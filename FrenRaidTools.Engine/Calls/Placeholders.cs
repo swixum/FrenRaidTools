@@ -233,6 +233,13 @@ public static class Placeholders
     private static bool TryMember(object target, string name, out object? value)
     {
         value = null;
+
+        if (target is Actor player && name.Equals(nameof(Actor.Name), StringComparison.OrdinalIgnoreCase))
+        {
+            value = player.Called;
+            return true;
+        }
+
         var type = target.GetType();
 
         const BindingFlags Flags =

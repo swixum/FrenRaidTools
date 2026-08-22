@@ -51,7 +51,9 @@ public sealed record Actor
 
     public bool Support => JobRoles.IsSupport(Job);
 
-    public override string ToString() => Name;
+    public string Called => IsPlayer ? PlayerName.First(Name) : Name;
+
+    public override string ToString() => Called;
 }
 
 public sealed record GameEvent

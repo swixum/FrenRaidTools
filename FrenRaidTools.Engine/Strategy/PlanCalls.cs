@@ -218,9 +218,20 @@ public sealed class PlanCalls
                 baitsClones: Flag(args, PlanStep.LastTowerParam) != true,
                 baits: false,
                 ownBait: PlanStep.OwnBait(seat, Text(args, RoleParam)),
-                next: Text(args, NextParam));
+                next: Text(args, NextParam),
+                partner: PlanStep.SharesWith(block, Mate(mechanic, book.Pick.Seat, step)));
 
-        return PlanStep.Read(lines, line => book.Aligned(line, mechanic));
+        return PlanStep.Read(
+            lines, line => book.Aligned(line, mechanic),
+            bait ? null : Text(args, MineParam));
+    }
+
+    private static StrategyBlock? Mate(StrategyMechanic mechanic, string seat, int step)
+    {
+        var mate = Slots.PartnerSlot(seat);
+        if (mate.Length == 0) return null;
+
+        return mechanic.Seats.TryGetValue(mate, out var text) ? text.Step(step) : null;
     }
 
     private static string? Text(IReadOnlyDictionary<string, object?>? args, string key) =>

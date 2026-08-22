@@ -83,12 +83,12 @@ public sealed class Forsaken
         Callout.Of("Forsaken: New Debuff (Tower 3)", "New debuff {myNextMech}")
             .Note("Soaking the third tower hands you the debuff you keep all the way to the last tower, and it lands after the tower 3 call has already been said. This fires the moment that marker appears.");
 
-    public const string FinalBait = "Bait between for final tower";
+    public const string FinalBait = "Bait between, Final Tower";
 
     public readonly Callout forsakenFinalFuture =
-        Callout.Of("Forsaken: Final Future Nothing", $"{FinalBait} (Future)");
+        Callout.Of("Forsaken: Final Future Nothing", $"{FinalBait}, Future");
     public readonly Callout forsakenFinalPast =
-        Callout.Of("Forsaken: Final Past Nothing", $"{FinalBait} (Past)")
+        Callout.Of("Forsaken: Final Past Nothing", $"{FinalBait}, Past")
             .In(2, "Forsaken: Final Past Nothing");
 
     public static ForsakenMech? MechFor(uint markerId) => markerId switch
@@ -350,13 +350,6 @@ public sealed class Forsaken
 
             if (hasPastFuture)
             {
-                var pastFuture = await run.FindOrWaitForCast(
-                    world, e => e.Id is FutureCast or PastCast);
-
-                castFuture = pastFuture?.Id == FutureCast;
-                nextFuture = castFuture && set != LastTowerSet;
-                run.SetParam("future", nextFuture);
-
                 run.Call(roundMech switch
                 {
                     ForsakenMech.Cone => forsakenTowerCone,
@@ -364,6 +357,13 @@ public sealed class Forsaken
                     ForsakenMech.Stack => forsakenTowerStack,
                     _ => forsakenTowerNothing,
                 });
+
+                var pastFuture = await run.FindOrWaitForCast(
+                    world, e => e.Id is FutureCast or PastCast);
+
+                castFuture = pastFuture?.Id == FutureCast;
+                nextFuture = castFuture && set != LastTowerSet;
+                run.SetParam("future", nextFuture);
             }
             else
             {

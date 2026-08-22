@@ -223,7 +223,7 @@ public static class PlanStep
         StrategyBlock block, string? mine, bool? future,
         string? tower = null, string? role = null, string? fluid = null,
         bool baitsClones = true, bool baits = true, string? ownBait = null,
-        string? next = null)
+        string? next = null, bool partner = false)
     {
         var built = new List<string>();
         var owned = false;
@@ -257,7 +257,7 @@ public static class PlanStep
             var owner = Owner(trimmed);
             if (owner is null)
             {
-                built.Add(trimmed);
+                built.Add(CallWords.Line(trimmed));
                 continue;
             }
 
@@ -267,7 +267,7 @@ public static class PlanStep
                 continue;
 
             yours = true;
-            built.Add(Rest(trimmed));
+            built.Add(CallWords.Line(Rest(trimmed)));
         }
 
         var offTower = false;
@@ -280,13 +280,70 @@ public static class PlanStep
 
         var trimmedDown = Once(built);
 
-        var label = offTower ? null : block.Label?.Trim();
+        var label = offTower ? null : Job(block.Label?.Trim());
         if (!string.IsNullOrEmpty(label)
             && !Repeats(label, trimmedDown.Where(l => !IsDebuffNote(l))))
-            trimmedDown.Insert(0, label);
+            Tack(trimmedDown, label);
+
+        if (partner && !offTower) Tack(trimmedDown, WithPartner, glue: " ");
 
         return trimmedDown;
     }
+
+    public const string WithPartner = "with Partner";
+
+    public static bool SharesWith(StrategyBlock block, StrategyBlock? partner)
+    {
+        if (partner is null) return false;
+        if (!string.Equals(block.Label?.Trim(), partner.Label?.Trim(), StringComparison.OrdinalIgnoreCase))
+            return false;
+
+        var mine = Spots(block);
+        var theirs = Spots(partner);
+
+        return mine.Count == 1 && theirs.Count == 1 &&
+            string.Equals(mine[0], theirs[0], StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static List<string> Spots(StrategyBlock block)
+    {
+        var spots = new List<string>();
+
+        foreach (var line in block.Lines)
+        {
+            var trimmed = line.Trim();
+            if (trimmed.Length == 0) continue;
+            if (trimmed.StartsWith(BaitToken, StringComparison.OrdinalIgnoreCase)) continue;
+            if (trimmed.StartsWith(RememberNew, StringComparison.OrdinalIgnoreCase)) continue;
+            if (trimmed.StartsWith(Remember, StringComparison.OrdinalIgnoreCase)) continue;
+            if (trimmed.Contains(Arrow)) return [];
+
+            spots.Add(trimmed);
+        }
+
+        return spots;
+    }
+
+    private static readonly Dictionary<string, string> Jobs =
+        new(StringComparer.OrdinalIgnoreCase) { ["Help Stack"] = "Take Stack" };
+
+    public static string? Job(string? label) =>
+        label is not null && Jobs.TryGetValue(label, out var said) ? said : label;
+
+    public static void Tack(List<string> lines, string job, string glue = ", ")
+    {
+        for (var i = lines.Count - 1; i >= 0; i--)
+        {
+            if (IsDebuffNote(lines[i]) || IsBaitLine(lines[i])) continue;
+            lines[i] = $"{lines[i]}{glue}{job}";
+            return;
+        }
+
+        lines.Add(job);
+    }
+
+    public static bool IsBaitLine(string line) =>
+        line == BaitFuture || line == BaitPast || line == BaitUnknown;
 
     public static List<string> Once(IReadOnlyList<string> lines)
     {
@@ -335,7 +392,8 @@ public static class PlanStep
         return at < 0 ? line : line[(at + 1)..].Trim();
     }
 
-    public static StrategyCue Read(IReadOnlyList<string> lines, Func<string, string> turn)
+    public static StrategyCue Read(
+        IReadOnlyList<string> lines, Func<string, string> turn, string? debuff = null)
     {
         if (lines.Count == 0) return StrategyCue.None;
 
@@ -355,6 +413,14 @@ public static class PlanStep
             speech.Append(spoken);
         }
 
-        return new StrategyCue(display.ToString(), speech.ToString());
+        return new StrategyCue(Bracketed(display.ToString(), debuff), speech.ToString());
+    }
+
+    public static string Bracketed(string display, string? debuff)
+    {
+        if (!Known(debuff) || display.Length == 0) return display;
+        if (display.Contains(debuff!, StringComparison.OrdinalIgnoreCase)) return display;
+
+        return $"{display} ({debuff})";
     }
 }
