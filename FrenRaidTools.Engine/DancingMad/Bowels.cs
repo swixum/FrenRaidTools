@@ -209,14 +209,13 @@ public sealed class Bowels
     public const string BaitJumpSeat = "R1";
     public const string BaitJumpName = "Bowels: Bait Jump";
 
-    public const double UmbraSmashAfterImplosionSeconds = 20.21;
-    public const double BaitJumpCountdownSeconds = 10.0;
-    public const double BaitJumpLeadSeconds =
-        UmbraSmashAfterImplosionSeconds - BaitJumpCountdownSeconds;
+    public const double CastsAfterSecondWaveSeconds = 10.44;
+    public const double BaitJumpCountdownSeconds = CastsAfterSecondWaveSeconds;
+    public const double WaveApartSeconds = 5.0;
 
     public readonly Callout baitJump =
         Callout.Duration(BaitJumpName, "Bait Jump").Linger(BaitJumpCountdownSeconds)
-            .Note("Phys ranged only. Fires ten seconds before Umbra Smash starts casting, timed off the Implosion. Zero is the moment the casts start, which is when you move behind Exdeath. Umbra Smash itself lands about five seconds later.");
+            .Note("Phys ranged only. Fires when the second fire or water expires. The countdown is the measured gap to the casts, 10.35 to 10.54 seconds across the pulls it was taken from, so zero is your cue to move behind Exdeath. Umbra Smash lands about five seconds after that.");
 
     public static bool Baits(IWorld world)
     {
@@ -228,6 +227,9 @@ public sealed class Bowels
             : JobKinds.Kind(you.Job) == JobKind.PhysRanged;
     }
 
+    private static bool FireOrWaterGone(GameEvent e) =>
+        e.Kind == EventKind.StatusLose && e.Id is Entropy or Dynamic;
+
     public Sequence BuildBaitJump(IWorld world) =>
         Sequence.Repeat(Group + "BaitJump", 180,
             e => e.Is(EventKind.CastStart, BowelsCast),
@@ -235,10 +237,13 @@ public sealed class Bowels
             {
                 if (!Baits(world)) return;
 
-                var implosion = await run.WaitEvent(
-                    EventKind.CastStart, Earthquake.LongitudinalCast, Earthquake.LatitudinalCast);
+                var first = await run.WaitEvent(FireOrWaterGone);
 
-                await run.WaitSeconds(BaitJumpLeadSeconds - run.Since(implosion));
+                while (true)
+                {
+                    var next = await run.WaitEvent(FireOrWaterGone);
+                    if (next.At - first.At >= WaveApartSeconds) break;
+                }
 
                 run.Call(baitJump, new GameEvent
                 {
