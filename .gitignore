@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+scratch/
+tools/plans/source/
+tests/
+tools/
+dist/
+stage/

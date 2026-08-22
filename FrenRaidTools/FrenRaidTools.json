@@ -1,0 +1,16 @@
+{
+  "Author": "swix",
+  "Name": "Fren Raid Tools",
+  "InternalName": "FrenRaidTools",
+  "Punchline": "It's raid tools with frens.",
+  "Description": "Mechanics and callouts for fights.",
+  "AssemblyVersion": "1.0.0.2",
+  "ApplicableVersion": "any",
+  "RepoUrl": "https://github.com/swixum/FrenRaidTools",
+  "Tags": ["raid", "ultimate", "callout", "dancing mad"],
+  "CategoryTags": ["utility"],
+  "DalamudApiLevel": 15,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "CanUnloadAsync": false
+}

@@ -1,0 +1,4605 @@
+{
+  "licence": "MIT",
+  "fightKey": "umad",
+  "title": "Dancing Mad (Ultimate)",
+  "subtitle": "Kefka 7.51",
+  "plan": {
+    "name": "kefkabin",
+    "label": "Kefkabin",
+    "links": [
+      {
+        "name": "Kefka Bin",
+        "url": "https://tinyurl.com/kefkabin"
+      },
+      {
+        "name": "UMAD P1: Merry Go Round by Fae Fiyaa",
+        "url": "https://docs.google.com/presentation/d/1-E2rEKa586KKiVNvtt3EAMQY2YAEVBRGcMX0WzORIq8/edit?usp=sharing"
+      },
+      {
+        "name": "Kroxy-Rinon 3/4/1 (Center/N Stacks)",
+        "url": "https://raidplan.io/plan/UATE__aDcw1-bgVv"
+      },
+      {
+        "name": "P2 Trines",
+        "url": "https://raidplan.io/plan/apkh6ytq72w8pt3v"
+      },
+      {
+        "name": "DMU P3: Dank Feet DSA BH",
+        "url": "https://docs.google.com/presentation/d/1w05ez7GscxTflgaMgVET42gjGryI2QSPR0zqRWXdWgI/edit?usp=sharing"
+      },
+      {
+        "name": "P4 Kefka Says Gazes Mid by Dank",
+        "url": "https://raidplan.io/plan/ChcTBFAcFMZKFVKo"
+      },
+      {
+        "name": "Kefkabin P5",
+        "url": "https://raidplan.io/plan/3wODYtApXBtYAdu0"
+      }
+    ]
+  },
+  "seats": [
+    {
+      "key": "MT",
+      "role": "Tank",
+      "party": 1
+    },
+    {
+      "key": "OT",
+      "role": "Tank",
+      "party": 2
+    },
+    {
+      "key": "H1",
+      "role": "Healer",
+      "party": 1
+    },
+    {
+      "key": "H2",
+      "role": "Healer",
+      "party": 2
+    },
+    {
+      "key": "M1",
+      "role": "Melee",
+      "party": 1
+    },
+    {
+      "key": "M2",
+      "role": "Melee",
+      "party": 2
+    },
+    {
+      "key": "R1",
+      "role": "Ranged",
+      "party": 1
+    },
+    {
+      "key": "R2",
+      "role": "Ranged",
+      "party": 2
+    }
+  ],
+  "alignments": [
+    {
+      "value": "original",
+      "label": "Boss North"
+    },
+    {
+      "value": "truenorth",
+      "label": "Tower North"
+    }
+  ],
+  "options": [
+    {
+      "key": "arrows",
+      "label": "P1 Arrows",
+      "defaultValue": "mgr",
+      "options": [
+        {
+          "value": "mgr",
+          "label": "Merry-Go-Round",
+          "difference": "Arrows arranged in one large box clockwise, aka Big Box."
+        }
+      ]
+    },
+    {
+      "key": "forsaken",
+      "label": "P2 Forsaken",
+      "defaultValue": "kr",
+      "options": [
+        {
+          "value": "kr",
+          "label": "Kroxy-Rinon",
+          "difference": "Tanks and Melees are the only flexers. May be difficult to find original partners to determine flex, but takes burden off healers."
+        }
+      ]
+    },
+    {
+      "key": "bowels",
+      "label": "P3 Bowels/LC",
+      "defaultValue": "lb",
+      "options": [
+        {
+          "value": "lb",
+          "label": "LB3 Cheese",
+          "difference": "All 8 players cleanse their Headwind/Tailwind on Vacuum Wave, then use Tank LB3 to take all 8 Wind AOEs simultaneously. Requires use of LB3 and heavy mit."
+        }
+      ]
+    },
+    {
+      "key": "blackhole",
+      "label": "Black Hole",
+      "defaultValue": "dsa",
+      "options": [
+        {
+          "value": "dsa",
+          "label": "D>S>A (Old)",
+          "difference": "Original Kefkabin plan with DPS > Support > Accretion tether order. Watch 2nd-in-Line Tank after Set 3 to make sure they're healed up after going to 1HP."
+        }
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "name": "Graven 1: Fire + Ice",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Tankbuster",
+          "description": {
+            "text": "Hits 1st in threat, then 2nd in threat"
+          }
+        },
+        {
+          "name": "Start",
+          "description": {
+            "text": "Tether = knockback\nFake Fire (top ring) = opposite of stack/spread marker\nFake Ice (bottom ring) = stand in purple"
+          },
+          "action": {
+            "text": "Supports West, DPS East"
+          },
+          "seats": {
+            "MT": {
+              "text": "West"
+            },
+            "OT": {
+              "text": "West"
+            },
+            "H1": {
+              "text": "West"
+            },
+            "H2": {
+              "text": "West"
+            },
+            "M1": {
+              "text": "East"
+            },
+            "M2": {
+              "text": "East"
+            },
+            "R1": {
+              "text": "East"
+            },
+            "R2": {
+              "text": "East"
+            }
+          }
+        },
+        {
+          "name": "Stack",
+          "action": {
+            "text": "Supports West, DPS East"
+          },
+          "seats": {
+            "MT": {
+              "text": "West"
+            },
+            "OT": {
+              "text": "West"
+            },
+            "H1": {
+              "text": "West"
+            },
+            "H2": {
+              "text": "West"
+            },
+            "M1": {
+              "text": "East"
+            },
+            "M2": {
+              "text": "East"
+            },
+            "R1": {
+              "text": "East"
+            },
+            "R2": {
+              "text": "East"
+            }
+          }
+        },
+        {
+          "name": "Spread",
+          "action": {
+            "text": "Supports West, DPS East\nTanks/Melees on hitbox"
+          },
+          "seats": {
+            "MT": {
+              "text": "West half, N/S on hitbox"
+            },
+            "OT": {
+              "text": "West on hitbox"
+            },
+            "H1": {
+              "text": "Far West"
+            },
+            "H2": {
+              "text": "Far West"
+            },
+            "M1": {
+              "text": "East half, N/S on hitbox"
+            },
+            "M2": {
+              "text": "East on hitbox"
+            },
+            "R1": {
+              "text": "Far East"
+            },
+            "R2": {
+              "text": "Far East"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 1: Lasers + Towers",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Conga",
+          "description": {
+            "text": "2 DPS + 2 Supports get hit and spawn towers"
+          },
+          "action": {
+            "text": "HHTTMMRR Conga"
+          },
+          "seats": {
+            "MT": {
+              "text": "3rd from West"
+            },
+            "OT": {
+              "text": "4th from West"
+            },
+            "H1": {
+              "text": "2nd from West"
+            },
+            "H2": {
+              "text": "1st from West"
+            },
+            "M1": {
+              "text": "4th from East"
+            },
+            "M2": {
+              "text": "3rd from East"
+            },
+            "R1": {
+              "text": "2nd from East"
+            },
+            "R2": {
+              "text": "1st from East"
+            }
+          }
+        },
+        {
+          "name": "Towers",
+          "action": {
+            "text": "Use same West -> East prio on your half to soak towers if you didn't get hit"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 1: First Confetti",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Knockback",
+          "description": {
+            "text": "One player from each role will get a Confetti debuff = stack + knockback from that player"
+          }
+        },
+        {
+          "name": "Lightning + Ice",
+          "description": {
+            "text": "Lightning = top ring & lines\nIce = bottom ring & quadrants"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 2: Puddles",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "First Puddle",
+          "description": {
+            "text": "Center tether = Puddle\nRight side tether = Rocks"
+          },
+          "action": {
+            "text": "North for 1st puddles"
+          }
+        },
+        {
+          "name": "First Rocks",
+          "action": {
+            "text": "G1 Left, G2 Right\nMelees/Tanks can go E/W of boss hitbox\nGravity players can go middle"
+          },
+          "seats": {
+            "MT": {
+              "text": "Left, on hitbox"
+            },
+            "OT": {
+              "text": "Right, on hitbox"
+            },
+            "H1": {
+              "text": "Left"
+            },
+            "H2": {
+              "text": "Right"
+            },
+            "M1": {
+              "text": "Left, on hitbox"
+            },
+            "M2": {
+              "text": "Right, on hitbox"
+            },
+            "R1": {
+              "text": "Left"
+            },
+            "R2": {
+              "text": "Right"
+            }
+          }
+        },
+        {
+          "name": "Tankbuster",
+          "description": {
+            "text": "Same conal tankbuster as first one"
+          }
+        },
+        {
+          "name": "First Half-room",
+          "description": {
+            "text": "Boss orb telegraphs half-room cleave"
+          }
+        },
+        {
+          "name": "Second Puddle",
+          "action": {
+            "text": "South for 2nd Puddles"
+          }
+        },
+        {
+          "name": "Second Rocks",
+          "action": {
+            "text": "G1 go Left, G2 go Right\nMelees/Tanks can go E/W of boss hitbox\nGravity players can go middle"
+          },
+          "seats": {
+            "MT": {
+              "text": "Left, on hitbox"
+            },
+            "OT": {
+              "text": "Right, on hitbox"
+            },
+            "H1": {
+              "text": "Left"
+            },
+            "H2": {
+              "text": "Right"
+            },
+            "M1": {
+              "text": "Left, on hitbox"
+            },
+            "M2": {
+              "text": "Right, on hitbox"
+            },
+            "R1": {
+              "text": "Left"
+            },
+            "R2": {
+              "text": "Right"
+            }
+          }
+        },
+        {
+          "name": "Second Half-room",
+          "description": {
+            "text": "Boss orb telegraphs half-room cleave\nSupports preposition North\nDPS preposition South"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 2: Second Confetti",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Knockback",
+          "action": {
+            "text": "Supports North, DPS South\nParty stack on inside of hitbox\nConfetti on edge of puddles"
+          }
+        },
+        {
+          "name": "Puddle Soak",
+          "action": {
+            "text": "Get knocked back through boss into opposite puddle\nConfettis step back into puddle"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 3: Arrows",
+      "tag": "arrows",
+      "optionKey": "arrows",
+      "optionValue": "mgr",
+      "mechanics": [
+        {
+          "name": "Placement",
+          "description": {
+            "text": "Everyone gets 2 Arrow debuffs\nOne role gets 2x same, one role gets 2x different\nPlace arrows rotating CLOCKWISE using markers"
+          }
+        },
+        {
+          "name": "Arrow Solve",
+          "description": {
+            "text": "Same Arrows: Place on Letter + 1 CCW of Letter\nDifferent Arrows: Use Leftmost debuff to solve side\nPlace depending on debuff timers"
+          }
+        },
+        {
+          "name": "Knockback",
+          "action": {
+            "text": "Supports NW, DPS SE for Confetti KB\nConfetti debuffs on the 1/3 markers"
+          }
+        },
+        {
+          "name": "Sleep/Confuse (Fixed positions)",
+          "description": {
+            "text": "IGNORE DEBUFFS, use fixed tether spots\nTanks/Melee inside, Healers/Ranged outside"
+          },
+          "seats": {
+            "MT": {
+              "text": "North, inside"
+            },
+            "OT": {
+              "text": "West, inside"
+            },
+            "H1": {
+              "text": "South, outside"
+            },
+            "H2": {
+              "text": "East, outside"
+            },
+            "M1": {
+              "text": "South, inside"
+            },
+            "M2": {
+              "text": "East, inside"
+            },
+            "R1": {
+              "text": "North, outside"
+            },
+            "R2": {
+              "text": "West, outside"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 3: Arrows",
+      "tag": "arrows",
+      "optionKey": "arrows",
+      "optionValue": "pinoy",
+      "mechanics": [
+        {
+          "name": "Placement",
+          "description": {
+            "text": "Everyone gets 2 Arrow debuffs\nOne role gets 2x same, one role gets 2x different\nPlace arrows in a box on intercards"
+          }
+        },
+        {
+          "name": "Arrow Solve",
+          "description": {
+            "text": "Same Arrows: Place on outside intercard facing CCW\nDifferent Arrows: Arrows point towards your corner\nPlace on marker + outside depending on debuff timers"
+          }
+        },
+        {
+          "name": "Knockback",
+          "description": {
+            "text": "Supports North, DPS South Confetti KB\nNon-Confetti on boss hitbox\nGet knocked through boss"
+          }
+        },
+        {
+          "name": "Sleep/Confuse (Fixed positions)",
+          "description": {
+            "text": "IGNORE DEBUFFS, use fixed spots\nG1 West, G2 East\nTank/Range North, Healer/Melee South\nRanged inside the arrow box, Melees on boss hitbox intercards"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Graven 3: Arrows",
+      "tag": "arrows",
+      "optionKey": "arrows",
+      "optionValue": "freaky",
+      "mechanics": [
+        {
+          "name": "Placement",
+          "description": {
+            "text": "Everyone gets 2 Arrow debuffs\nOne role gets 2x same, one role gets 2x different\nPlace arrows in a ring CLOCKWISE, only one spot per player"
+          }
+        },
+        {
+          "name": "Arrow Solve",
+          "description": {
+            "text": "Cardinal (Letter) arrows go on the INNER EDGE of the waymark\nSame Arrows: drop 1st on the Letter marker + 1 spot CCW\nDifferent Arrows: use the timer to see which drops first"
+          }
+        },
+        {
+          "name": "Knockback",
+          "action": {
+            "text": "Supports NW, DPS SE for Confetti KB\nConfetti debuffs on the 1/3 markers"
+          }
+        },
+        {
+          "name": "Sleep/Confuse (Tethers matter)",
+          "description": {
+            "text": "Each role gets Upper/Left (Outside/Confuse) or Lower/Right (Inside/Sleep) tether"
+          },
+          "action": {
+            "text": "Sleep = Inside\nConfuse = Outside"
+          },
+          "seats": {
+            "MT": {
+              "text": "North"
+            },
+            "OT": {
+              "text": "West"
+            },
+            "H1": {
+              "text": "South"
+            },
+            "H2": {
+              "text": "East"
+            },
+            "M1": {
+              "text": "South"
+            },
+            "M2": {
+              "text": "East"
+            },
+            "R1": {
+              "text": "North"
+            },
+            "R2": {
+              "text": "West"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gaze + Fire + Lightning",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Static Spots",
+          "action": {
+            "text": "After teleports, preposition in shown spots"
+          },
+          "seats": {
+            "MT": {
+              "text": "Northeast, 2 marker"
+            },
+            "OT": {
+              "text": "Southeast, 3 marker"
+            },
+            "H1": {
+              "text": "South, far"
+            },
+            "H2": {
+              "text": "East, far"
+            },
+            "M1": {
+              "text": "Northwest, 1 marker"
+            },
+            "M2": {
+              "text": "Southwest, 4 marker"
+            },
+            "R1": {
+              "text": "North, far"
+            },
+            "R2": {
+              "text": "West, far"
+            }
+          }
+        },
+        {
+          "name": "Spread",
+          "description": {
+            "text": "Make sure to solve Gaze (on statue) + Lightning lines"
+          },
+          "action": {
+            "text": "Melee on unsafe half move under boss"
+          },
+          "seats": {
+            "MT": {
+              "text": "Northeast, 2 marker"
+            },
+            "OT": {
+              "text": "Southeast, 3 marker"
+            },
+            "H1": {
+              "text": "South, far"
+            },
+            "H2": {
+              "text": "East, far"
+            },
+            "M1": {
+              "text": "Northwest, 1 marker"
+            },
+            "M2": {
+              "text": "Southwest, 4 marker"
+            },
+            "R1": {
+              "text": "North, far"
+            },
+            "R2": {
+              "text": "West, far"
+            }
+          }
+        },
+        {
+          "name": "Stack",
+          "action": {
+            "text": "Supports on 3\nDPS on 1"
+          },
+          "seats": {
+            "MT": {
+              "text": "Southeast, 3 marker"
+            },
+            "OT": {
+              "text": "Southeast, 3 marker"
+            },
+            "H1": {
+              "text": "Southeast, 3 marker"
+            },
+            "H2": {
+              "text": "Southeast, 3 marker"
+            },
+            "M1": {
+              "text": "Northwest, 1 marker"
+            },
+            "M2": {
+              "text": "Northwest, 1 marker"
+            },
+            "R1": {
+              "text": "Northwest, 1 marker"
+            },
+            "R2": {
+              "text": "Northwest, 1 marker"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forsaken Overview",
+      "tag": "forsaken",
+      "optionKey": "forsaken",
+      "optionValue": "kr",
+      "mechanics": [
+        {
+          "name": "Group A (Different Debuffs)",
+          "seats": {
+            "MT": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "OT": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 6 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 8 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 6 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 8 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Group B (Same Debuffs)",
+          "seats": {
+            "MT": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nLeft Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "OT": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nLeft Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H1": {
+              "text": "Tower 1 - Bait Cone\nREMEMBER DEBUFF\nLeft Tower, Out + Back edge\n\nTower 2 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H2": {
+              "text": "Tower 1 - Bait Cone\nREMEMBER DEBUFF\nLeft Tower, Out + Back edge\n\nTower 2 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Left Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M1": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M2": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → HTMR Tower Prio, inner ring at tower edge\nForsaken Circle → HTMR Tower Prio, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → HTMR Tower Prio, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → HTMR Tower Prio, inner ring at tower edge",
+                    "Forsaken Circle → HTMR Tower Prio, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → HTMR Tower Prio, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R1": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R2": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Right Tower, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forsaken Overview",
+      "tag": "forsaken",
+      "optionKey": "forsaken",
+      "optionValue": "south",
+      "mechanics": [
+        {
+          "name": "Group A (Different Debuffs)",
+          "seats": {
+            "MT": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "OT": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 6 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Left Tower, Northwest\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 6 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Left Tower, Northwest",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R1": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R2": {
+              "text": "Tower 1 - Take Tower\nForsaken Stack → Right Tower, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 2 - Take Tower\nForsaken Cone → Tower 1 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 1 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 3 - Take Tower\nForsaken Stack → Tower 2 South Adjust, North\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\nREMEMBER NEW DEBUFF\n\nTower 4 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 5 - Help Stack\nRight Tower, Out + Front edge\n\nTower 6 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 7 - Help Stack\nRight Tower, Out + Front edge\n\nTower 8 - Take Tower\nForsaken Cone → Tower 3 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 3 South Adjust, South\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-stack",
+                "forsaken-cone",
+                "forsaken-circle"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Right Tower, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 1 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 1 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 2 South Adjust, North",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South",
+                    "REMEMBER NEW DEBUFF"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 3 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 3 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Group B (Same Debuffs)",
+          "seats": {
+            "MT": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nLeft Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "OT": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nLeft Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nLeft Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Left Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Left Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Left Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H1": {
+              "text": "Tower 1 - Bait Cone\nREMEMBER DEBUFF\nLeft Tower, Out + Back edge\n\nTower 2 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "H2": {
+              "text": "Tower 1 - Bait Cone\nREMEMBER DEBUFF\nLeft Tower, Out + Back edge\n\nTower 2 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Bait Cone\nLeft Tower, Out + Back edge\n\nTower 4 - Take Tower\nForsaken Cone → Left Tower, inner ring at tower edge\nForsaken Circle → Left Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Left Cone onto Left marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Left Tower, Out + Back edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Left Tower, inner ring at tower edge",
+                    "Forsaken Circle → Left Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Left Cone onto Left marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M1": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "M2": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Clone\nBait Right Clone, Far North (outer ring)\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Clone",
+                  "label": "Bait Clone",
+                  "lines": [
+                    "Bait Right Clone, Far North (outer ring)",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R1": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            },
+            "R2": {
+              "text": "Tower 1 - Help Stack\nREMEMBER DEBUFF\nRight Tower, Out + Front edge\n\nTower 2 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST\n\nTower 3 - Help Stack\nRight Tower, Out + Front edge\n\nTower 4 - Take Tower\nForsaken Cone → Right Tower, inner ring at tower edge\nForsaken Circle → Right Tower, South\n\nBAIT FUTURE/PAST\n\nTower 5 - Take Tower\nForsaken Stack → Tower 4 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 6 - Take Tower\nForsaken Cone → Tower 5 South Adjust, inner ring at tower edge\nForsaken Circle → Tower 5 South Adjust, South\n\nBAIT FUTURE/PAST\n\nTower 7 - Take Tower\nForsaken Stack → Tower 6 South Adjust, North-ish\nForsaken Cone → Left Tower, South\nForsaken Circle → Right Tower, South\n\nTower 8 - Bait Cone\nBait Right Cone onto Right marker\n\nBAIT FUTURE/PAST",
+              "icons": [
+                "forsaken-cone",
+                "forsaken-circle",
+                "forsaken-stack"
+              ],
+              "blocks": [
+                {
+                  "step": 1,
+                  "heading": "Tower 1 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "REMEMBER DEBUFF",
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 2,
+                  "heading": "Tower 2 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 3,
+                  "heading": "Tower 3 - Help Stack",
+                  "label": "Help Stack",
+                  "lines": [
+                    "Right Tower, Out + Front edge"
+                  ]
+                },
+                {
+                  "step": 4,
+                  "heading": "Tower 4 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Right Tower, inner ring at tower edge",
+                    "Forsaken Circle → Right Tower, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 5,
+                  "heading": "Tower 5 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 4 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 6,
+                  "heading": "Tower 6 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Cone → Tower 5 South Adjust, inner ring at tower edge",
+                    "Forsaken Circle → Tower 5 South Adjust, South",
+                    "BAIT FUTURE/PAST"
+                  ]
+                },
+                {
+                  "step": 7,
+                  "heading": "Tower 7 - Take Tower",
+                  "label": "Take Tower",
+                  "lines": [
+                    "Forsaken Stack → Tower 6 South Adjust, North-ish",
+                    "Forsaken Cone → Left Tower, South",
+                    "Forsaken Circle → Right Tower, South"
+                  ]
+                },
+                {
+                  "step": 8,
+                  "heading": "Tower 8 - Bait Cone",
+                  "label": "Bait Cone",
+                  "lines": [
+                    "Bait Right Cone onto Right marker",
+                    "BAIT FUTURE/PAST"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forsaken",
+      "tag": "forsaken",
+      "optionKey": "forsaken",
+      "optionValue": "kr",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "AAABBBBA order\nOdd towers: Cones Left, Spreads Right\nLeft stack = boss hitbox ring, Right stack = front toward \"new north\"\nEven towers: one spread, one cone per tower\nTanks/Melees will flex if partner matches"
+          }
+        },
+        {
+          "name": "Start",
+          "description": {
+            "text": "Find role/group partner"
+          },
+          "action": {
+            "text": "Group A if one has a stack\nGroup B if both the same"
+          }
+        },
+        {
+          "name": "Odd Towers",
+          "description": {
+            "text": "Left Tower: Forsaken Stack + Forsaken Cone, Right Tower: Forsaken Stack + Forsaken Circle Spread",
+            "icons": [
+              "forsaken-stack",
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          },
+          "action": {
+            "text": "Non-tower Tank front edge, Non-tower Healer back off edge\nTower Tank/Melee flex if partner matches"
+          }
+        },
+        {
+          "name": "Odd Towers (Left)",
+          "description": {
+            "text": "Forsaken Stack on the boss hitbox (fixed); Stack Tank stands right in front\nForsaken Cone = away from the Stack, just off the tower edge (not the back wall)",
+            "icons": [
+              "forsaken-stack",
+              "forsaken-cone"
+            ]
+          },
+          "rotations": {
+            "truenorth": 45
+          }
+        },
+        {
+          "name": "Odd Towers (Right)",
+          "description": {
+            "text": "Forsaken Stack = between the outer hitbox and tower edge, before the midpoint (not the \"eye\" corner, not the Even cone spot)\nForsaken Circle Spread = South of the tower, away from boss (opposite the Stack)",
+            "icons": [
+              "forsaken-stack",
+              "forsaken-circle"
+            ]
+          },
+          "rotations": {
+            "truenorth": -45
+          }
+        },
+        {
+          "name": "Even Towers (Diamond Box Markers)",
+          "description": {
+            "text": "Both Towers: Forsaken Cone North + Forsaken Circle Spread South",
+            "icons": [
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          },
+          "action": {
+            "text": "Non-tower Tank/Melee North on OUTER RING of boss hitbox to bait Clones\n❗BE ON THE OUTER RING, DO NOT GO FURTHER OUT\nNon-tower Healer/Ranged bait cones on Marker\nNumber Marker = Back corner, Letter Marker = Front edge\nTower Tank/Melee flex if partner matches"
+          }
+        },
+        {
+          "name": "Even Towers (Number Markers, Left)",
+          "description": {
+            "text": "Left tower (Boss is North)\nForsaken Cone = Front edge towards Left on INNER hitbox ring at TOWER EDGE\nForsaken Circle Spread = South edge, directly across tower from Cone\nBaiter = Back corner of Number Markers",
+            "icons": [
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          },
+          "rotations": {
+            "truenorth": 45
+          }
+        },
+        {
+          "name": "Even Towers (Letter Markers, Right)",
+          "description": {
+            "text": "Right tower (Boss is North)\nForsaken Cone = Front edge towards Right on INNER hitbox ring at TOWER EDGE\nForsaken Circle Spread = South edge, directly across tower from Cone\nBaiter = Front edge of Letter Markers",
+            "icons": [
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          },
+          "rotations": {
+            "truenorth": -45
+          }
+        },
+        {
+          "name": "Future/Past Baits",
+          "description": {
+            "text": "Everyone baits Past/Future at max melee\nCast after every odd tower, bait after every even tower"
+          },
+          "action": {
+            "text": "BE AT LEAST MAX MELEE\nPast = Between towers, Future = Away from towers"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forsaken",
+      "tag": "forsaken",
+      "optionKey": "forsaken",
+      "optionValue": "south",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "AAABBBBA order\nOdd towers: Cones Left, Spreads Right\nLeft stack = boss hitbox ring, Right stack = front toward \"new north\"\nEven towers: one spread, one cone per tower\nSouth tower players flex for next tower if new debuff matches"
+          }
+        },
+        {
+          "name": "Start",
+          "description": {
+            "text": "Find role/group partner\nGroup A if one has a stack\nGroup B if both the same"
+          }
+        },
+        {
+          "name": "Odd Towers",
+          "description": {
+            "text": "Left Tower: Forsaken Stack + Forsaken Cone, Right Tower: Forsaken Stack + Forsaken Circle Spread\nNon-tower Tank front edge, Non-tower Healer back off edge\nSouth tower players flex for next tower if new debuff matches",
+            "icons": [
+              "forsaken-stack",
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          }
+        },
+        {
+          "name": "Even Towers",
+          "description": {
+            "text": "Both Towers: Forsaken Cone (inner ring at tower edge) + Forsaken Circle Spread South\nNon-tower Tank/Melee North on OUTER RING of boss hitbox to bait Clones\nNon-tower Healer/Ranged bait Cones on Marker\nSpread can cheat slightly away from baiter\nSouth tower players flex for next tower if new debuff matches",
+            "icons": [
+              "forsaken-cone",
+              "forsaken-circle"
+            ]
+          }
+        },
+        {
+          "name": "Even Towers (Number Markers)",
+          "description": {
+            "text": "Boss is North\nNumber Marker baiter = Outside corner of marker\nCone = inner ring at tower edge, Spread = South, slightly toward other tower"
+          }
+        },
+        {
+          "name": "Even Towers (Letter Markers)",
+          "description": {
+            "text": "Boss is North\nLetter Marker baiter = Inside of marker\nCone = inner ring at tower edge, Spread = South, slightly toward other tower"
+          }
+        },
+        {
+          "name": "Future/Past Baits",
+          "description": {
+            "text": "Everyone baits Past/Future at max melee\nPast = Between towers, Future = Away from towers\nCast after every odd tower, bait after every even tower"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trines",
+      "tag": "p2",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "3 sets of Trines spawn: 3/1/3\nHalf room while 3rd set is landing\nStart Mid, then dodge into first explosion"
+          },
+          "action": {
+            "text": "Wait Mid\nTanks move into 1st CCW from 1\nParty move into 1st CW from A"
+          }
+        },
+        {
+          "name": "Tankbusters",
+          "description": {
+            "text": "Near/Far tankbuster snapshots at 3rd explosion\n2 arena rings from edge = safe from both for party"
+          }
+        },
+        {
+          "name": "Final",
+          "action": {
+            "text": "One tank tuck into middle trine, one tank far, party 2 rings from edge"
+          }
+        }
+      ]
+    },
+    {
+      "name": "The Decisive Battle",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Opener Split",
+          "action": {
+            "text": "G1 Supports + Melee -> Chaos\nG2 Supports + Ranged -> Exdeath"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bowels of Agony",
+      "tag": "bowels",
+      "optionKey": "bowels",
+      "optionValue": "lb",
+      "mechanics": [
+        {
+          "name": "Debuffs",
+          "description": {
+            "text": "1 Sup + 1 DPS: Entropy (fire/spread)\n1 Sup + 1 DPS: Dynamic Fluid (water/donut)\nOne Short (20s), one Long (45s)\nEveryone gets Headwind or Tailwind\nHeadwind = face AWAY, Tailwind = face TOWARD",
+            "icons": [
+              "entropy",
+              "dynamic-fluid",
+              "headwind",
+              "tailwind"
+            ]
+          }
+        },
+        {
+          "name": "Setup",
+          "seats": {
+            "MT": {
+              "text": "Drag Chaos to wall at Wind crystal"
+            },
+            "OT": {
+              "text": "Keep Exdeath Middle"
+            },
+            "H1": {
+              "text": "Stack at Wind crystal"
+            },
+            "H2": {
+              "text": "Stack at Wind crystal"
+            },
+            "M1": {
+              "text": "Stack at Wind crystal"
+            },
+            "M2": {
+              "text": "Stack at Wind crystal"
+            },
+            "R1": {
+              "text": "Spread at wall near short debuff crystal\nFurther from boss"
+            },
+            "R2": {
+              "text": "Spread at wall near short debuff crystal\nCloser to boss"
+            }
+          }
+        },
+        {
+          "name": "First Resolve (Short)",
+          "description": {
+            "text": "Exdeath defam, Firewall debuffs drop, Short element resolves\nShort Entropy Fire: Melee spread from Supports\nShort Dynamic Fluid Water: Melee + Supports stack\nCrystal AOE hits Ranged",
+            "icons": [
+              "entropy",
+              "dynamic-fluid"
+            ]
+          },
+          "seats": {
+            "MT": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "OT": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "H1": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "H2": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "M1": {
+              "text": "If short Entropy Fire, be away from Supports\nIf short Dynamic Fluid Water, stack with Supports",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "M2": {
+              "text": "If short Entropy Fire, be away from Supports\nIf short Dynamic Fluid Water, stack with Supports",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "R1": {
+              "text": "Stay spread at wall, take crystal AoE"
+            },
+            "R2": {
+              "text": "Stay spread at wall, take crystal AoE"
+            }
+          }
+        },
+        {
+          "name": "Tankbuster + Implosion",
+          "description": {
+            "text": "Exdeath Thunder III 2-hit tankbuster (TB 1/5)\nDrag Exdeath to the wall, Chaos tank drag Chaos out + position near intercard for Lat/Long\nLatitude = sides first, Longitude = front/back first"
+          },
+          "seats": {
+            "MT": {
+              "text": "Take Exdeath Tankbuster, then drag Exdeath/Chaos to wall at Wind"
+            },
+            "OT": {
+              "text": "Take Exdeath Tankbuster, then drag Exdeath/Chaos to wall at Wind"
+            },
+            "H1": {
+              "text": "Dodge Lat/Long"
+            },
+            "H2": {
+              "text": "Dodge Lat/Long"
+            },
+            "M1": {
+              "text": "Dodge Lat/Long"
+            },
+            "M2": {
+              "text": "Dodge Lat/Long"
+            },
+            "R1": {
+              "text": "Move across to other crystal\nWatch Chaos for Lat/Long"
+            },
+            "R2": {
+              "text": "Move across to other crystal\nWatch Chaos for Lat/Long"
+            }
+          }
+        },
+        {
+          "name": "Second Resolve (Long)",
+          "description": {
+            "text": "Long debuffs resolve after 2nd Implosion hit\nRanged spread, Melee + Supports stack or spread depending on debuff"
+          },
+          "seats": {
+            "MT": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "OT": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "H1": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "H2": {
+              "text": "If short Entropy Fire, be away from Melees\nIf short Dynamic Fluid Water, stack with Melees",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "M1": {
+              "text": "If short Entropy Fire, be away from Supports\nIf short Dynamic Fluid Water, stack with Supports",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "M2": {
+              "text": "If short Entropy Fire, be away from Supports\nIf short Dynamic Fluid Water, stack with Supports",
+              "icons": [
+                "entropy",
+                "dynamic-fluid"
+              ]
+            },
+            "R1": {
+              "text": "Stay spread at wall, take crystal AoE"
+            },
+            "R2": {
+              "text": "Stay spread at wall, take crystal AoE"
+            }
+          }
+        },
+        {
+          "name": "Superjump",
+          "description": {
+            "text": "Drag Exdeath onto the Wind crystal\nPhys Ranged go opposite Wind crystal to bait Superjump\nEveryone stack on Exdeath"
+          },
+          "seats": {
+            "MT": {
+              "text": "Drag Exdeath onto Wind crystal\nWait for Chaos to jump, then stack behind Exdeath"
+            },
+            "OT": {
+              "text": "Drag Exdeath onto Wind crystal\nWait for Chaos to jump, then stack behind Exdeath"
+            },
+            "H1": {
+              "text": "Wait for Chaos to jump, then stack behind Exdeath"
+            },
+            "H2": {
+              "text": "Wait for Chaos to jump, then stack behind Exdeath"
+            },
+            "M1": {
+              "text": "Wait for Chaos to jump, then stack behind Exdeath"
+            },
+            "M2": {
+              "text": "Wait for Chaos to jump, then stack behind Exdeath"
+            },
+            "R1": {
+              "text": "Go away from Chaos to bait jump\nAs soon as casts start, stack behind Exdeath"
+            },
+            "R2": {
+              "text": "Wait for Chaos to jump, then stack behind Exdeath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bowels of Agony",
+      "tag": "bowels",
+      "optionKey": "bowels",
+      "optionValue": "sg3k",
+      "mechanics": [
+        {
+          "name": "Debuffs",
+          "description": {
+            "text": "1 Sup + 1 DPS: Entropy (fire/spread)\n1 Sup + 1 DPS: Dynamic Fluid (water/donut)\nOne Short (20s), one Long (45s)\nEveryone gets Headwind or Tailwind\nHeadwind = face AWAY, Tailwind = face TOWARD",
+            "icons": [
+              "entropy",
+              "dynamic-fluid",
+              "headwind",
+              "tailwind"
+            ]
+          }
+        },
+        {
+          "name": "Boss Pulls",
+          "description": {
+            "text": "Pull Exdeath AWAY from the Short crystal, hug the wall\nPull Chaos between Wind and Short crystals, as close to the wall as possible"
+          }
+        },
+        {
+          "name": "First Resolve (Short)",
+          "description": {
+            "text": "Exdeath PBAOE + Short element resolves\nShort: Support at the wall, DPS near center next to crystal (just outside the waymark)\nLong: stand beside Short DPS and resolve Head/Tailwind\nNon-element: pairs to bait Wind\nSupports close (bait nearest), DPS further, ranged/G2 away from Chaos"
+          }
+        },
+        {
+          "name": "Short Crystal AOE",
+          "description": {
+            "text": "Short: stay for the second hit\nLong: get knocked back\nEntropy Fire = dead center, Dynamic Fluid Water = inner ring on the floor\nWind baiters align with intercard waymark, DPS slightly further from Wind crystal",
+            "icons": [
+              "entropy",
+              "dynamic-fluid"
+            ]
+          }
+        },
+        {
+          "name": "Tankbuster + Implosion",
+          "description": {
+            "text": "Exdeath Thunder III Tankbuster on closest (TB 1/5)\nChaos tank center, face between Wind and Long crystal\nLatitude = sides first, Longitude = front/back first\nDodge into the first AOE, second crystal happens right after second hit"
+          }
+        },
+        {
+          "name": "Second Resolve (Long)",
+          "description": {
+            "text": "Dodge 2nd cleave into your element spots (same prio)\nShort: get knocked back by crystal hit\nEntropy Fire = dead center, Dynamic Fluid Water = inner ring on the floor\nWind baiters return to the same side and bait again",
+            "icons": [
+              "entropy",
+              "dynamic-fluid"
+            ]
+          }
+        },
+        {
+          "name": "Superjump",
+          "description": {
+            "text": "Drag both bosses opposite wind crystal\nPhys Ranged stand at the wall behind the Wind crystal to bait Superjump"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vacuum Wave + Limit Cut",
+      "tag": "bowels",
+      "optionKey": "bowels",
+      "optionValue": "lb",
+      "mechanics": [
+        {
+          "name": "Kefka Dashes",
+          "action": {
+            "text": "Watch Kefka dashes\nREMEMBER start + CW or CCW rotation for Limit Cut"
+          }
+        },
+        {
+          "name": "Vacuum Wave + Tank LB",
+          "action": {
+            "text": "Resolve Headwind, Tailwind Head/Tailwind\nStack all 8 players and mit\nNon-LB tank can also step out to 7-1 for extra LB gen",
+            "icons": [
+              "headwind",
+              "tailwind"
+            ]
+          }
+        },
+        {
+          "name": "Pairs Variant",
+          "action": {
+            "text": "Supports Left, DPS Right, each with your role partner\nResolve Headwind, Tailwind Head/Tailwind\nTANK LB toward the end of the cast bar\nMove to your Wind stack location",
+            "icons": [
+              "headwind",
+              "tailwind"
+            ]
+          }
+        },
+        {
+          "name": "Numbers",
+          "description": {
+            "text": "Relative North = opposite Kefka’s FIRST dash\nStand on the inter-inter-cardinals in number order from Rel N, rotating OPPOSITE Kefka’s dash direction\nAlign with the waymark or between markers\nExdeath Thunder III tankbuster after (TB 2/5)"
+          },
+          "action": {
+            "text": "Align with the waymark or between markers"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vacuum Wave + Limit Cut",
+      "tag": "bowels",
+      "optionKey": "bowels",
+      "optionValue": "sg3k",
+      "mechanics": [
+        {
+          "name": "Kefka Dashes",
+          "description": {
+            "text": "Watch Kefka dashes\nREMEMBER start + CW or CCW rotation for Limit Cut"
+          }
+        },
+        {
+          "name": "Static Wind Baits",
+          "description": {
+            "text": "Resolve Head/Tailwind with Exdeath Vacuum Wave\nAfter KB, bait Wind in static spots around Chaos\nSupports Left / DPS Right (facing wall), 4 Melees closest on Chaos hitbox, LP1 on the wall, Ranged a few steps out"
+          }
+        },
+        {
+          "name": "Numbers",
+          "description": {
+            "text": "Relative North = opposite Kefka’s FIRST dash\nStand on the inter-inter-cardinals in number order from Rel N, rotating OPPOSITE Kefka’s dash direction\nAlign with the waymark or between markers\nExdeath Thunder III tankbuster after (TB 2/5)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Earthquake: Accretion",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Re-split",
+          "action": {
+            "text": "G1 Supports + Melee -> Chaos\nG2 Supports + Ranged -> Exdeath\nExdeath Thunder III tankbuster (TB 3/5)"
+          }
+        },
+        {
+          "name": "Conga + Debuffs",
+          "description": {
+            "text": "Stack bosses mid, then conga; HP set to 1\nAll: Primordial Crust (cleanse by dying -> survive at 1 hp)\n1 DPS + 1 Healer: Accretion (cleanse by full heal)\nRaidwide + 4s Earth vuln each time an Earth debuff expires\n3x First in Line / 3x Second in Line / 2x Third in Line",
+            "icons": [
+              "accretion",
+              "first-in-line",
+              "second-in-line",
+              "third-in-line"
+            ]
+          }
+        },
+        {
+          "name": "Tether Order",
+          "description": {
+            "text": "Healers single-target the First-in-line Accretion, then the second",
+            "icons": [
+              "accretion"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Earthquake: Black Holes",
+      "tag": "blackhole",
+      "optionKey": "blackhole",
+      "optionValue": "double",
+      "mechanics": [
+        {
+          "name": "Hand Attacks",
+          "action": {
+            "text": "Kefka = Relative North\nLeft side unsafe (facing boss) = Party Stack\nRight side unsafe = Role Spread"
+          }
+        },
+        {
+          "name": "Hand Attacks (Roles)",
+          "action": {
+            "text": "If Role Spread, Tanks Front, Healers Mid, DPS Back"
+          }
+        },
+        {
+          "name": "Laser Tethers",
+          "description": {
+            "text": "4 tether sets, each player soaks 3 lasers\nDPS = 1st tether CW from Kefka, Supports = 2nd, Accretion = 3rd\nPoint every laser clockwise\nNeed to get hit 3 times to cleanse\n1st DPS takes Set 1 Double, 3rd Support takes Set 4 Double",
+            "icons": [
+              "accretion"
+            ]
+          }
+        },
+        {
+          "name": "Tether Timeline (DSA Double)",
+          "description": {
+            "text": "Tether CW Order = #1 DPS, #2 Supports, #3 Accretion\n1st DPS takes Set 1 Double, 3rd Support takes Set 4 Double",
+            "icons": [
+              "accretion"
+            ]
+          },
+          "action": {
+            "text": "Set 1 (1 Laser + 2 Lasers)\nSet 1 1st hit: First in Line Support\nSet 1 2nd hit: First in Line DPS (BOTH TETHERS)\nExdeath Tankbuster (TB 4/5)\nChaos Edict + Kefka Hand\nSet 2 (3 Lasers, 3 hits)\nSet 2 1st hit: First in Line DPS, First in Line Support, First in Line, Accretion\nSet 2 2nd hit: Second in Line DPS take 1st tether\nSet 2 3rd hit: Second in Line Support take 2nd tether\nChaos Edict + Kefka Hot Tail + Exdeath Tankbuster (TB 5/5)\nSet 3 (3 tethers, 3 hits)\nSet 3 1st hit: Second in Line DPS, Second in Line Support, Second in Line, Accretion\nSet 3 2nd hit: Third in Line DPS take 1st tether\nSet 3 3rd hit: Third in Line Support take 2nd tether\nChaos Lat/Long + Kefka Hand\nSet 4 (2 Lasers + 1 Laser)\nSet 4 1st hit: Third in Line Support (BOTH TETHERS)\nKefka Hot Tail\nSet 4 2nd hit: Third in Line DPS",
+            "icons": [
+              "first-in-line",
+              "accretion",
+              "second-in-line",
+              "third-in-line"
+            ]
+          }
+        },
+        {
+          "name": "White Hole + Dodges",
+          "description": {
+            "text": "Dodge Latitude/Longitude then Kefka hand (move to the safe side on the 2nd hit)\nExdeath White Hole: ALL players must be at FULL HP\nKefka Party Stack / Role Spread resolves"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Earthquake: Black Holes",
+      "tag": "blackhole",
+      "optionKey": "blackhole",
+      "optionValue": "dsa",
+      "mechanics": [
+        {
+          "name": "Hand Attacks",
+          "action": {
+            "text": "Kefka = Relative North\nLeft side unsafe (facing boss) = Party Stack\nRight side unsafe = Role Spread"
+          }
+        },
+        {
+          "name": "Hand Attacks (Roles)",
+          "action": {
+            "text": "If Role Spread, Tanks Front, Healers Mid, DPS Back"
+          }
+        },
+        {
+          "name": "Laser Tethers",
+          "description": {
+            "text": "4 tether sets, each player soaks 3 lasers\nDPS = 1st tether CW from Kefka, Supports = 2nd, Accretion = 3rd\nPoint every laser clockwise\nNeed to get hit 3 times to cleanse",
+            "icons": [
+              "accretion"
+            ]
+          }
+        },
+        {
+          "name": "Tether Timeline (D>S>A)",
+          "description": {
+            "text": "Tether CW Order = #1 DPS, #2 Supports, #3 Accretion",
+            "icons": [
+              "accretion"
+            ]
+          },
+          "action": {
+            "text": "Set 1 (1 Laser + 2 Lasers)\nSet 1 1st hit: First in Line DPS\nSet 1 2nd hit: First in Line DPS + First in Line Support\nExdeath Tankbuster (TB 4/5)\nChaos Edict + Kefka Hand\nSet 2 (3 Lasers, 3 hits)\nSet 2 1st hit: First in Line DPS, First in Line Support, First in Line, Accretion\nSet 2 2nd hit: Second in Line DPS take 1st tether\nSet 2 3rd hit: Second in Line Support take 2nd tether\nChaos Edict + Kefka Hot Tail + Exdeath Tankbuster (TB 5/5)\nSet 3 (3 tethers, 3 hits)\nSet 3 1st hit: Second in Line DPS, Second in Line Support, Second in Line, Accretion\nSet 3 2nd hit: Third in Line DPS take 1st tether\nSet 3 3rd hit: Third in Line Support take 2nd tether\nChaos Lat/Long + Kefka Hand\nSet 4 (2 Lasers + 1 Laser)\nSet 4 1st hit: Third in Line DPS + Third in Line Support\nKefka Hot Tail\nSet 4 2nd hit: Third in Line Support",
+            "icons": [
+              "first-in-line",
+              "accretion",
+              "second-in-line",
+              "third-in-line"
+            ]
+          }
+        },
+        {
+          "name": "White Hole + Dodges",
+          "description": {
+            "text": "Dodge Latitude/Longitude then Kefka hand (move to the safe side on the 2nd hit)\nExdeath White Hole: ALL players must be at FULL HP\nKefka Party Stack / Role Spread resolves"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Earthquake: Black Holes",
+      "tag": "blackhole",
+      "optionKey": "blackhole",
+      "optionValue": "sda",
+      "mechanics": [
+        {
+          "name": "Hand Attacks",
+          "action": {
+            "text": "Kefka = Relative North\nLeft side unsafe (facing boss) = Party Stack\nRight side unsafe = Role Spread"
+          }
+        },
+        {
+          "name": "Hand Attacks (Roles)",
+          "action": {
+            "text": "If Role Spread, Tanks Front, Healers Mid, DPS Back"
+          }
+        },
+        {
+          "name": "Laser Tethers",
+          "description": {
+            "text": "4 tether sets, each player soaks 3 lasers\nSupports = 1st tether CW from Kefka, DPS = 2nd, Accretion = 3rd\nPoint every laser clockwise\nNeed to get hit 3 times to cleanse",
+            "icons": [
+              "accretion"
+            ]
+          }
+        },
+        {
+          "name": "Tether Timeline (S>D>A)",
+          "description": {
+            "text": "Tether CW Order = #1 Supports, #2 DPS, #3 Accretion",
+            "icons": [
+              "accretion"
+            ]
+          },
+          "action": {
+            "text": "Set 1 (1 Laser + 2 Lasers)\nSet 1 1st hit: First in Line Support\nSet 1 2nd hit: First in Line Support + First in Line DPS\nExdeath Tankbuster (TB 4/5)\nChaos Edict + Kefka Hand\nSet 2 (3 Lasers, 3 hits)\nSet 2 1st hit: First in Line Support, First in Line DPS, First in Line, Accretion\nSet 2 2nd hit: Second in Line Support take 1st tether\nSet 2 3rd hit: Second in Line DPS take 2nd tether\nChaos Edict + Kefka Hot Tail + Exdeath Tankbuster (TB 5/5)\nSet 3 (3 tethers, 3 hits)\nSet 3 1st hit: Second in Line Support, Second in Line DPS, Second in Line, Accretion\nSet 3 2nd hit: Third in Line Support take 1st tether\nSet 3 3rd hit: Third in Line DPS take 2nd tether\nChaos Lat/Long + Kefka Hand\nSet 4 (2 Lasers + 1 Laser)\nSet 4 1st hit: Third in Line Support + Third in Line DPS\nKefka Hot Tail\nSet 4 2nd hit: Third in Line DPS",
+            "icons": [
+              "first-in-line",
+              "accretion",
+              "second-in-line",
+              "third-in-line"
+            ]
+          }
+        },
+        {
+          "name": "White Hole + Dodges",
+          "description": {
+            "text": "Dodge Latitude/Longitude then Kefka hand (move to the safe side on the 2nd hit)\nExdeath White Hole: ALL players must be at FULL HP\nKefka Party Stack / Role Spread resolves"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Earthquake: Stompies",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Blizzard Puddles",
+          "description": {
+            "text": "Kefka = Relative North\nSupports start Relative North, DPS start Relative South\nBlizzard AOEs under everyone -> move to intercards in partners\nG1 Rel West/Left, G2 Rel East/Right\n1 Support or 1 DPS gets a stack marker"
+          },
+          "seats": {
+            "MT": {
+              "text": "Start Relative North, Spread Northwest"
+            },
+            "OT": {
+              "text": "Start Relative North, Spread Northeast"
+            },
+            "H1": {
+              "text": "Start Relative North, Spread Northwest"
+            },
+            "H2": {
+              "text": "Start Relative North, Spread Northeast"
+            },
+            "M1": {
+              "text": "Start Relative South, Spread Southwest"
+            },
+            "M2": {
+              "text": "Start Relative South, Spread Southeast"
+            },
+            "R1": {
+              "text": "Start Relative South, Spread Southwest"
+            },
+            "R2": {
+              "text": "Start Relative South, Spread Southeast"
+            }
+          }
+        },
+        {
+          "name": "Towers + Enrage",
+          "description": {
+            "text": "Stacked role returns mid after the 2nd puddle bait; other role takes towers (G1 West, G2 East)\nSwap: opposite role gets the stack, take towers again\nBlizzard III = keep moving\nKill both bosses before enrage"
+          },
+          "seats": {
+            "MT": {
+              "text": "West/Left Tower"
+            },
+            "OT": {
+              "text": "East/Right Tower"
+            },
+            "H1": {
+              "text": "West/Left Tower"
+            },
+            "H2": {
+              "text": "East/Right Tower"
+            },
+            "M1": {
+              "text": "West/Left Tower"
+            },
+            "M2": {
+              "text": "East/Right Tower"
+            },
+            "R1": {
+              "text": "West/Left Tower"
+            },
+            "R2": {
+              "text": "East/Right Tower"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Timeline",
+      "tag": "p4",
+      "description": {
+        "text": "Open the P4 Helper"
+      },
+      "mechanics": [
+        {
+          "name": "Timeline",
+          "action": {
+            "text": "1st Debuffs\nKefka Mystery Magic + Neo Exdeath Debuffs Forked Lightning, Compressed Water/Accel Bomb/Cursed Shriek + Chaos Debuffs Entropy, Dynamic Fluid\nINDIVIDUALS remember if you have Short or Long Spread + Stillness/Motion\nGROUP remember if 1st Shriek is Real/Fake + if Inferno/Tsunami is Real/Fake\n2nd Debuffs\nKefka Mystery Magic + Neo Exdeath Debuffs Forked Lightning, Compressed Water/Accel Bomb/Cursed Shriek + Chaos Debuffs Entropy, Dynamic Fluid\nINDIVIDUALS remember if you have Short or Long Spread + Stillness/Motion\nGROUP remember if 2nd Shriek is Real/Fake + if Inferno/Tsunami is Real/Fake\n3rd Debuffs\nKefka Mystery Magic + Neo Exdeath Antilight White Wound, Black Wound/Allagan Field, Beyond Death\nFlood of Naught\nFollow White Wound, Black Wound/Allagan Field, Beyond Death, stand in correct half\n1st Resolve\n1st Stacks N/S + Forked Lightning/Fake Compressed Water Spreads E/W + Accel Bombs\n1st Kefka Mana Charge + 1st Cursed Shriek\nEntropy Inferno (Can be Fake)\n2nd Resolve\n2nd Kefka Mana Charge + 2nd Stacks N/S + Forked Lightning/Fake Compressed Water Spreads E/W + Accel Bombs\n2nd Cursed Shriek\nKefka Mana Release + Dynamic Fluid Tsunami (Can be Fake)",
+            "icons": [
+              "forked-lightning",
+              "compressed-water",
+              "accel-bomb",
+              "cursed-shriek",
+              "entropy",
+              "dynamic-fluid",
+              "white-wound",
+              "black-wound",
+              "allagan-field",
+              "beyond-death",
+              "kefka-fake"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Kefka Says (Debuffs)",
+      "tag": "p4",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "Kefka targetable, enrages at 25%\nChaos + Neo Exdeath apply debuffs\nFake orb on a cast = FAKE (effect reversed), Real = real",
+            "icons": [
+              "kefka-fake",
+              "kefka-real"
+            ]
+          }
+        },
+        {
+          "name": "Neo Exdeath Debuffs",
+          "description": {
+            "text": "Forked Lightning, Compressed Water Lightning/Water can have short or long timer\nNeo Exdeath applies 2x Lightning and 2x Water per cast\nOne cast will have Short timer, other will be Long\nForked Lightning OR Fake Compressed Water Fake Water = Spread\nCompressed Water OR Fake Forked Lightning Fake Lightning = Stack\n\nEach player gets 1 Accel Bomb with a short or long timer\nNeo Exdeath applies 2x Short and 2x Long per cast\nAccel Bomb = Stillness, Fake = Motion\n\n1st applied Cursed Shriek has short timer, 2nd has long timer\nCursed Shriek = Look away, Fake = Look at\n\nEach timer always goes to 1 Support + 1 DPS (Forked Lightning, Compressed Water, Cursed Shriek) or 2 Support + 2 DPS (Accel Bomb)",
+            "icons": [
+              "forked-lightning",
+              "compressed-water",
+              "kefka-fake",
+              "accel-bomb",
+              "cursed-shriek"
+            ]
+          }
+        },
+        {
+          "name": "Chaos Debuffs",
+          "description": {
+            "text": "Entropy resolves 1st, Dynamic Fluid resolves 2nd regardless of order applied\nEntropy OR Fake Dynamic Fluid Fake Dynamic = Fire/AOE\nDynamic Fluid OR Fake Entropy Fake Entropy = Water/Donut",
+            "icons": [
+              "entropy",
+              "dynamic-fluid",
+              "kefka-fake"
+            ]
+          }
+        },
+        {
+          "name": "Antilight + Flood of Naught",
+          "description": {
+            "text": "Applies White Wound/Black Wound + 4 Allagan Field, 4 Beyond Death\nAllagan Field = Stand in Opposite Color\nBeyond Death = Stand in Same Color\nIgnore the Real/Fake on debuff application\nFollow the Real/Fake on Flood of Naught cast",
+            "icons": [
+              "white-wound",
+              "black-wound",
+              "allagan-field",
+              "beyond-death"
+            ]
+          }
+        },
+        {
+          "name": "Mana Charge / Release",
+          "description": {
+            "text": "Mana Charge banks the next Real/Fake for that element\nMana Release applies the banked Real/Fake along with the displayed one\nTwo Fakes = Real",
+            "icons": [
+              "kefka-fake",
+              "kefka-real"
+            ]
+          }
+        },
+        {
+          "name": "Debuff Resolution",
+          "description": {
+            "text": "Stacks Compressed Water/Fake Forked Lightning: Supports North, DPS South\nSpreads: Forked Lightning/Fake Compressed Water Supports West, DPS East\n\nShriek: Shrieks in, party out N/S and look away, debuffs don't look at each other\nFake Shriek Fake Cursed Shriek: Shrieks in, party look in, debuffs look at each other\n\nInferno Entropy/Fake Dynamic Fluid: Drop twister AOE middle, then spread\nTsunami Dynamic Fluid/Fake Entropy: Drop twister donut middle, then stay",
+            "icons": [
+              "compressed-water",
+              "kefka-fake",
+              "forked-lightning",
+              "cursed-shriek",
+              "entropy",
+              "dynamic-fluid"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Kefka Says (Resolution)",
+      "tag": "p4",
+      "mechanics": [
+        {
+          "name": "Stack/Spread",
+          "action": {
+            "text": "Forked Lightning OR Fake Compressed Water Fake Water = Spread (Supports West, DPS East)\nCompressed Water OR Fake Forked Lightning Fake Lightning = Stack (Supports North, DPS South)",
+            "icons": [
+              "forked-lightning",
+              "kefka-fake",
+              "compressed-water"
+            ]
+          }
+        },
+        {
+          "name": "Gazes",
+          "action": {
+            "text": "Shrieks under boss, Support North, DPS South\nParty out along the thunder edge - gazes are the only players inside the hitbox\nIf Real, everyone look away\nIf Fake, party look in, debuffs look at each other",
+            "icons": [
+              "cursed-shriek",
+              "kefka-real",
+              "kefka-fake"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Autos",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Ultima Repeater",
+          "description": {
+            "text": "4x raidwide\nStand in your role spot to prep for the autos after"
+          }
+        },
+        {
+          "name": "Fell Forces",
+          "description": {
+            "text": "Role-based autos"
+          },
+          "action": {
+            "text": "Tanks N, Healers SW, DPS SE"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chaotic Flood",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Rotating Quadrants",
+          "description": {
+            "text": "Dodge around mid\nLook at first 2 lines for safe cardinals\nCan also do single dodge, 2x dodge is safer"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maddening Orchestra",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Spread",
+          "action": {
+            "text": "Spread: Tanks North, Healers South, G1 DPS West, G2 DPS East"
+          }
+        },
+        {
+          "name": "1st Hit (Random)",
+          "description": {
+            "text": "1st hit is random\nMT gets 1x Surprise Flare, OT gets 1x Surprise Holy\n3x on Non-tanks"
+          }
+        },
+        {
+          "name": "2nd Hit (Proximity)",
+          "description": {
+            "text": "2nd hit is proximity\nTanks stack together for the shared buster\nParty go out if you got hit"
+          },
+          "action": {
+            "text": "Tanks stack together for the shared buster\nNon-tanks go out if you got hit first"
+          }
+        },
+        {
+          "name": "Tank Resolve",
+          "seats": {
+            "MT": {
+              "text": "Flare; go to the wall North"
+            },
+            "OT": {
+              "text": "Holy; invuln max melee\nHoly tank voke before the resolution to take the next 2 autos with invuln"
+            },
+            "H1": {
+              "text": "South"
+            },
+            "H2": {
+              "text": "South"
+            },
+            "M1": {
+              "text": "South"
+            },
+            "M2": {
+              "text": "South"
+            },
+            "R1": {
+              "text": "South"
+            },
+            "R2": {
+              "text": "South"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Celestriad (Towers)",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "4 towers active per set, 3 sets total\nVulns applied randomly: 2x ice, 2x lightning, 2x fire, 2x nothing\n2x nothing will always fill the double"
+          },
+          "action": {
+            "text": "For 1st + 3rd, Earth = OUT safe, Wind = IN safe"
+          }
+        },
+        {
+          "name": "Resolution",
+          "action": {
+            "text": "Debuffs: 1st safe tower CW from your vuln, then rotate CW\nNo debuff: 1st CCW of double element"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stray Apocalypse",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Exaflares",
+          "description": {
+            "text": "6x sets of exaflares, always start NW => NE and repeat\nDodge however you like, just be at your spread spot after"
+          }
+        },
+        {
+          "name": "Stray Entropy",
+          "description": {
+            "text": "Ends with Stray Entropy = spreads\nSpread out around the arena"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maddening Orchestra 2",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Resolve",
+          "description": {
+            "text": "Resolve the same as the first Maddening Orchestra\nOT should have aggro during the 1st hit to get the flare"
+          },
+          "seats": {
+            "MT": {
+              "text": "Holy; invuln max melee"
+            },
+            "OT": {
+              "text": "Flare; go to the wall North"
+            },
+            "H1": {
+              "text": "Spread towards West, Close/Far, South"
+            },
+            "H2": {
+              "text": "Spread towards West, Close/Far, South"
+            },
+            "M1": {
+              "text": "Spread towards East, Close/Far, South"
+            },
+            "M2": {
+              "text": "Spread towards East, Close/Far, South"
+            },
+            "R1": {
+              "text": "Spread towards East, Close/Far, South"
+            },
+            "R2": {
+              "text": "Spread towards East, Close/Far, South"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Forsaken (Enrage)",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Overview",
+          "description": {
+            "text": "LONG enrage cast (~20%+ at cast start clears)\n4x stacks as Kefka places void holes around the arena\nStep in a hole or get clipped by the orange AOE = shadow realm"
+          }
+        },
+        {
+          "name": "Stack Pattern",
+          "description": {
+            "text": "Always start at C, then rotate inter/cards: 4 - 1 - 2 - 3\nOrange AOE markers bait onto the card/inter closest to a random player\n1st stack is CW from the 1st orange marker, then keep rotating CW\nStay after each stack until the next AOEs show to bait them"
+          },
+          "action": {
+            "text": "Start C, rotate CW (4-1-2-3)"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+using FrenRaidTools.Engine;
+using FrenRaidTools.Feed;
+
+namespace FrenRaidTools;
+
+public sealed class TickClock : IClock
+{
+    public double Now { get; set; }
+}
+
+public sealed class Runtime : IDisposable
+{
+    public const int LinesPerTick = 512;
+    public const double PruneSeconds = 2.0;
+
+    private readonly Configuration _config;
+    private readonly CallBoard _board;
+    private readonly Fight _fight;
+    private readonly Diag _diag;
+
+    private readonly TickClock _clock = new();
+    private readonly ParserSocket _socket = new();
+    private readonly ParserActorBook _book = new();
+    private readonly NetworkLineReader _reader;
+    private readonly FeedWorld _world;
+    private readonly EventFeed _feed;
+    private readonly SequenceHost _host;
+    private readonly VfxLink _vfx;
+    private readonly ClientLink _client;
+    private readonly EffectLink _effects;
+    private readonly ControlLink _controls;
+
+    private bool _installed;
+    private bool _replaying;
+    private double _nextPrune;
+    private ushort _zone;
+
+    public Runtime(Configuration config, CallBoard board, Fight fight, Diag diag)
+    {
+        _config = config;
+        _board = board;
+        _fight = fight;
+        _diag = diag;
+
+        _reader = new NetworkLineReader(_book, _clock);
+        _world = new FeedWorld(_book, _clock);
+        _host = new SequenceHost(_clock, _world, Sink);
+        _feed = new EventFeed(_clock, Deliver);
+        _vfx = new VfxLink(_book, e => _feed.Publish(EventSource.Client, e), () => _clock.Now);
+        _client = new ClientLink(_book, e => _feed.Publish(EventSource.Client, e));
+        _effects = new EffectLink(_book, e => _feed.Publish(EventSource.Client, e), () => _clock.Now);
+        _controls = new ControlLink(_book, e => _feed.Publish(EventSource.Client, e), () => _clock.Now);
+    }
+
+    public bool Running { get; private set; }
+
+    public long Lines => _reader.Read;
+
+    public long Understood => _reader.Understood;
+
+    public long Events => _feed.Delivered;
+
+    public int Actors => _book.Count;
+
+    public int Sequences => _host.Sequences.Count;
+
+    public int Live => _host.RunningCount;
+
+    public IReadOnlyList<string> Faults =>
+        [.. _host.Faults,
+         .. new[] { _vfx.Fault, _effects.Fault, _controls.Fault }.OfType<string>()];
+
+    public bool Replaying => _replaying;
+
+    public bool SocketConnected => _socket.Connected;
+
+    public bool VfxAttached => _vfx.Attached;
+
+    public string VfxDetail => _vfx.Detail;
+
+    public string ClientDetail => _client.Detail;
+
+    public string EffectDetail => _effects.Detail;
+
+    public string ControlDetail => _controls.Detail;
+
+    public string SocketDetail =>
+        _socket.Connected
+            ? _socket.Dropped > 0
+                ? $"Connected to {_socket.Endpoint}. {_socket.Dropped:n0} lines fell behind and were dropped."
+                : _reader.Stamps.Lag > 1.0
+                    ? $"Connected to {_socket.Endpoint}. Running {_reader.Stamps.Lag:0.0}s behind."
+                    : $"Connected to {_socket.Endpoint}."
+        : _socket.LastError ?? (_socket.Enabled ? "Looking for a parser." : "Off.");
+
+    public void Tick(double now)
+    {
+        _clock.Now = now;
+
+        Watch();
+        Install();
+        Follow();
+
+        if (_config.ParserOn)
+        {
+            if (!_socket.Enabled) _socket.Start();
+        }
+        else if (_socket.Enabled)
+        {
+            _socket.Stop();
+        }
+
+        if (_zone == EngineInfo.DancingMadTerritory)
+        {
+            _vfx.Start();
+            _effects.Start();
+            _controls.Start();
+        }
+
+        _client.On = Running && (_replaying || !_feed.ParserLive);
+        _effects.On = _client.On;
+        _controls.On = Running;
+        _client.Tick(_clock.Now);
+
+        _feed.ClientOwnsEverything = _replaying && !HooksBroken;
+        _feed.ParserAttached = _socket.Connected;
+        _socket.Drain(Line, LinesPerTick);
+
+        if (now >= _nextPrune)
+        {
+            _nextPrune = now + PruneSeconds;
+            _world.Prune();
+        }
+
+        _host.Tick();
+    }
+
+    private void Sink(Callout callout, GameEvent? on, IReadOnlyDictionary<string, object?> args)
+    {
+        var keyed = _fight.Catalog.WithKey(callout);
+        _diag.Plan($"fire {keyed.Key} args {Diag.Args(args)}");
+
+        if (_fight.Plan is { } plan) plan.Deliver(keyed, on, args, _board.Fire);
+        else _board.Fire(keyed, on, args);
+    }
+
+    public bool HooksBroken => _vfx.Fault is not null || _controls.Fault is not null;
+
+    private bool _watching;
+    private float _speed = Game.NormalSpeed;
+    private readonly HashSet<string> _faultsTold = [];
+
+    private void Watch()
+    {
+        if (_diag.On != _watching)
+        {
+            _watching = _diag.On;
+            ArenaPos.Trace = _watching ? _diag.Bearing : null;
+        }
+
+        if (!_diag.On) return;
+
+        foreach (var fault in Faults)
+            if (_faultsTold.Add(fault))
+                _diag.Note("FAULT", fault);
+
+        var speed = Game.InReplay ? Game.Speed() : Game.NormalSpeed;
+        if (Math.Abs(speed - _speed) < 0.01f) return;
+
+        _speed = speed;
+        _diag.Note("replay", speed <= 0f ? "paused" : $"speed {speed:0.##}x");
+    }
+
+    public string Setup()
+    {
+        var owner = _replaying ? "the game, because this is a duty replay"
+            : _feed.ParserLive ? "the log for casts, hits, statuses, tethers and markers"
+            : "the game, because no parser is reading";
+
+        return string.Join('\n',
+        [
+            $"zone {Game.Zone} ({Game.ZoneName()})",
+            $"replay {(_replaying ? "yes" : "no")}, running {(Running ? "yes" : "no")}",
+            $"events come from {owner}",
+            $"parser {SocketDetail}",
+            $"hooks {(HooksBroken ? "BROKEN, the parser is covering what it can" : "attached")}",
+            $"you {_world.You?.Name ?? "unknown"}, party {_world.Party.Count}, seat {(SeatSync.SeatFor(_config) is { Length: > 0 } seat ? seat : "none")}",
+            "event lines are tagged [log] or [game] for where they came from",
+        ]);
+    }
+
+    private void Install()
+    {
+        if (_installed) return;
+        if (!_fight.PlanReady) return;
+
+        _host.ExpireCall = _board.Expire;
+        _world.Options = _fight.Chosen;
+        _world.Buddy = Buddy;
+        _world.Seat = actor => _config.Roles.SlotOf(actor.Name);
+        _fight.DancingMad.Install(_host);
+
+        _installed = true;
+    }
+
+    private Actor? Buddy()
+    {
+        var you = Party.YouName();
+        if (you.Length == 0) return null;
+
+        var buddy = _config.Roles.PartnerName(you);
+        if (string.IsNullOrWhiteSpace(buddy)) return null;
+
+        foreach (var actor in _book.Players)
+            if (string.Equals(actor.Name, buddy, StringComparison.OrdinalIgnoreCase)) return actor;
+
+        return null;
+    }
+
+    private void Follow()
+    {
+        var zone = (ushort)Game.Zone;
+        var replay = Game.InReplay;
+
+        if (zone != _zone)
+        {
+            _zone = zone;
+            Wipe();
+        }
+
+        if (replay != _replaying)
+        {
+            _replaying = replay;
+            Wipe();
+            if (replay && _config.DiagInReplay && !_diag.On) _diag.Start();
+        }
+
+        Running = _installed
+            && zone == EngineInfo.DancingMadTerritory
+            && (replay || _config.ParserOn);
+    }
+
+    private void Line(string line)
+    {
+        var e = _reader.Parse(line);
+        if (e is null) return;
+
+        _feed.Publish(EventSource.Parser, e);
+    }
+
+    private void Deliver(GameEvent e, EventSource from)
+    {
+        _diag.Event(e, from);
+        _world.Take(e);
+
+        if (e.Kind is EventKind.CombatStart or EventKind.CombatEnd or EventKind.ZoneChange)
+            _fight.Plan?.Reset();
+
+        if (Running) _host.Feed(e);
+    }
+
+    public void Wipe()
+    {
+        _diag.Note("wipe", $"zone={_zone} replay={_replaying}");
+        _reader.Restart();
+        _fight.Plan?.Reset();
+        _host.Reset();
+        _world.Clear();
+        _book.Clear();
+        _feed.Reset();
+        _client.Clear();
+        _board.Clear();
+    }
+
+    public void Dispose()
+    {
+        ArenaPos.Trace = null;
+        _socket.Dispose();
+        _vfx.Dispose();
+        _effects.Dispose();
+        _controls.Dispose();
+        _host.Reset();
+    }
+}

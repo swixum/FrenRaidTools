@@ -1,0 +1,96 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download Dalamud
+        shell: pwsh
+        run: |
+          $dev = "$env:AppData\XIVLauncher\addon\Hooks\dev"
+          New-Item -ItemType Directory -Force -Path $dev | Out-Null
+          $ok = $false
+          foreach ($try in 1..5) {
+            try {
+              Invoke-WebRequest -Uri "https://goatcorp.github.io/dalamud-distrib/stg/latest.zip" -OutFile dalamud.zip
+              $ok = $true; break
+            } catch {
+              Write-Host "Download attempt $try failed: $($_.Exception.Message)"
+              Start-Sleep -Seconds (10 * $try)
+            }
+          }
+          if (-not $ok) { throw "Dalamud download failed after 5 attempts." }
+          Expand-Archive -Path dalamud.zip -DestinationPath $dev -Force
+
+      - name: Build
+        run: dotnet build FrenRaidTools/FrenRaidTools.csproj -c Release --nologo
+
+      - name: Assemble Pages site
+        shell: pwsh
+        run: |
+          $out = "bin"
+          if (-not (Test-Path "$out\FrenRaidTools.dll")) { throw "no build output in $out - there would be nothing to install." }
+
+          $stage = "stage\FrenRaidTools"
+          New-Item -ItemType Directory -Force -Path "$stage\images" | Out-Null
+          New-Item -ItemType Directory -Force -Path "site" | Out-Null
+
+          foreach ($file in @("FrenRaidTools.dll", "FrenRaidTools.Engine.dll", "FrenRaidTools.deps.json", "FrenRaidTools.json")) {
+            if (-not (Test-Path "$out\$file")) { throw "$file missing from the build - the plugin would not load." }
+            Copy-Item "$out\$file" "$stage\$file" -Force
+          }
+
+          Copy-Item "FrenRaidTools\images\icon.png" "$stage\images\icon.png" -Force
+          Copy-Item "FrenRaidTools\images\icon.png" "site\icon.png" -Force
+
+          Compress-Archive -Path "$stage\*" -DestinationPath "site\FrenRaidTools.zip" -Force
+
+          if (-not (Test-Path "FrenRaidTools\repo.json")) { throw "FrenRaidTools\repo.json missing - every installed copy would stop seeing updates." }
+          $entries = Get-Content "FrenRaidTools\repo.json" -Raw | ConvertFrom-Json
+          $built = @{ "FrenRaidTools" = "$out\FrenRaidTools.json" }
+          foreach ($e in $entries) {
+            $manifest = $built[$e.InternalName]
+            if (-not $manifest) { throw "repo.json lists $($e.InternalName) but nothing here built it - its download link would 404." }
+            $ver = (Get-Content $manifest -Raw | ConvertFrom-Json).AssemblyVersion
+            $e.AssemblyVersion = $ver
+            if ($e.PSObject.Properties.Name -contains "TestingAssemblyVersion") { $e.TestingAssemblyVersion = $ver }
+            Write-Host "Published $($e.InternalName) at $ver"
+          }
+          $json = $entries | ConvertTo-Json -Depth 10
+          if (@($entries).Count -eq 1) { $json = "[$json]" }
+          $json | Set-Content "site\repo.json" -Encoding utf8
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
