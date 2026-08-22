@@ -66,15 +66,18 @@ public sealed class TeleTrouncing
         Callout.Duration("TT: Knockback not on You", "Knockback on {confettiPlayers}").AutoIcon();
 
     public readonly Callout sleepTetherInitial =
-        Callout.Of("TT: Sleep Tether (Initial)", "Sleep Tether").Icon(SleepIcon);
+        Callout.Of("TT: Sleep Tether (Initial)", "Sleep Tether").Icon(SleepIcon).Quiet()
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
     public readonly Callout confusionTetherInitial =
         Callout.Of("TT: Confusion Tether (Initial)", "Confusion Tether").Icon(ConfusionIcon).Quiet()
             .Note("Off by default at swix's ask: the tether call after the knockback says what to do about it, so naming it twice adds nothing.");
 
     public readonly Callout sleepTether =
-        Callout.Of("TT: Sleep Tether (After Knockback)", "Spread for Sleep").Icon(SleepIcon);
+        Callout.Of("TT: Sleep Tether (After Knockback)", "Spread for Sleep").Icon(SleepIcon).Quiet()
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
     public readonly Callout confuseTether =
-        Callout.Of("TT: Confusion Tether (After Knockback)", "Spread for Confusion").Icon(ConfusionIcon);
+        Callout.Of("TT: Confusion Tether (After Knockback)", "Spread for Confusion").Icon(ConfusionIcon).Quiet()
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
 
     public readonly Callout earlyFakeGaze = Callout.Of("TT: Fake Gaze (Early Call)", "Look Towards Statue");
     public readonly Callout earlyRealGaze = Callout.Of("TT: Real Gaze (Early Call)", "Look Away");

@@ -34,6 +34,7 @@ public sealed class Configuration : IPluginConfiguration
     public bool CallsOn { get; set; } = true;
     public bool OnlyInFight { get; set; } = true;
     public HashSet<string> MutedCalls { get; set; } = new(StringComparer.Ordinal);
+    public HashSet<string> SeededQuiet { get; set; } = new(StringComparer.Ordinal);
     public Dictionary<string, CallEdit> CallEdits { get; set; } = new(StringComparer.Ordinal);
 
     public CallEdit? EditFor(string key) =>
@@ -133,6 +134,7 @@ public sealed class Configuration : IPluginConfiguration
     public void Normalize()
     {
         MutedCalls ??= new HashSet<string>(StringComparer.Ordinal);
+        SeededQuiet ??= new HashSet<string>(StringComparer.Ordinal);
         CallEdits ??= new Dictionary<string, CallEdit>(StringComparer.Ordinal);
         CarryRenamedCalls();
         foreach (var edit in CallEdits.Values) edit.Normalize();

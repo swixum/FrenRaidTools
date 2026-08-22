@@ -90,8 +90,6 @@ public sealed class CallBoard
 
     public void PlanCarriesItsOwnCalls() => _planRidesItself = true;
 
-    public const int QuietCallsSeeded = 2;
-
     public void SetCatalog(IReadOnlyList<CatalogEntry> entries)
     {
         Catalog = entries;
@@ -101,12 +99,9 @@ public sealed class CallBoard
 
     private void SeedQuietCalls()
     {
-        if (Catalog.Count == 0 || _config.Version >= QuietCallsSeeded) return;
+        if (Catalog.Count == 0) return;
+        if (!QuietSeed.Apply(Catalog, _config.MutedCalls, _config.SeededQuiet)) return;
 
-        foreach (var entry in Catalog)
-            if (!entry.Call.OnByDefault) _config.MutedCalls.Add(entry.Key);
-
-        _config.Version = QuietCallsSeeded;
         _config.Save(_now);
     }
 
