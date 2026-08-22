@@ -116,6 +116,7 @@ public sealed class DancingMadFight
         yield return Trines.BuildExtras(world);
         yield return Bowels.BuildHeroes(world);
         yield return Bowels.BuildDecisive(world);
+        yield return Bowels.BuildBaitJump(world);
         yield return Forsaken.BuildExtras(world);
         yield return TeleTrouncing.BuildJudgment(world);
         yield return Earthquake.BuildCasts(world);

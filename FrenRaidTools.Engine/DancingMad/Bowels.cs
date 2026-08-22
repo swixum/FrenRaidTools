@@ -206,6 +206,49 @@ public sealed class Bowels
                 await run.WaitCastFinished(start);
             });
 
+    public const string BaitJumpSeat = "R1";
+    public const string BaitJumpName = "Bowels: Bait Jump";
+
+    public const double UmbraSmashAfterImplosionSeconds = 20.21;
+    public const double BaitJumpCountdownSeconds = 10.0;
+    public const double BaitJumpLeadSeconds =
+        UmbraSmashAfterImplosionSeconds - BaitJumpCountdownSeconds;
+
+    public readonly Callout baitJump =
+        Callout.Duration(BaitJumpName, "Bait Jump").Linger(BaitJumpCountdownSeconds)
+            .Note("Phys ranged only. Fires ten seconds before Umbra Smash starts casting, timed off the Implosion. Zero is the moment the casts start, which is when you move behind Exdeath. Umbra Smash itself lands about five seconds later.");
+
+    public static bool Baits(IWorld world)
+    {
+        if (world.You is not { } you) return false;
+
+        var seat = world.SeatOf(you);
+        return seat >= 0
+            ? seat == Slots.IndexOf(BaitJumpSeat)
+            : JobKinds.Kind(you.Job) == JobKind.PhysRanged;
+    }
+
+    public Sequence BuildBaitJump(IWorld world) =>
+        Sequence.Repeat(Group + "BaitJump", 180,
+            e => e.Is(EventKind.CastStart, BowelsCast),
+            async (start, run) =>
+            {
+                if (!Baits(world)) return;
+
+                var implosion = await run.WaitEvent(
+                    EventKind.CastStart, Earthquake.LongitudinalCast, Earthquake.LatitudinalCast);
+
+                await run.WaitSeconds(BaitJumpLeadSeconds - run.Since(implosion));
+
+                run.Call(baitJump, new GameEvent
+                {
+                    Kind = EventKind.CastStart,
+                    Id = PlanAnchors.UmbraSmash,
+                    At = run.Now,
+                    Duration = BaitJumpCountdownSeconds,
+                });
+            });
+
     public Sequence BuildHeroes(IWorld world) =>
         Sequence.Indexed(Group + "Heroes", 180,
             e => e.Kind == EventKind.StatusGain && e.Target?.IsYou == true

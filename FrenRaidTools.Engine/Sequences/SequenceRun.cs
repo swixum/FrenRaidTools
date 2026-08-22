@@ -28,6 +28,8 @@ public sealed class SequenceRun
 
     public double SinceStart => _clock.Now - StartedAt;
 
+    public double Now => _clock.Now;
+
     public IReadOnlyDictionary<string, object?> Params => _params;
 
     public bool Stopped { get; private set; }
