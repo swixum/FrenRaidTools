@@ -38,7 +38,7 @@ public sealed class MaddeningOrchestra
         Sequence.Repeat(Group, 180, e => e.Is(EventKind.CastStart, OrchestraCast),
             (start, run) => Run(start, run, world));
 
-    private static bool IsHolyHit(GameEvent e) =>
+    public static bool IsHolyHit(GameEvent e) =>
         e.Is(EventKind.AbilityHit, HolyHit) && e.FirstTarget;
 
     private async Task Run(GameEvent start, SequenceRun run, IWorld world)

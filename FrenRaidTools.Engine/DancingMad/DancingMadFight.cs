@@ -28,6 +28,7 @@ public sealed class DancingMadFight
     public Flood Flood { get; } = new();
     public MaddeningOrchestra MaddeningOrchestra { get; } = new();
     public Celestriad Celestriad { get; } = new();
+    public FellForces FellForces { get; } = new();
     public P5Forsaken P5Forsaken { get; } = new();
     public DirectCalls DirectCalls { get; } = new();
 
@@ -52,7 +53,8 @@ public sealed class DancingMadFight
             [DancingMad.GrandCross.Group, DancingMad.KefkaSays.Group]),
         new(Phase.P5UltimaKefka, "Ultima Kefka",
             [DancingMad.Flood.Group, DancingMad.MaddeningOrchestra.Group,
-             DancingMad.Celestriad.Group, DancingMad.P5Forsaken.Group]),
+             DancingMad.Celestriad.Group, DancingMad.FellForces.Group,
+             DancingMad.P5Forsaken.Group]),
     ];
 
     public CalloutCatalog Catalog()
@@ -80,6 +82,7 @@ public sealed class DancingMadFight
         yield return new Part(Phase.P5UltimaKefka, DancingMad.Flood.Group, DancingMad.Flood.MechanicName, Flood);
         yield return new Part(Phase.P5UltimaKefka, DancingMad.MaddeningOrchestra.Group, DancingMad.MaddeningOrchestra.MechanicName, MaddeningOrchestra);
         yield return new Part(Phase.P5UltimaKefka, DancingMad.Celestriad.Group, DancingMad.Celestriad.MechanicName, Celestriad);
+        yield return new Part(Phase.P5UltimaKefka, DancingMad.FellForces.Group, DancingMad.FellForces.MechanicName, FellForces);
         yield return new Part(Phase.P5UltimaKefka, DancingMad.P5Forsaken.Group, DancingMad.P5Forsaken.MechanicName, P5Forsaken);
         yield return new Part(Phase.P1Kefka, DancingMad.DirectCalls.Group, DancingMad.DirectCalls.MechanicName, DirectCalls);
     }
@@ -106,6 +109,8 @@ public sealed class DancingMadFight
         yield return MaddeningOrchestra.Build(world);
         yield return Celestriad.Build(world);
         yield return Celestriad.BuildCatastrophic(world);
+        yield return FellForces.BuildAfterRepeater(world);
+        yield return FellForces.BuildAfterOrchestra(world);
         yield return P5Forsaken.Build(world);
         yield return Earthquake.BuildLatLong(world);
         yield return Earthquake.BuildCleanses(world);
@@ -141,5 +146,6 @@ public sealed class DancingMadFight
         host.ResetHooks.Add(Vfx.Reset);
         host.ResetHooks.Add(Earthquake.ForgetAssignment);
         host.ResetHooks.Add(Forsaken.ForgetStacks);
+        host.ResetHooks.Add(FellForces.ForgetSets);
     }
 }

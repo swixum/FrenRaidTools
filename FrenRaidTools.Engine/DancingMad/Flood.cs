@@ -19,7 +19,7 @@ public sealed class Flood
     public static readonly ArenaPos Ap = new(100, 100, 2, 2);
 
     public readonly Callout ultimaUpsurge =
-        Callout.Duration("Ultima Upsurge", "Raidwide");
+        Callout.Duration("Ultima Upsurge", "Big Raidwide");
 
     public readonly Callout p4enrageFail =
         Callout.Duration("P4 Enrage (Failed)", "Failed");

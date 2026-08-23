@@ -25,6 +25,15 @@ public sealed class ClientLink
         _publish = publish;
     }
 
+    public static readonly uint[] WatchedObjects =
+    [
+        FrenRaidTools.Engine.DancingMad.Celestriad.FireTowerNpc,
+        FrenRaidTools.Engine.DancingMad.Celestriad.IceTowerNpc,
+        FrenRaidTools.Engine.DancingMad.Celestriad.ThunderTowerNpc,
+    ];
+
+    public static bool Watched(uint baseId) => Array.IndexOf(WatchedObjects, baseId) >= 0;
+
     public bool On { get; set; }
 
     public long Actors { get; private set; }
@@ -65,7 +74,7 @@ public sealed class ClientLink
         foreach (var obj in table)
         {
             if (obj is null) continue;
-            if (obj.ObjectKind is not (ObjectKind.Pc or ObjectKind.BattleNpc)) continue;
+            if (obj.ObjectKind is not (ObjectKind.Pc or ObjectKind.BattleNpc) && !Watched(obj.BaseId)) continue;
 
             var id = obj.EntityId;
             if (id == 0) continue;
