@@ -10,19 +10,72 @@ public sealed class LimitCut
     public static readonly ArenaPos Wide = new(100, 100, 10, 10);
 
     public readonly Callout limitCutInitial =
-        Callout.Of("Limit Cut: Initial", "Starting {resultingStart} -> {resultingClockwise ? 'Clockwise' : 'CCW'}")
+        Callout.Of("Limit Cut: Initial", "{startWaymark} - {resultingClockwise ? 'CW' : 'CCW'}")
             .Note("The four variables you can use in this call are initialClone and initialClockwise which are the first clone and which direction the initial waves are going. resultingStart and resultingClockwise are where the limit cut hits will start from and which direction.");
 
+    public const string WaymarkParam = "myWaymark";
+    public const string StartWaymarkParam = "startWaymark";
+
+    public const double ResolveAfterNumbersSeconds = 12.24;
+    public const double PerNumberSeconds = 0.22;
+
+    public static double Countdown(int number) =>
+        number < 1 || number > Numbers
+            ? 0
+            : ResolveAfterNumbersSeconds + (number - 1) * PerNumberSeconds;
+
+    public const int Numbers = 8;
+
+    public const int CloneReads = 8;
+
+    public static int? StepBetween(int dashesApart, ArenaSector first, ArenaSector second)
+    {
+        if (dashesApart <= 0 || !first.IsPoint() || !second.IsPoint()) return null;
+
+        var delta = first.EighthsTo(second);
+        var clockwise = Turns(1, dashesApart) == delta;
+        var widdershins = Turns(-1, dashesApart) == delta;
+
+        return clockwise == widdershins ? null : clockwise ? 1 : -1;
+    }
+
+    private static int Turns(int step, int dashes) =>
+        (step * dashes % ArenaSectors.Eighths + ArenaSectors.Eighths) % ArenaSectors.Eighths;
+
+    public static (ArenaSector Origin, bool Clockwise)? Solve(
+        IReadOnlyList<(int Index, ArenaSector Where)> reads)
+    {
+        if (reads.Count < 2) return null;
+
+        var first = reads[0];
+        var last = reads[^1];
+
+        if (StepBetween(last.Index - first.Index, first.Where, last.Where) is not { } step) return null;
+
+        return (first.Where.PlusEighths(-step * first.Index), step > 0);
+    }
+
+    public static string? Spot(ArenaSector start, bool clockwise, int number)
+    {
+        if (!start.IsPoint() || number < 1 || number > Numbers) return null;
+
+        var step = clockwise ? number - 1 : Numbers - number;
+        var first = start.PlusEighths(step).Waymark();
+        var second = start.PlusEighths(step + 1).Waymark();
+
+        return first is null || second is null ? null : first + second;
+    }
+
     public readonly Callout limitCutNumber1 =
-        Callout.Of("Limit Cut: 1", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }")
+        Callout.Duration("Limit Cut: 1", "{myNumber} - {myWaymark}")
             .Note("For the individual number calls, you can use {myNumber} which is your limit cut number, starting at 1, in case you want to do math in the expressions. You can also use {myPosition} for the arena position opposite your clone. For example, { myPosition } { resultingClockwise ? 'Left' : 'Right' } would call out something like North Right (left/right is looking inwards) for the typical LC strategy.");
-    public readonly Callout limitCutNumber2 = Callout.Of("Limit Cut: 2", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber3 = Callout.Of("Limit Cut: 3", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber4 = Callout.Of("Limit Cut: 4", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber5 = Callout.Of("Limit Cut: 5", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber6 = Callout.Of("Limit Cut: 6", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber7 = Callout.Of("Limit Cut: 7", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
-    public readonly Callout limitCutNumber8 = Callout.Of("Limit Cut: 8", "{myNumber} { myPosition } { resultingClockwise ? 'CW' : 'CCW' }");
+    public readonly Callout limitCutNumber2 = Callout.Duration("Limit Cut: 2", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber3 = Callout.Duration("Limit Cut: 3", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber4 = Callout.Duration("Limit Cut: 4", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber5 = Callout.Duration("Limit Cut: 5", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber6 = Callout.Duration("Limit Cut: 6", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber7 = Callout.Duration("Limit Cut: 7", "{myNumber} - {myWaymark}");
+    public readonly Callout limitCutNumber8 = Callout.Duration("Limit Cut: 8", "{myNumber} - {myWaymark}");
     public readonly Callout unknown = Callout.Of("Limit Cut: Error", "Error");
 
     public static int NumberFor(uint markerId) => markerId switch
@@ -44,28 +97,37 @@ public sealed class LimitCut
 
     private async Task Run(GameEvent start, SequenceRun run, IWorld world)
     {
-        var hit1 = await run.WaitEvent(EventKind.AbilityHit, e => e.Id == CloneHit && e.FirstTarget);
-        var hit2 = await run.WaitEvent(EventKind.AbilityHit, e => e.Id == CloneHit && e.FirstTarget);
-        await run.Settle();
+        var reads = new List<(int Index, ArenaSector Where)>();
+        (ArenaSector Origin, bool Clockwise)? clones = null;
 
-        var from1 = Wide.For(Fresh(hit1.Source, world));
-        var from2 = Wide.For(Fresh(hit2.Source, world));
+        for (var read = 0; read < CloneReads && clones is null; read++)
+        {
+            var hit = await run.WaitEvent(
+                EventKind.AbilityHit, e => e.Id == CloneHit && e.FirstTarget);
+            await run.Settle();
 
-        run.SetParam("initialClone", from1.Told());
+            var where = Wide.For(Fresh(hit.Source, world));
+            if (!where.IsPoint()) continue;
+
+            reads.Add((read, where));
+            clones = Solve(reads);
+        }
 
         bool? resultingClockwise = null;
         var resultingStart = ArenaSector.Unknown;
 
-        if (from1.IsStrictlyAdjacentTo(from2))
-        {
-            var initialClockwise = from1.EighthsTo(from2) == 1;
-            run.SetParam("initialClockwise", initialClockwise);
+        run.SetParam("initialClone", clones?.Origin.Told());
 
-            resultingClockwise = !initialClockwise;
+        if (clones is { } dash)
+        {
+            run.SetParam("initialClockwise", dash.Clockwise);
+
+            resultingClockwise = !dash.Clockwise;
             run.SetParam("resultingClockwise", resultingClockwise);
 
-            resultingStart = from1.Opposite();
+            resultingStart = dash.Origin.Opposite();
             run.SetParam("resultingStart", resultingStart.Told());
+            run.SetParam(StartWaymarkParam, resultingStart.Waymark());
         }
 
         run.Call(limitCutInitial);
@@ -78,10 +140,12 @@ public sealed class LimitCut
         {
             var step = (myNumber - 1) * (clockwise ? 1 : -1);
             run.SetParam("myPosition", resultingStart.PlusEighths(step).Told());
+            run.SetParam(WaymarkParam, Spot(resultingStart, clockwise, myNumber));
         }
         else
         {
             run.SetParam("myPosition", null);
+            run.SetParam(WaymarkParam, null);
         }
 
         run.Call(myNumber switch
@@ -95,7 +159,7 @@ public sealed class LimitCut
             7 => limitCutNumber7,
             8 => limitCutNumber8,
             _ => unknown,
-        }, myMarker);
+        }, myMarker with { Duration = Countdown(myNumber) });
     }
 
     private static Actor? Fresh(Actor? actor, IWorld world) =>

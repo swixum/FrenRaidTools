@@ -21,11 +21,47 @@ public sealed class NetworkLineReader
 
     public long Moves { get; private set; }
 
+    public const double PlacedGraceSeconds = 1.0;
+
+    public const int MaxPlaced = 64;
+
+    private readonly Dictionary<uint, double> _placed = [];
+
+    public long Ignored { get; private set; }
+
     private readonly LogStamps _stamps = new();
 
     public LogStamps Stamps => _stamps;
 
-    public void Restart() => _stamps.Reset();
+    public void Restart()
+    {
+        _stamps.Reset();
+        _placed.Clear();
+    }
+
+    public int PlacedCount => _placed.Count;
+
+    private void NotePlaced(uint id, double at)
+    {
+        if (_placed.Count >= MaxPlaced && !_placed.ContainsKey(id))
+        {
+            foreach (var (key, when) in _placed.ToList())
+                if (at - when > PlacedGraceSeconds) _placed.Remove(key);
+
+            while (_placed.Count >= MaxPlaced)
+            {
+                var oldest = _placed.First();
+                foreach (var pair in _placed)
+                    if (pair.Value < oldest.Value) oldest = pair;
+                _placed.Remove(oldest.Key);
+            }
+        }
+
+        _placed[id] = at;
+    }
+
+    private bool JustPlaced(uint id, double at) =>
+        _placed.TryGetValue(id, out var when) && at - when <= PlacedGraceSeconds;
 
     public GameEvent? Parse(string line)
     {
@@ -54,7 +90,7 @@ public sealed class NetworkLineReader
             case NetworkLine.CastStart:
             {
                 Understood++;
-                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.CastSourcePosField);
+                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.CastSourcePosField, at);
                 return new GameEvent
                 {
                     Kind = EventKind.CastStart,
@@ -74,8 +110,8 @@ public sealed class NetworkLineReader
                     ? NetworkLine.Decimal(fields, NetworkLine.AbilityTargetIndexField)
                     : 0;
 
-                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.AbilitySourcePosField);
-                MoveFrom(fields, NetworkLine.Hex(fields, 6), NetworkLine.AbilityTargetPosField);
+                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.AbilitySourcePosField, at);
+                MoveFrom(fields, NetworkLine.Hex(fields, 6), NetworkLine.AbilityTargetPosField, at);
 
                 return new GameEvent
                 {
@@ -178,6 +214,7 @@ public sealed class NetworkLineReader
                 var heading = (float)NetworkLine.Number(fields, 3);
 
                 _book.Move(id, pos, heading);
+                NotePlaced(id, at);
                 var actor = _book.Find(id);
                 if (actor is null) return null;
 
@@ -187,7 +224,7 @@ public sealed class NetworkLineReader
 
             case NetworkLine.StatusEffects:
             {
-                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.StatusEffectsPosField);
+                MoveFrom(fields, NetworkLine.Hex(fields, 2), NetworkLine.StatusEffectsPosField, at);
                 return null;
             }
 
@@ -215,18 +252,24 @@ public sealed class NetworkLineReader
         }
     }
 
-    private void MoveFrom(string[] fields, uint id, int at)
+    private void MoveFrom(string[] fields, uint id, int field, double at)
     {
         if (!ReadsPositions || id == 0) return;
-        if (!NetworkLine.HasRun(fields, at, 4)) return;
+        if (!NetworkLine.HasRun(fields, field, 4)) return;
+
+        if (JustPlaced(id, at))
+        {
+            Ignored++;
+            return;
+        }
 
         Shift(
             id,
             new Position(
-                (float)NetworkLine.Number(fields, at),
-                (float)NetworkLine.Number(fields, at + 1),
-                (float)NetworkLine.Number(fields, at + 2)),
-            (float)NetworkLine.Number(fields, at + 3));
+                (float)NetworkLine.Number(fields, field),
+                (float)NetworkLine.Number(fields, field + 1),
+                (float)NetworkLine.Number(fields, field + 2)),
+            (float)NetworkLine.Number(fields, field + 3));
     }
 
     private void Shift(uint id, Position pos, float heading)

@@ -67,6 +67,19 @@ public static class ArenaSectors
         _ => "Unknown",
     };
 
+    public static string? Waymark(this ArenaSector sector) => sector switch
+    {
+        ArenaSector.North => "A",
+        ArenaSector.Northeast => "2",
+        ArenaSector.East => "B",
+        ArenaSector.Southeast => "3",
+        ArenaSector.South => "C",
+        ArenaSector.Southwest => "4",
+        ArenaSector.West => "D",
+        ArenaSector.Northwest => "1",
+        _ => null,
+    };
+
     public static string? Told(this ArenaSector sector) =>
         sector == ArenaSector.Unknown ? null : sector.Name();
 
