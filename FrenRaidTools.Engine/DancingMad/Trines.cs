@@ -29,9 +29,8 @@ public sealed class Trines
 
     public readonly Callout trinesSafe = Callout.Of(
             "{bestStart} to {firstTrineLocations}",
-            "{bestStart}",
             "{bestStart} to {firstTrineLocations}")
-        .Note("This call will provide a starting position (prefers center if available, else one that is adjacent to one or more safe spots) and all of the safe spots.");
+        .Note("This call will provide a starting position (prefers center if available, else one that is adjacent to one or more safe spots) and all of the safe spots. The whole route is spoken as well as shown.");
 
     public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");

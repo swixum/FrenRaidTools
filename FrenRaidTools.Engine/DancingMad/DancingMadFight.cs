@@ -147,5 +147,6 @@ public sealed class DancingMadFight
         host.ResetHooks.Add(Earthquake.ForgetAssignment);
         host.ResetHooks.Add(Forsaken.ForgetStacks);
         host.ResetHooks.Add(FellForces.ForgetSets);
+        host.ResetHooks.Add(KefkaSays.ForgetSecondSpot);
     }
 }

@@ -28,6 +28,7 @@ public sealed class KefkaSays
 
     public const double BombSetSeconds = 20;
     public const double ShriekSeconds = 15;
+    public const double FirstSetAfterBeamSeconds = 7.77;
 
     public const uint BlackCastReal = 0xC395;
     public const uint BlackCastFake = 0xC394;
@@ -230,23 +231,52 @@ public sealed class KefkaSays
     public readonly Callout standInBlack =
         Callout.Duration("Kefka Says: Stand in Black", "Stand in Blue ({blackCompass})");
 
+    public const string MarkerParam = "myMarker";
+    public const string NextSpotParam = "next";
+
+    public const string SpreadSupport = "D";
+    public const string SpreadDps = "B";
+    public const string StackSupport = "A";
+    public const string StackDps = "C";
+
+    public static string? Waymark(string job, bool spread) => JobKinds.Kind(job) switch
+    {
+        JobKind.Tank or JobKind.Healer => spread ? SpreadSupport : StackSupport,
+        JobKind.Melee or JobKind.PhysRanged or JobKind.Caster => spread ? SpreadDps : StackDps,
+        _ => null,
+    };
+
+    public static string? Waymark(IWorld world, bool spread) =>
+        world.You is { } you ? Waymark(you.Job, spread) : null;
+
+    private (bool Spreading, string? Marker)? _secondSpot;
+
+    public void NoteSecondSpot(bool spreading, string? marker) => _secondSpot = (spreading, marker);
+
+    public void ForgetSecondSpot() => _secondSpot = null;
+
+    public string? SecondSpotSuffix() =>
+        _secondSpot is { Marker: { } marker } spot
+            ? $" and {(spot.Spreading ? "Spread" : "Stack")} {marker}"
+            : null;
+
     public readonly Callout firstSetStack =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Stack", "Stack").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Stack", "Stack {myMarker}").AutoIcon();
 
     public readonly Callout firstSetSpread =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Spread", "Spread").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Spread", "Spread {myMarker}").AutoIcon();
 
     public readonly Callout firstSetNothing =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Nothing", "Stack with {stacks}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Nothing", "Stack {myMarker}").AutoIcon();
 
     public readonly Callout firstSetAccelStack =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon();
 
     public readonly Callout firstSetAccelSpread =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker}").AutoIcon();
 
     public readonly Callout firstSetAccelNothing =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack with {stacks}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon();
 
     public readonly Callout thunderShriek =
         Callout.Duration("Kefka Says: Thunder and First Shrieks Resolving", "{fakeThunder ? 'In' : 'Avoid'} Thunder, Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK);
@@ -258,28 +288,30 @@ public sealed class KefkaSays
         Callout.Duration("Kefka Says: First Entropy/Dynamic Resolving", "{isDonut ? 'Stack for Donut' : 'Stack then Move'}").AutoIcon();
 
     public readonly Callout firstEntropyDynamicMove =
-        Callout.Duration("Kefka Says: First Entropy/Dynamic: Move (Circle Aoe)", "Move").AutoIcon();
+        Callout.Duration("Kefka Says: First Entropy/Dynamic: Move (Circle Aoe)", "Move{next}").AutoIcon()
+            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Move and Spread B. Supports take D on a spread and A on a stack, dps take B and C. Holding neither a fork nor a water for that set leaves it as plain Move.");
 
     public readonly Callout firstEntropyDynamicStay =
-        Callout.Duration("Kefka Says: First Entropy/Dynamic: Stay (Donut AoE)", "Stay").AutoIcon();
+        Callout.Duration("Kefka Says: First Entropy/Dynamic: Stay (Donut AoE)", "Stay{next}").AutoIcon()
+            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Stay and Spread B. Holding neither a fork nor a water for that set leaves it as plain Stay.");
 
     public readonly Callout secondSetStack =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Stack", "Stack {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Stack", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondSetSpread =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Spread", "Spread {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Spread", "Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondSetNothing =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Nothing", "Stack {fakeIce ? 'In Ice' : 'Out of Ice'} (with {stacks})").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Nothing", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondSetAccelStack =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondSetAccelSpread =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondSetAccelNothing =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {fakeIce ? 'In Ice' : 'Out of Ice'} (with {stacks})").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
 
     public readonly Callout secondShriek =
         Callout.Duration("Kefka Says: Second Shrieks Resolving", "Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK);
@@ -557,9 +589,10 @@ public sealed class KefkaSays
             run.Call(whiteIsSafe ? standInWhite : standInBlack, blackCast);
         }
 
-        BombSet(run, world, fake, first: true, fork1, fork2, accel1, accel2, water1, water2);
-
         if (blackCast is not null) await run.WaitCastFinished(blackCast);
+
+        BombSet(run, world, fake, first: true, fork1, fork2, accel1, accel2, water1, water2);
+        NoteSecondSet(run, world, fake, fork1, fork2, water1, water2);
 
         var hm1 = await run.WaitEvent(EventKind.HeadMarker, NearKefka);
         run.SetParam("fakeThunder", hm1.Id == FakeThunder);
@@ -591,6 +624,33 @@ public sealed class KefkaSays
         world.ActiveStatuses().FirstOrDefault(s =>
             s.Id == SHRIEK && run.Remaining(s) < ShriekSeconds && (!onlyYou || Yours(s)));
 
+    private void NoteSecondSet(
+        SequenceRun run, IWorld world, HashSet<(uint Status, uint Target)> fake,
+        GameEvent? fork1, GameEvent? fork2, GameEvent? water1, GameEvent? water2)
+    {
+        var fork = Longest(run, fork1, fork2);
+        var water = Longest(run, water1, water2);
+
+        bool spreading;
+        if (fork is not null && (water is null || run.Remaining(fork) > run.Remaining(water)))
+            spreading = !IsFake(fake, fork);
+        else if (water is not null)
+            spreading = IsFake(fake, water);
+        else return;
+
+        NoteSecondSpot(spreading, Waymark(world, spreading));
+    }
+
+    private static GameEvent? Longest(SequenceRun run, params GameEvent?[] statuses)
+    {
+        GameEvent? best = null;
+        foreach (var status in statuses)
+            if (status is not null && run.Remaining(status) > 0 &&
+                (best is null || run.Remaining(status) > run.Remaining(best)))
+                best = status;
+        return best;
+    }
+
     private GameEvent? BombSet(
         SequenceRun run, IWorld world, HashSet<(uint Status, uint Target)> fake, bool first,
         GameEvent? fork1, GameEvent? fork2, GameEvent? accel1, GameEvent? accel2,
@@ -609,19 +669,26 @@ public sealed class KefkaSays
 
         if (myAccel is not null) run.SetParam("stillness", !IsFake(fake, myAccel));
 
+        GameEvent? Timed(GameEvent? status) =>
+            !first || status is null
+                ? status
+                : status with { Kind = EventKind.CastStart, At = run.Now, Duration = FirstSetAfterBeamSeconds };
+
         if (myFork is not null)
         {
-            var isFake = IsFake(fake, myFork);
-            if (myAccel is not null) run.Call(isFake ? accelStack : accelSpread, myFork);
-            else run.Call(isFake ? stack : spread, myFork);
+            var spreading = !IsFake(fake, myFork);
+            run.SetParam(MarkerParam, Waymark(world, spreading));
+            if (myAccel is not null) run.Call(spreading ? accelSpread : accelStack, Timed(myFork));
+            else run.Call(spreading ? spread : stack, Timed(myFork));
             return myWater;
         }
 
         if (myWater is not null)
         {
-            var isFake = IsFake(fake, myWater);
-            if (myAccel is not null) run.Call(isFake ? accelSpread : accelStack, myWater);
-            else run.Call(isFake ? spread : stack, myWater);
+            var spreading = IsFake(fake, myWater);
+            run.SetParam(MarkerParam, Waymark(world, spreading));
+            if (myAccel is not null) run.Call(spreading ? accelSpread : accelStack, Timed(myWater));
+            else run.Call(spreading ? spread : stack, Timed(myWater));
             return myWater;
         }
 
@@ -631,9 +698,10 @@ public sealed class KefkaSays
             .ToList();
 
         run.SetParam("stacks", stacks.Select(s => s.Target).OfType<Actor>().ToList());
+        run.SetParam(MarkerParam, Waymark(world, spread: false));
 
         var stackBuff = stacks.FirstOrDefault();
-        On(run, myAccel is not null ? accelNothing : nothing, stackBuff);
+        On(run, myAccel is not null ? accelNothing : nothing, Timed(stackBuff));
         return stackBuff;
     }
 
@@ -702,6 +770,7 @@ public sealed class KefkaSays
         run.Call(firstEntropyDynamic, early);
 
         var cast = await run.WaitEvent(EventKind.CastStart, DonutCasts);
+        run.SetParam(NextSpotParam, SecondSpotSuffix() ?? "");
         run.Call(isDonut ? firstEntropyDynamicStay : firstEntropyDynamicMove, cast);
 
         var detail = await run.WaitEvent(EventKind.Synthetic, Synthetic.ManaChargeDetail);
