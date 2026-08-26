@@ -29,7 +29,7 @@ public sealed class Celestriad
     public bool DoubleTowerOnlyWithNoDebuff { get; set; }
 
     public readonly Callout celestriad =
-        Callout.Duration("Celestriad", "Elemental Towers");
+        Callout.Duration("Celestriad");
 
     public readonly Callout celestriadFireResDown =
         Callout.Duration("Celestriad: Fire Res Down", "Ice and Lightning, Fire Last").AutoIcon();
@@ -45,6 +45,8 @@ public sealed class Celestriad
     public const string ClockParam = "takeClock";
     public const string StepsParam = "takeSteps";
     public const string TurnParam = "takeTurn";
+    public const string NthParam = "takeNth";
+    public const string TurnSpokenParam = "takeTurnSpoken";
     public const string NextParam = "nextElement";
 
     public const int RingTowers = 9;
@@ -57,8 +59,10 @@ public sealed class Celestriad
             .Note("Names the tower you take first, by the hour it sits on, then the one after it. Nine towers stand 40 degrees apart and an hour covers 30, so two towers can never share an hour, which is why this is an hour and not a compass point. Your resistance down is always last. Use {elementOrder} if you would rather hear all three at once.");
 
     public readonly Callout celestriadNextTower =
-        Callout.Of("Celestriad: Next Tower", "{takeSteps} {takeTurn}, {takeElement}")
-            .Note("Every set after the first is counted from the tower you are standing on, in tower spots round the ring rather than waymarks. The turn is measured from where the towers actually are, so it says counterclockwise if that is what they did.");
+        Callout.Of("Celestriad: Next Tower",
+            "{takeNth} {takeTurnSpoken}, {takeElement}",
+            "{takeNth} {takeTurn}, {takeElement}")
+            .Note("Counts towers of the element you are about to take, walking from the tower you stand on: 1st CW is the next one of that colour clockwise, 2nd CCW the one past the first going the other way. The direction is the shorter way round, measured from where the towers actually are. {takeSteps} still carries the raw tower-spot count if you would rather hear that.");
 
     public readonly Callout celestriadNoResDown =
         Callout.Of("Celestriad: No Res Down", "No Debuff");
@@ -99,6 +103,31 @@ public sealed class Celestriad
         var hour = (int)Math.Round(Bearing(pos) / (360.0 / ClockHours)) % ClockHours;
         return hour == 0 ? ClockHours : hour;
     }
+
+    public static int NthAlong(
+        IEnumerable<GameEvent> towers, string element, Position from, Position to, bool clockwise)
+    {
+        double Along(Position pos)
+        {
+            var delta = clockwise ? Bearing(pos) - Bearing(from) : Bearing(from) - Bearing(pos);
+            return (delta % 360.0 + 360.0) % 360.0;
+        }
+
+        var target = Along(to);
+        var margin = RingStepDegrees / 2.0;
+
+        return 1 + towers.Count(t =>
+            t.Target is { } lit && lit.Pos.Known && Element(lit.BaseId) == element &&
+            Along(lit.Pos) is var d && d > margin && d < target - margin);
+    }
+
+    public static string Nth(int n) => n switch
+    {
+        1 => "1st",
+        2 => "2nd",
+        3 => "3rd",
+        _ => n + "th",
+    };
 
     public static (int Steps, bool Clockwise)? Turn(Position from, Position to)
     {
@@ -262,7 +291,9 @@ public sealed class Celestriad
                 if (standing is not null && Turn(standing.Value, spot.Pos) is { } turn)
                 {
                     run.SetParam(StepsParam, turn.Steps);
-                    run.SetParam(TurnParam, turn.Clockwise ? "Clockwise" : "Counterclockwise");
+                    run.SetParam(TurnParam, turn.Clockwise ? "CW" : "CCW");
+                    run.SetParam(TurnSpokenParam, turn.Clockwise ? "Clockwise" : "Counterclockwise");
+                    run.SetParam(NthParam, Nth(NthAlong(towers, order![i], standing.Value, spot.Pos, turn.Clockwise)));
                     run.Call(celestriadNextTower);
                 }
                 else

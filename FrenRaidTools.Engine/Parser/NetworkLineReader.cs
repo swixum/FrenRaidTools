@@ -281,15 +281,16 @@ public sealed class NetworkLineReader
 
     private void Remember(string[] fields)
     {
-        if (NetworkLine.Text(fields, 2) is not ("Change" or "Add")) return;
+        var change = NetworkLine.Text(fields, 2);
+        if (change is not ("Change" or "Add")) return;
 
         var id = NetworkLine.Hex(fields, 3);
         if (id == 0) return;
         var actor = _book.Find(id);
-        if (actor is null) return;
 
-        var pos = actor.Pos;
-        var heading = actor.Heading;
+        var pos = actor?.Pos ?? Position.Unknown;
+        var heading = actor?.Heading ?? 0f;
+        var baseId = 0u;
         var touched = false;
 
         for (var i = NetworkLine.MemoryPairsField; i + 1 < fields.Length; i += 2)
@@ -297,6 +298,7 @@ public sealed class NetworkLineReader
             var value = (float)NetworkLine.Number(fields, i + 1);
             switch (fields[i])
             {
+                case "BNpcID": baseId = NetworkLine.Hex(fields, i + 1); break;
                 case "PosX": pos = pos with { X = value }; touched = true; break;
                 case "PosY": pos = pos with { Y = value }; touched = true; break;
                 case "PosZ": pos = pos with { Z = value }; touched = true; break;
@@ -304,6 +306,13 @@ public sealed class NetworkLineReader
             }
         }
 
+        if (actor is null)
+        {
+            if (change != "Add" || baseId == 0) return;
+            _book.Resolve(id, "");
+        }
+
+        if (baseId != 0) _book.Identify(id, baseId);
         if (!touched) return;
         _book.Move(id, pos, heading);
         Moves++;

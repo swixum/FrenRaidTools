@@ -31,7 +31,9 @@ public sealed class Flood
         Callout.Duration("Flood", "Flood");
 
     public readonly Callout floodCall =
-        Callout.Of("Flood: Location and Rotation", "Start {cardinalStart}, {clockwise ? 'Clockwise' : 'CCW'}").Note("You can use the variables 'start' and 'secondStart' for the direction opposite the first and second hit (intercard),\\ along with {cardinalStart} for the cardinal between those two. 'final' is opposite the final hit, and cardinalFinal is the safe spot for the 3rd and 4th hits.");
+        Callout.Of("Flood: Location and Rotation",
+            "Start {startWaymark}, {clockwise ? 'Clockwise' : 'Counterclockwise'}",
+            "Start {startWaymark}, {clockwise ? 'CW' : 'CCW'}").Note("{startWaymark} is the waymark letter on the cardinal to start at. You can use the variables 'start' and 'secondStart' for the direction opposite the first and second hit (intercard),\\ along with {cardinalStart} for the cardinal between those two. 'final' is opposite the final hit, and cardinalFinal is the safe spot for the 3rd and 4th hits.");
 
     public readonly Callout floodMove1 =
         Callout.Of("Flood: Move 1", "Move").Quiet();
@@ -58,12 +60,14 @@ public sealed class Flood
 
         run.SetParam("start", startSector.Told());
         run.SetParam("second", second.Told());
-        run.SetParam("cardinalStart", Combine(startSector, second).Told());
+        var cardinalStart = Combine(startSector, second);
+        run.SetParam("cardinalStart", cardinalStart.Told());
+        run.SetParam("startWaymark", cardinalStart.Waymark());
 
         var clockwise = Turning(firstLocation, secondLocation);
         run.SetParam("clockwise", clockwise);
         run.SetParam("final", startSector.PlusQuads(clockwise ? -1 : 1).Told());
-        run.SetParam("cardinalFinal", Combine(startSector, second).Opposite().Told());
+        run.SetParam("cardinalFinal", cardinalStart.Opposite().Told());
 
         run.Call(floodCall);
 

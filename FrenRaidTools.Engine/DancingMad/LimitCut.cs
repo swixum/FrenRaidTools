@@ -10,7 +10,9 @@ public sealed class LimitCut
     public static readonly ArenaPos Wide = new(100, 100, 10, 10);
 
     public readonly Callout limitCutInitial =
-        Callout.Of("Limit Cut: Initial", "{startWaymark} - {resultingClockwise ? 'CW' : 'CCW'}")
+        Callout.Of("Limit Cut: Initial",
+            "{startWaymark} - {resultingClockwise ? 'Clockwise' : 'Counterclockwise'}",
+            "{startWaymark} - {resultingClockwise ? 'CW' : 'CCW'}")
             .Note("The four variables you can use in this call are initialClone and initialClockwise which are the first clone and which direction the initial waves are going. resultingStart and resultingClockwise are where the limit cut hits will start from and which direction.");
 
     public const string WaymarkParam = "myWaymark";

@@ -41,6 +41,12 @@ public sealed class ParserActorBook
 
     public void Forget(uint id) => _known.Remove(id);
 
+    public void Identify(uint id, uint baseId)
+    {
+        if (!_known.TryGetValue(id, out var actor) || actor.BaseId == baseId) return;
+        _known[id] = actor with { BaseId = baseId };
+    }
+
     public void Move(uint id, Position pos, float heading)
     {
         if (!_known.TryGetValue(id, out var actor)) return;
