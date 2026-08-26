@@ -367,6 +367,7 @@ public sealed class Earthquake
             if (role is null) continue;
 
             roles[target.ObjectId] = role.Value;
+            _lineNames[PlanTether.Name(PlaceOf(role.Value), GroupOf(role.Value))] = target.Called;
             if (target.IsYou) myRole = role;
         }
 
@@ -478,7 +479,13 @@ public sealed class Earthquake
 
     public AccretionRole? Assignment { get; private set; }
 
-    public void ForgetAssignment() => Assignment = null;
+    private readonly Dictionary<string, string> _lineNames = new(StringComparer.Ordinal);
+
+    public void ForgetAssignment()
+    {
+        Assignment = null;
+        _lineNames.Clear();
+    }
 
     public static AccretionRole? Remembered(AccretionRole? latched, IWorld world) =>
         latched ?? Mine(world);
@@ -555,6 +562,8 @@ public sealed class Earthquake
         run.SetParam(PlanCalls.SpotsParam, Names(ClockwiseFrom(anchor, holes)));
         run.SetParam(PlanCalls.PairParam,
             pair is null ? null : Names(ClockwiseFrom(anchor, pair)));
+        run.SetParam(PlanCalls.HoldersParam,
+            _lineNames.Count == 0 ? null : new Dictionary<string, string>(_lineNames, StringComparer.Ordinal));
     }
 
     public Sequence BuildCasts(IWorld world) =>

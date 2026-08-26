@@ -165,6 +165,7 @@ public sealed class PlanCalls
     public const string GroupParam = "myGroup";
     public const string SpotsParam = "tetherSpots";
     public const string PairParam = "tetherPair";
+    public const string HoldersParam = "tetherHolders";
 
     private static StrategyCue Timeline(
         StrategyBook book, StrategyMechanic mechanic, int? step,
@@ -178,10 +179,16 @@ public sealed class PlanCalls
         var lines = PlanTether.Lines(
             timeline, rules, step.Value,
             Text(args, PlaceParam), Text(args, GroupParam),
-            Names(args, SpotsParam), Names(args, PairParam));
+            Names(args, SpotsParam), Names(args, PairParam), Holders(args));
 
         return PlanStep.Read(lines, line => book.Aligned(line, mechanic));
     }
+
+    private static IReadOnlyDictionary<string, string>? Holders(
+        IReadOnlyDictionary<string, object?>? args) =>
+        args is not null && args.TryGetValue(HoldersParam, out var value)
+            ? value as IReadOnlyDictionary<string, string>
+            : null;
 
     private static IReadOnlyList<string>? Names(
         IReadOnlyDictionary<string, object?>? args, string key)

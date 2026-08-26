@@ -107,7 +107,8 @@ public static partial class PlanTether
     public static IReadOnlyList<string> Lines(
         IReadOnlyList<string> timeline, IReadOnlyList<string> rules, int set,
         string? place, string? group, IReadOnlyList<string>? spots,
-        IReadOnlyList<string>? pair = null)
+        IReadOnlyList<string>? pair = null,
+        IReadOnlyDictionary<string, string>? holders = null)
     {
         var me = Name(place, group);
         if (me.Length == 0) return [];
@@ -117,19 +118,32 @@ public static partial class PlanTether
         if (mine.Count == 0) return duties.Count > 0 ? [Idle] : [];
 
         var order = Order(rules);
-        var grouped = new List<(string Where, List<int> Hits)>();
+        var lines = new List<string>();
+        var soaks = new List<(string Where, List<int> Hits)>();
 
         foreach (var duty in mine)
         {
-            var index = duty.Tether ?? (group is null ? null : Rank(order, group));
-            var where = Where(duty, index, spots, pair);
+            if (duty.Both)
+            {
+                var all = Named(pair ?? spots);
+                lines.Add(all.Length > 0 ? $"Take 2 Tether Hits, {all}" : "Take 2 Tether Hits");
+                continue;
+            }
 
-            var slot = grouped.FindIndex(x => string.Equals(x.Where, where, StringComparison.Ordinal));
-            if (slot < 0) grouped.Add((where, [duty.Hit]));
-            else if (!grouped[slot].Hits.Contains(duty.Hit)) grouped[slot].Hits.Add(duty.Hit);
+            if (duty.Tether is { } taken)
+            {
+                lines.Add(Steal(timeline, order, set, duty.Hit, taken, holders));
+                continue;
+            }
+
+            var where = At(spots, group is null ? null : Rank(order, group));
+            var slot = soaks.FindIndex(x => string.Equals(x.Where, where, StringComparison.Ordinal));
+            if (slot < 0) soaks.Add((where, [duty.Hit]));
+            else if (!soaks[slot].Hits.Contains(duty.Hit)) soaks[slot].Hits.Add(duty.Hit);
         }
 
-        return PlanStep.Once([.. grouped.Select(x => Say(x.Where, x.Hits))]);
+        lines.AddRange(soaks.Select(x => Say(x.Where, x.Hits)));
+        return PlanStep.Once(lines);
     }
 
     public static string Say(string where, IReadOnlyList<int> hits)
@@ -138,24 +152,55 @@ public static partial class PlanTether
         return where.Length == 0 ? when : $"{where}, {when}";
     }
 
-    public static int? Rank(IReadOnlyDictionary<string, int> order, string group) =>
-        order.TryGetValue(Full(group), out var rank) ? rank : null;
-
-    public static string Where(
-        TetherDuty duty, int? tether, IReadOnlyList<string>? spots,
-        IReadOnlyList<string>? pair = null)
+    public static string Steal(
+        IReadOnlyList<string> timeline, IReadOnlyDictionary<string, int> order,
+        int set, int beforeHit, int tether, IReadOnlyDictionary<string, string>? holders)
     {
-        if (duty.Both)
+        var line = $"Take {Ordinal(tether)} tether";
+        if (holders is null) return line;
+
+        var identity = HolderOf(timeline, order, set, beforeHit, tether);
+        return identity is not null && holders.TryGetValue(identity, out var who) && who.Length > 0
+            ? $"{line} off {who}"
+            : line;
+    }
+
+    public static string? HolderOf(
+        IReadOnlyList<string> timeline, IReadOnlyDictionary<string, int> order,
+        int set, int beforeHit, int tether)
+    {
+        string? holder = null;
+
+        foreach (var raw in timeline)
         {
-            var all = Named(pair ?? spots);
-            return all.Length > 0 ? $"Both tethers, {all}" : "Both tethers";
+            var match = HitLine().Match(raw.Trim());
+            if (!match.Success) continue;
+            if (int.Parse(match.Groups[1].Value) != set) continue;
+            if (int.Parse(match.Groups[2].Value) >= beforeHit) continue;
+
+            foreach (var assignment in Assignments(match.Groups[3].Value))
+            {
+                var identity = IdentityLine().Match(assignment);
+                if (!identity.Success) continue;
+
+                var take = TakeTether().Match(assignment);
+                var held = take.Success
+                    ? int.Parse(take.Groups[1].Value)
+                    : Rank(order, identity.Groups[3].Value);
+
+                if (held == tether) holder = identity.Groups[1].Value;
+            }
         }
 
-        var where = At(spots, tether);
-        if (where.Length > 0) return where;
-
-        return tether is null ? "" : $"{Ordinal(tether.Value)} tether";
+        return holder;
     }
+
+    [GeneratedRegex(@"^((First|Second|Third)\s+in\s+Line\s+(DPS|Support|Accretion))\b",
+        RegexOptions.IgnoreCase)]
+    private static partial Regex IdentityLine();
+
+    public static int? Rank(IReadOnlyDictionary<string, int> order, string group) =>
+        order.TryGetValue(Full(group), out var rank) ? rank : null;
 
     public static string At(IReadOnlyList<string>? spots, int? tether) =>
         spots is not null && tether is { } n && n >= 1 && n <= spots.Count ? spots[n - 1] : "";

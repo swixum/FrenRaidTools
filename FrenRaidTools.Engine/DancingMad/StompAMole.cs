@@ -21,7 +21,9 @@ public sealed class StompAMole
     public const uint BowelsEnrage = 0xC61F;
 
     public readonly Callout stompAMole =
-        Callout.Duration("Stomp-a-Mole: Initial Cast", "Bait Blizzards then Stacks");
+        Callout.Duration("Stomp-a-Mole: Initial Cast",
+            "Bait Puddles 2 times then Stacks",
+            "Bait Puddles x2 then Stacks");
 
     public readonly Callout stompAMoleMove1 =
         Callout.Duration("Stomp-a-Mole: Move 1", "Move");
