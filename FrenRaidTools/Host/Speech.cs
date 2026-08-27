@@ -192,23 +192,37 @@ public sealed class Speech : IDisposable
     private static void Set(object target, string member, object value) =>
         target.GetType().InvokeMember(member, BindingFlags.SetProperty, null, target, [value]);
 
+    public const int StopWaitMs = 2000;
+
     public void Dispose()
     {
+        var stopped = false;
+
         try
         {
             _stopping.Cancel();
             _queue.CompleteAdding();
-            _worker.Join(TimeSpan.FromMilliseconds(750));
+            stopped = _worker.Join(TimeSpan.FromMilliseconds(StopWaitMs));
         }
         catch
         {
         }
 
-        _queue.Dispose();
-        _stopping.Dispose();
+        try
+        {
+            _queue.Dispose();
+            _stopping.Dispose();
+        }
+        catch
+        {
+        }
 
-        if (_voice is not null && System.Runtime.InteropServices.Marshal.IsComObject(_voice))
-            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(_voice);
+        var voice = _voice;
         _voice = null;
+
+        if (!stopped) return;
+
+        if (voice is not null && System.Runtime.InteropServices.Marshal.IsComObject(voice))
+            System.Runtime.InteropServices.Marshal.FinalReleaseComObject(voice);
     }
 }

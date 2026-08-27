@@ -121,6 +121,18 @@ public class OverlayWindow : Window
 
     public override void Draw()
     {
+        try
+        {
+            Paint();
+        }
+        catch (Exception ex)
+        {
+            Service.Log.Error(ex, "Overlay draw failed.");
+        }
+    }
+
+    private void Paint()
+    {
         SavePositionIfDragged();
         if (_draggable && ImGui.IsMouseDown(ImGuiMouseButton.Left)) _dragged = true;
 

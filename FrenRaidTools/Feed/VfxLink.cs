@@ -117,7 +117,10 @@ public sealed unsafe class VfxLink : IDisposable
     private static bool Starts(byte* path, string lead)
     {
         for (var i = 0; i < lead.Length; i++)
-            if (path[i] != (byte)lead[i]) return false;
+        {
+            var at = path[i];
+            if (at == 0 || at != (byte)lead[i]) return false;
+        }
 
         return true;
     }

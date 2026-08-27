@@ -1,6 +1,7 @@
 using System.Numerics;
 using Dalamud.Configuration;
 using FrenRaidTools.Engine;
+using FrenRaidTools.Engine.DancingMad;
 using FrenRaidTools.Ui;
 
 namespace FrenRaidTools;
@@ -18,13 +19,6 @@ public sealed class CallEdit
         Speech ??= "";
         Text ??= "";
     }
-}
-
-public enum CleanseCalls
-{
-    All,
-    PriorSetSameRole,
-    EntirePriorSet,
 }
 
 public sealed class Configuration : IPluginConfiguration
@@ -93,7 +87,7 @@ public sealed class Configuration : IPluginConfiguration
     public int ActiveSetup { get; set; }
     public bool FillRolesOnJoin { get; set; } = true;
 
-    public CleanseCalls CleanseCallMode { get; set; } = CleanseCalls.EntirePriorSet;
+    public CleanseCalls CleanseCallMode { get; set; } = CleanseCalls.PriorSet;
     public bool DoubleTowerOnlyWithNoDebuff { get; set; }
 
     public Dictionary<string, StrategyPick> Plans { get; set; } = new(StringComparer.Ordinal);

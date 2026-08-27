@@ -65,6 +65,8 @@ public partial class MainWindow
         Widgets.ListEnd();
     }
 
+    private const int FaultsShown = 5;
+
     private void DrawDiagnostics()
     {
         var diag = _plugin.Diag;
@@ -92,6 +94,9 @@ public partial class MainWindow
             C.DiagInReplay = armed;
             Touch();
         }
+
+        foreach (var fault in _plugin.Runtime.Faults.Take(FaultsShown))
+            Widgets.RowNoteWrap(fault, Theme.Warn);
 
         if (diag.On) Widgets.RowNoteWrap(diag.Detail);
 

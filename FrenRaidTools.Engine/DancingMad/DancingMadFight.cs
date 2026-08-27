@@ -117,6 +117,7 @@ public sealed class DancingMadFight
         yield return Earthquake.BuildTethers(world);
         yield return KefkaSays.BuildExdeath(world);
         yield return KefkaSays.BuildChaos(world);
+        yield return KefkaSays.BuildLimitBreak(world);
         yield return DirectCalls.Build(world);
         yield return Trines.BuildExtras(world);
         yield return Bowels.BuildHeroes(world);

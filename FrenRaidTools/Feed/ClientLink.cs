@@ -16,6 +16,7 @@ public sealed class ClientLink
     private readonly HashSet<ulong> _open = [];
     private readonly List<ulong> _lost = [];
     private readonly Dictionary<uint, HashSet<uint>> _tethers = [];
+    private readonly HashSet<uint> _tied = [];
     private readonly HashSet<uint> _alive = [];
     private readonly List<uint> _gone = [];
 
@@ -219,7 +220,7 @@ public sealed class ClientLink
         if (raw is null) return;
 
         var live = _tethers.TryGetValue(actor.ObjectId, out var was) ? was : null;
-        var open = new HashSet<uint>();
+        _tied.Clear();
 
         var span = raw->Vfx.Tethers;
         for (var i = 0; i < span.Length; i++)
@@ -230,7 +231,7 @@ public sealed class ClientLink
             var target = (uint)tether.TargetId.ObjectId;
             if (target == 0) continue;
 
-            open.Add(target);
+            _tied.Add(target);
             if (live is not null && live.Contains(target)) continue;
 
             Tethers++;
@@ -244,8 +245,20 @@ public sealed class ClientLink
             });
         }
 
-        if (open.Count == 0) _tethers.Remove(actor.ObjectId);
-        else _tethers[actor.ObjectId] = open;
+        if (_tied.Count == 0)
+        {
+            _tethers.Remove(actor.ObjectId);
+            return;
+        }
+
+        if (live is null)
+        {
+            _tethers[actor.ObjectId] = [.. _tied];
+            return;
+        }
+
+        live.Clear();
+        foreach (var target in _tied) live.Add(target);
     }
 
     private void Drop(double now)

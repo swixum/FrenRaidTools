@@ -10,7 +10,7 @@ public sealed class ParserSocket : IDisposable
     public const int MaxQueued = 4096;
     public const int ReceiveBufferBytes = 64 * 1024;
 
-    private static readonly string[] Endpoints =
+    public static readonly string[] Defaults =
     [
         "ws://127.0.0.1:10501/ws",
         "ws://localhost:10501/ws",
@@ -21,8 +21,23 @@ public sealed class ParserSocket : IDisposable
     private readonly ConcurrentQueue<string> _lines = new();
     private CancellationTokenSource? _stopping;
     private Task? _worker;
+    private string[] _endpoints = Defaults;
+
+    public static string[] Order(string address)
+    {
+        var wanted = address.Trim();
+        if (wanted.Length == 0) return Defaults;
+
+        var order = new List<string> { wanted };
+        foreach (var fallback in Defaults)
+            if (!order.Contains(fallback, StringComparer.OrdinalIgnoreCase)) order.Add(fallback);
+
+        return [.. order];
+    }
 
     public bool Enabled { get; private set; }
+
+    public string Wanted { get; private set; } = "";
 
     public bool Connected { get; private set; }
 
@@ -34,21 +49,36 @@ public sealed class ParserSocket : IDisposable
 
     public long Dropped { get; private set; }
 
-    public void Start()
+    public void Start(string address = "")
     {
-        if (Enabled) return;
+        var wanted = address.Trim();
+
+        if (Enabled)
+        {
+            if (string.Equals(wanted, Wanted, StringComparison.Ordinal)) return;
+            Stop();
+        }
+
+        Wanted = wanted;
+        _endpoints = Order(wanted);
         Enabled = true;
-        _stopping = new CancellationTokenSource();
-        _worker = Task.Run(() => Run(_stopping.Token));
+
+        var stopping = new CancellationTokenSource();
+        _stopping = stopping;
+        _worker = Task.Run(() => Run(stopping.Token));
     }
 
     public void Stop()
     {
         Enabled = false;
         Connected = false;
-        _stopping?.Cancel();
-        _worker = null;
+
+        var stopping = _stopping;
         _stopping = null;
+        _worker = null;
+        Wanted = "";
+
+        stopping?.Cancel();
         while (_lines.TryDequeue(out _)) { }
     }
 
@@ -69,7 +99,7 @@ public sealed class ParserSocket : IDisposable
 
         while (!token.IsCancellationRequested)
         {
-            foreach (var endpoint in Endpoints)
+            foreach (var endpoint in _endpoints)
             {
                 if (token.IsCancellationRequested) return;
 
@@ -104,8 +134,14 @@ public sealed class ParserSocket : IDisposable
 
     private async Task Listen(string endpoint, CancellationToken token)
     {
+        if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var uri))
+        {
+            LastError = $"{endpoint} does not read as a URL.";
+            return;
+        }
+
         using var socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri(endpoint), token);
+        await socket.ConnectAsync(uri, token);
 
         Connected = true;
         Endpoint = endpoint;
@@ -134,6 +170,7 @@ public sealed class ParserSocket : IDisposable
             }
             while (!result.EndOfMessage);
 
+            if (token.IsCancellationRequested) return;
             Take(message.ToString());
         }
 

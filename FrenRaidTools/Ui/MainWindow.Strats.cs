@@ -1,5 +1,6 @@
 using Dalamud.Bindings.ImGui;
 using FrenRaidTools.Engine;
+using FrenRaidTools.Engine.DancingMad;
 
 namespace FrenRaidTools.Ui;
 
@@ -107,7 +108,7 @@ public partial class MainWindow
     private static string CleanseHint(CleanseCalls mode) => mode switch
     {
         CleanseCalls.All => "Every cleanse that lands, whoever it was",
-        CleanseCalls.PriorSetSameRole => "Only whoever took your spot in the set before yours",
+        CleanseCalls.Matched => "Only whoever took your spot in the set before yours",
         _ => "Everyone in the set before yours",
     };
 }

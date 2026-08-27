@@ -16,7 +16,9 @@ public sealed class SequenceScheduler : SynchronizationContext
 
     public override SynchronizationContext CreateCopy() => this;
 
-    public int Pump()
+    public int Pump() => Under(Drain);
+
+    private int Drain()
     {
         var ran = 0;
         while (ran < MaxDrainPerPump && _queue.TryDequeue(out var item))
@@ -30,6 +32,8 @@ public sealed class SequenceScheduler : SynchronizationContext
     public T Under<T>(Func<T> work)
     {
         var previous = Current;
+        if (ReferenceEquals(previous, this)) return work();
+
         SetSynchronizationContext(this);
         try
         {

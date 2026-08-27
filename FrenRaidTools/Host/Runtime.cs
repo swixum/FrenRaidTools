@@ -19,6 +19,7 @@ public sealed class Runtime : IDisposable
     private readonly Diag _diag;
 
     private readonly TickClock _clock = new();
+    private readonly RunGate _gate = new();
     private readonly CombatWatch _combat = new();
     private readonly ParserSocket _socket = new();
     private readonly ParserActorBook _book = new();
@@ -68,7 +69,8 @@ public sealed class Runtime : IDisposable
     public int Live => _host.RunningCount;
 
     public IReadOnlyList<string> Faults =>
-        [.. _host.Faults,
+        [.. _fight.Faults,
+         .. _host.Faults,
          .. new[] { _vfx.Fault, _effects.Fault, _controls.Fault }.OfType<string>()];
 
     public bool Replaying => _replaying;
@@ -101,29 +103,27 @@ public sealed class Runtime : IDisposable
         Watch();
         Install();
         Follow();
+        Choices();
 
-        if (_config.ParserOn)
-        {
-            if (!_socket.Enabled) _socket.Start();
-        }
-        else if (_socket.Enabled)
-        {
-            _socket.Stop();
-        }
+        _gate.ParserLive = _feed.ParserLive;
+        _gate.HooksBroken = HooksBroken;
 
-        if (_zone == EngineInfo.DancingMadTerritory)
+        if (_gate.WantsSocket) _socket.Start(_config.ParserAddress);
+        else if (_socket.Enabled) _socket.Stop();
+
+        if (_gate.InTheFight)
         {
             _vfx.Start();
             _effects.Start();
             _controls.Start();
         }
 
-        _client.On = Running && (_replaying || !_feed.ParserLive);
+        _client.On = _gate.ClientReadsActors;
         _effects.On = _client.On;
         _controls.On = Running;
         _client.Tick(_clock.Now);
 
-        _feed.ClientOwnsEverything = _replaying && !HooksBroken;
+        _feed.ClientOwnsEverything = _gate.ClientOwnsEverything;
         _feed.ParserAttached = _socket.Connected;
         _socket.Drain(Line, LinesPerTick);
 
@@ -159,6 +159,8 @@ public sealed class Runtime : IDisposable
         {
             _watching = _diag.On;
             ArenaPos.Trace = _watching ? _diag.Bearing : null;
+            _told = _watching ? Shape() : "";
+            _nextSettle = _clock.Now + SettleEverySeconds;
         }
 
         if (!_diag.On) return;
@@ -169,11 +171,36 @@ public sealed class Runtime : IDisposable
             if (_faultsTold.Add(fault))
                 _diag.Note("FAULT", fault);
 
+        Resettle();
+
         var speed = Game.InReplay ? Game.Speed() : Game.NormalSpeed;
         if (Math.Abs(speed - _speed) < 0.01f) return;
 
         _speed = speed;
         _diag.Note("replay", speed <= 0f ? "paused" : $"speed {speed:0.##}x");
+    }
+
+    public const double SettleEverySeconds = 2.0;
+
+    private double _nextSettle;
+    private string _told = "";
+
+    private string Shape() =>
+        string.Join('/',
+            _zone, _replaying, Running, _feed.ParserLive, _socket.Connected, HooksBroken,
+            _world.You?.Name ?? "", _world.Party.Count, SeatSync.SeatFor(_config));
+
+    private void Resettle()
+    {
+        if (_clock.Now < _nextSettle) return;
+        _nextSettle = _clock.Now + SettleEverySeconds;
+
+        var shape = Shape();
+        if (shape == _told) return;
+
+        _told = shape;
+        foreach (var line in Setup().Split('\n'))
+            if (line.Length > 0) _diag.Note("setup", line);
     }
 
     public string Setup()
@@ -208,6 +235,12 @@ public sealed class Runtime : IDisposable
         _installed = true;
     }
 
+    private void Choices()
+    {
+        _fight.DancingMad.Earthquake.CleanseCall = _config.CleanseCallMode;
+        _fight.DancingMad.Celestriad.DoubleTowerOnlyWithNoDebuff = _config.DoubleTowerOnlyWithNoDebuff;
+    }
+
     private Actor? Buddy()
     {
         var you = Party.YouName();
@@ -240,9 +273,11 @@ public sealed class Runtime : IDisposable
             if (replay && _config.DiagInReplay && !_diag.On) _diag.Start();
         }
 
-        Running = _installed
-            && zone == EngineInfo.DancingMadTerritory
-            && (replay || _config.ParserOn);
+        _gate.Installed = _installed;
+        _gate.Zone = zone;
+        _gate.Replaying = replay;
+        _gate.ParserOn = _config.ParserOn;
+        Running = _gate.Running;
 
         if (_combat.Take(Game.PartyFighting(), _clock.Now) is { } boundary)
         {
