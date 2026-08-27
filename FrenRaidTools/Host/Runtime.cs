@@ -19,6 +19,7 @@ public sealed class Runtime : IDisposable
     private readonly Diag _diag;
 
     private readonly TickClock _clock = new();
+    private readonly CombatWatch _combat = new();
     private readonly ParserSocket _socket = new();
     private readonly ParserActorBook _book = new();
     private readonly NetworkLineReader _reader;
@@ -42,7 +43,7 @@ public sealed class Runtime : IDisposable
         _fight = fight;
         _diag = diag;
 
-        _reader = new NetworkLineReader(_book, _clock);
+        _reader = new NetworkLineReader(_book, _clock) { ReadsPositions = true };
         _world = new FeedWorld(_book, _clock);
         _host = new SequenceHost(_clock, _world, Sink);
         _feed = new EventFeed(_clock, Deliver);
@@ -152,6 +153,8 @@ public sealed class Runtime : IDisposable
 
     private void Watch()
     {
+        if (Game.You is { } you) _book.KnowYou(you.EntityId, you.Name.TextValue);
+
         if (_diag.On != _watching)
         {
             _watching = _diag.On;
@@ -159,6 +162,8 @@ public sealed class Runtime : IDisposable
         }
 
         if (!_diag.On) return;
+
+        if (_faultsTold.Count > SequenceHost.MaxFaults) _faultsTold.Clear();
 
         foreach (var fault in Faults)
             if (_faultsTold.Add(fault))
@@ -238,6 +243,12 @@ public sealed class Runtime : IDisposable
         Running = _installed
             && zone == EngineInfo.DancingMadTerritory
             && (replay || _config.ParserOn);
+
+        if (_combat.Take(Game.PartyFighting(), _clock.Now) is { } boundary)
+        {
+            _diag.Note("pull", boundary.Kind == EventKind.CombatStart ? "started" : "ended");
+            _feed.Publish(EventSource.Client, boundary);
+        }
     }
 
     private void Line(string line)
@@ -254,7 +265,13 @@ public sealed class Runtime : IDisposable
         _world.Take(e);
 
         if (e.Kind is EventKind.CombatStart or EventKind.CombatEnd or EventKind.ZoneChange)
+        {
             _fight.Plan?.Reset();
+            _host.Reset();
+        }
+
+        if (e.Kind is EventKind.CombatStart && _zone == EngineInfo.DancingMadTerritory)
+            _board.Clear();
 
         if (Running) _host.Feed(e);
     }
@@ -262,6 +279,7 @@ public sealed class Runtime : IDisposable
     public void Wipe()
     {
         _diag.Note("wipe", $"zone={_zone} replay={_replaying}");
+        _combat.Forget();
         _reader.Restart();
         _fight.Plan?.Reset();
         _host.Reset();

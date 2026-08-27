@@ -48,7 +48,7 @@ public sealed class GrandCross
             (start, run, invocation) =>
             {
                 run.SetParam("real", Vfx.NeoExdeathReal);
-                if (Vfx.NeoExdeathReal == false) return Task.CompletedTask;
+                if (Vfx.NeoExdeathReal != true) return Task.CompletedTask;
 
                 var call = invocation switch
                 {

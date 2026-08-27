@@ -23,6 +23,26 @@ public static class Game
 
     public static bool Fighting => InFight || InReplay;
 
+    public static bool PartyFighting()
+    {
+        if (InFight) return true;
+
+        try
+        {
+            foreach (var member in Service.PartyList)
+                if (member?.GameObject is Dalamud.Game.ClientState.Objects.Types.IBattleChara fighter
+                    && fighter.StatusFlags.HasFlag(
+                        Dalamud.Game.ClientState.Objects.Enums.StatusFlags.InCombat))
+                    return true;
+        }
+        catch
+        {
+            return InFight;
+        }
+
+        return false;
+    }
+
     public const float NormalSpeed = 1f;
     public const float PausedBelow = 0.02f;
     public const float SpeedCeiling = 100f;

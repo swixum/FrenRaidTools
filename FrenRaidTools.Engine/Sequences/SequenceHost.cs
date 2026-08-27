@@ -31,6 +31,8 @@ public sealed class SequenceHost
 
     public IWorld World => _world;
 
+    public const int MaxFaults = 32;
+
     public List<string> Faults { get; } = [];
 
     public List<Action> ResetHooks { get; } = [];
@@ -172,6 +174,7 @@ public sealed class SequenceHost
         }
         catch (Exception ex)
         {
+            if (Faults.Count >= MaxFaults) Faults.RemoveAt(0);
             Faults.Add($"{sequence.Name}: {ex.GetType().Name}: {ex.Message}");
         }
         finally

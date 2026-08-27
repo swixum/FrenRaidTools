@@ -39,6 +39,20 @@ public sealed class ParserActorBook
         Put(actor);
     }
 
+    public void KnowYou(uint id, string name)
+    {
+        if (id == YouId && name == YouName) return;
+
+        YouId = id;
+        YouName = name;
+
+        foreach (var (known, actor) in _known)
+        {
+            var mine = IsYou(known, actor.Name);
+            if (actor.IsYou != mine) _known[known] = actor with { IsYou = mine };
+        }
+    }
+
     public void Forget(uint id) => _known.Remove(id);
 
     public void Identify(uint id, uint baseId)
