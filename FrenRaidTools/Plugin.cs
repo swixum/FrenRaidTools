@@ -10,6 +10,7 @@ namespace FrenRaidTools;
 public sealed class Plugin : IDalamudPlugin
 {
     private const string Command = "/frt";
+    private const string CommandAlias = "/fart";
 
     public readonly WindowSystem Windows = new("FrenRaidTools");
 
@@ -65,6 +66,11 @@ public sealed class Plugin : IDalamudPlugin
         Service.CommandManager.AddHandler(Command, new CommandInfo(OnCommand)
         {
             HelpMessage = "Open Fren Raid Tools. /frt roles jumps straight to roles.",
+        });
+
+        Service.CommandManager.AddHandler(CommandAlias, new CommandInfo(OnCommand)
+        {
+            HelpMessage = "Same thing, more fun to type.",
         });
 
         Service.PluginInterface.UiBuilder.Draw += Windows.Draw;
@@ -240,6 +246,7 @@ public sealed class Plugin : IDalamudPlugin
         Service.Framework.Update -= OnUpdate;
         Service.ClientState.TerritoryChanged -= OnZoneChanged;
         Service.CommandManager.RemoveHandler(Command);
+        Service.CommandManager.RemoveHandler(CommandAlias);
 
         Config.Flush(_clock, force: true);
         Ui.Icons.Forget();

@@ -38,18 +38,13 @@ public partial class MainWindow
 
         var matches = catalog.Where(Matches).ToList();
 
-        if (_search.Length > 0)
+        if (_search.Length > 0 && matches.Count == 0)
         {
-            if (matches.Count == 0)
-            {
-                Widgets.EmptyState("Nothing matched", "Try a shorter word.");
-                return;
-            }
-
-            Widgets.SectionHeader($"{matches.Count} found");
-            DrawMechanics(matches);
+            Widgets.EmptyState("Nothing matched", "Try a shorter word.");
             return;
         }
+
+        if (_search.Length > 0) Widgets.SectionHeader($"{matches.Count} found");
 
         DrawPhaseTabs(catalog, matches);
     }
@@ -73,15 +68,22 @@ public partial class MainWindow
             var all = catalog.Where(e => e.Call.Phase == phase).ToList();
             var on = all.Count(e => !C.MutedCalls.Contains(e.Key));
             var name = Fight.PhaseName(phase);
-            var label = on == all.Count
-                ? $"{name}  {all.Count}###tab{phase}"
-                : $"{name}  {on}/{all.Count}###tab{phase}";
+            var shown = matches.Where(e => e.Call.Phase == phase).ToList();
+
+            var label = _search.Length > 0
+                ? $"{name}  {shown.Count}###tab{phase}"
+                : on == all.Count
+                    ? $"{name}  {all.Count}###tab{phase}"
+                    : $"{name}  {on}/{all.Count}###tab{phase}";
 
             if (!ImGui.BeginTabItem(label)) continue;
 
-            var shown = matches.Where(e => e.Call.Phase == phase).ToList();
-            if (shown.Count == 0) Widgets.EmptyState("Nothing here", "The filter is hiding them all.");
-            else DrawMechanics(shown);
+            if (shown.Count == 0)
+                Widgets.EmptyState(
+                    _search.Length > 0 ? "Nothing matched in this phase" : "Nothing here",
+                    _search.Length > 0 ? "The other tabs show their own counts." : "The filter is hiding them all.");
+            else
+                DrawMechanics(shown);
 
             ImGui.EndTabItem();
         }
@@ -124,6 +126,13 @@ public partial class MainWindow
     {
         var boss = FightPlans.ByKey(C.PlanFight) ?? FightPlans.First;
 
+        ImGui.SetNextItemWidth(Theme.S(210f));
+        var search = _search;
+        if (ImGui.InputTextWithHint("##callsearch", "Search calls", ref search, 64))
+            _search = search;
+
+        ImGui.SameLine(0, Theme.S(10f));
+
         Widgets.SegmentBegin();
         if (Widgets.Segment("All", _filter == CallFilter.All)) _filter = CallFilter.All;
         ImGui.SameLine();
@@ -160,9 +169,6 @@ public partial class MainWindow
 
         if (_search.Length > 0)
         {
-            ImGui.SameLine(0, Theme.S(10f));
-            ImGui.AlignTextToFramePadding();
-            ImGui.TextColored(Theme.V(Theme.Accent), $"\"{_search}\"");
             ImGui.SameLine(0, Theme.S(5f));
             if (Widgets.SmallGhost("Clear")) _search = "";
         }

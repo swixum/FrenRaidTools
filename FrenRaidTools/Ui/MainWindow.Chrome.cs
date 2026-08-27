@@ -50,14 +50,6 @@ public partial class MainWindow
         ImGui.PushStyleColor(ImGuiCol.ChildBg, Theme.PanelBg);
         if (ImGui.BeginChild("##nav", new Vector2(Theme.S(SidebarWidth), 0), true))
         {
-            ImGui.SetNextItemWidth(-1);
-            var search = _search;
-            if (ImGui.InputTextWithHint("##search", "Search calls", ref search, 64))
-            {
-                _search = search;
-                if (_search.Length > 0) _nav = Nav.Calls;
-            }
-
             ImGui.Dummy(new Vector2(0, Theme.S(4f)));
 
             NavRow(Nav.Status, "Status", FontAwesomeIcon.Home, "");
