@@ -29,6 +29,7 @@ public class OverlayWindow : Window
     private bool _snap = true;
     private bool _paintedBackground;
     private bool _draggable;
+    private bool _dragged;
 
     private double _previewUntil = double.NegativeInfinity;
 
@@ -97,7 +98,7 @@ public class OverlayWindow : Window
         var target = viewport.WorkPos + C.OverlayPosition * viewport.WorkSize;
         target = new Vector2(MathF.Round(target.X), MathF.Round(target.Y));
 
-        if (!_draggable || _snap || !ImGui.IsMouseDown(ImGuiMouseButton.Left))
+        if (!_draggable || _snap || (!ImGui.IsMouseDown(ImGuiMouseButton.Left) && !_dragged))
         {
             ImGui.SetNextWindowPos(target, ImGuiCond.Always, Anchor);
             _snap = false;
@@ -121,6 +122,7 @@ public class OverlayWindow : Window
     public override void Draw()
     {
         SavePositionIfDragged();
+        if (_draggable && ImGui.IsMouseDown(ImGuiMouseButton.Left)) _dragged = true;
 
         var now = _plugin.Now;
         var live = _plugin.Board.Visible();
@@ -236,8 +238,12 @@ public class OverlayWindow : Window
 
     private void SavePositionIfDragged()
     {
-        if (!_draggable) return;
+        if (!_draggable) { _dragged = false; return; }
         if (ImGui.IsMouseDown(ImGuiMouseButton.Left)) return;
+
+        var dragged = _dragged;
+        _dragged = false;
+        if (!dragged) return;
 
         var viewport = ImGui.GetMainViewport();
         if (viewport.WorkSize.X <= 0f || viewport.WorkSize.Y <= 0f) return;
