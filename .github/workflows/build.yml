@@ -45,6 +45,16 @@ jobs:
       - name: Build
         run: dotnet build FrenRaidTools/FrenRaidTools.csproj -c Release --nologo
 
+      - name: Refuse a version the world already has
+        if: github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $ver = (Get-Content "bin\FrenRaidTools.json" -Raw | ConvertFrom-Json).AssemblyVersion
+          $live = ""
+          try { $live = (Invoke-RestMethod "https://swixum.github.io/FrenRaidTools/repo.json")[0].AssemblyVersion } catch { Write-Host "no published repo.json readable, skipping the check" }
+          if ($live -and $ver -eq $live) { throw "version $ver is already published, so installed copies would never see this update. Bump the Version in FrenRaidTools.csproj." }
+          Write-Host "publishing $ver over $live"
+
       - name: Assemble Pages site
         shell: pwsh
         run: |

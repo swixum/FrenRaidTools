@@ -59,6 +59,8 @@ public sealed class EventFeed
 
     public bool ClientOwnsEverything { get; set; }
 
+    public void NoteParserLine() => _lastParserAt = _clock.Now;
+
     public void Publish(EventSource from, GameEvent e)
     {
         if (from == EventSource.Parser)

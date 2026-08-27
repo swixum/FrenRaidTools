@@ -45,10 +45,14 @@ public sealed class ClientLink
 
     public long Tethers { get; private set; }
 
+    public long Skipped { get; private set; }
+
     public string Detail =>
         !On ? "Off."
         : Actors == 0 ? "Watching, nothing in range yet."
-        : $"Reading {Actors} actors, {Casts} casts, {Statuses} status changes, {Tethers} tethers.";
+        : Skipped == 0
+            ? $"Reading {Actors} actors, {Casts} casts, {Statuses} status changes, {Tethers} tethers."
+            : $"Reading {Actors} actors, {Casts} casts, {Statuses} status changes, {Tethers} tethers. {Skipped:n0} unreadable actors skipped.";
 
     public void Clear()
     {
@@ -60,6 +64,7 @@ public sealed class ClientLink
         Casts = 0;
         Statuses = 0;
         Tethers = 0;
+        Skipped = 0;
     }
 
     public void Tick(double now)
@@ -71,34 +76,50 @@ public sealed class ClientLink
 
         _alive.Clear();
         var seen = 0;
+        var swept = true;
 
-        foreach (var obj in table)
+        try
         {
-            if (obj is null) continue;
-            if (obj.ObjectKind is not (ObjectKind.Pc or ObjectKind.BattleNpc) && !Watched(obj.BaseId)) continue;
-
-            var id = obj.EntityId;
-            if (id == 0) continue;
-
-            _alive.Add(id);
-            seen++;
-
-            var actor = Read(obj);
-            _book.Note(actor);
-
-            if (obj is IBattleChara fighter)
+            foreach (var obj in table)
             {
-                Cast(fighter, actor, now);
-                Status(fighter, actor, now);
+                if (obj is null) continue;
+                if (obj.ObjectKind is not (ObjectKind.Pc or ObjectKind.BattleNpc) && !Watched(obj.BaseId)) continue;
+
+                var id = obj.EntityId;
+                if (id == 0) continue;
+
+                _alive.Add(id);
+                seen++;
+
+                try
+                {
+                    var actor = Read(obj);
+                    _book.Note(actor);
+
+                    if (obj is IBattleChara fighter)
+                    {
+                        Cast(fighter, actor, now);
+                        Status(fighter, actor, now);
+                    }
+
+                    if (obj is ICharacter tethered) Tether(tethered, actor, now);
+                }
+                catch
+                {
+                    Skipped++;
+                }
+
+                if (seen >= MaxTracked) break;
             }
-
-            if (obj is ICharacter tethered) Tether(tethered, actor, now);
-
-            if (seen >= MaxTracked) break;
+        }
+        catch
+        {
+            Skipped++;
+            swept = false;
         }
 
         Actors = seen;
-        Drop(now);
+        if (swept) Drop(now);
     }
 
     private Actor Read(IGameObject obj)

@@ -337,6 +337,8 @@ public sealed class Runtime : IDisposable
 
     private void Line(string line)
     {
+        _feed.NoteParserLine();
+
         var e = _reader.Parse(line);
         if (e is null) return;
 
