@@ -11,8 +11,6 @@ public partial class MainWindow
 
     private void DrawDirections(StrategyAsset asset)
     {
-        if (!Plan.Enabled) return;
-
         var book = PlanSource.Book(PickedFight, Plan);
         if (book is null || !book.Ready)
         {

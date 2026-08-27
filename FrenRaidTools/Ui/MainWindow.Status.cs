@@ -72,8 +72,6 @@ public partial class MainWindow
         if (!Game.InTheFight) return null;
 
         var plan = C.PlanFor(PickedFight.Key);
-        if (!plan.Enabled) return "Your spot is off, so no call tells you where to stand. Strats page.";
-
         if (plan.Seat.Length > 0) return null;
 
         return C.Roles.Filled == 0

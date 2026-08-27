@@ -29,21 +29,6 @@ public partial class MainWindow
 
         Widgets.SectionHeader("Your spot");
 
-        var on = Plan.Enabled;
-        if (Widgets.RowCheckClick("Call my spot",
-                $"Say where you stand, off the {asset.Plan.Label} plan", ref on,
-                id: "usestrats" + fight.Key, sub: true))
-        {
-            Plan.Enabled = on;
-            Touch();
-        }
-
-        if (!on)
-        {
-            Widgets.RowNote("Off, so no call tells you where to stand.");
-            return;
-        }
-
         DrawSeatRow(asset, fight);
         DrawAlignmentRow(asset);
 

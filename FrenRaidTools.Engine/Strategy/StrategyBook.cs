@@ -24,7 +24,7 @@ public sealed class StrategyBook
 
     public StrategyPick Pick => _pick;
 
-    public bool Ready => _pick.Enabled && SeatKnown;
+    public bool Ready => SeatKnown;
 
     public bool SeatKnown => SeatOf(_pick.Seat) is not null;
 

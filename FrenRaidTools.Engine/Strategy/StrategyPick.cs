@@ -10,8 +10,6 @@ public sealed class StrategyPick
 
     public string Seat { get; set; } = "";
 
-    public bool Enabled { get; set; }
-
     public string? Value(string key) => Options.TryGetValue(key, out var value) ? value : null;
 
     public void Set(string key, string? value)
@@ -25,6 +23,5 @@ public sealed class StrategyPick
         Options = new Dictionary<string, string>(Options, StringComparer.Ordinal),
         Alignment = Alignment,
         Seat = Seat,
-        Enabled = Enabled,
     };
 }
