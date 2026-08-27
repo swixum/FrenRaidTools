@@ -57,6 +57,7 @@ public sealed class Earthquake
     public const uint VacuumWaveCast = 0xBB13;
     public const uint ThunderIIICast = 0xBB12;
     public const uint ThunderIIIProximityCast = 0xBB09;
+    public const uint ThunderIIIProximityHit = 0xBB0C;
 
     public readonly Callout vacuumWave =
         Callout.Duration("Vacuum Wave", "Knockback from {event.source}").Quiet()
@@ -67,6 +68,13 @@ public sealed class Earthquake
 
     public readonly Callout thunderIIItb =
         Callout.Duration("Thunder III (Exdeath Proximity)", "Proximity Buster");
+
+    public readonly Callout thunderSwapAway =
+        Callout.Of("Thunder III: You Took the Buster", "Away from {event.source}, Swap")
+            .Note("Tanks only. Fires on the first proximity hit of each set: whoever ate it moves out so the other tank is nearest for the second hit.");
+
+    public readonly Callout thunderSwapNear =
+        Callout.Of("Thunder III: Buster Swap", "Be Near {event.source}, Swap");
 
     public readonly Callout earthquake =
         Callout.Duration("Earthquake Initial", "Earthquake - 1 HP");
@@ -571,6 +579,17 @@ public sealed class Earthquake
             (VacuumWaveCast, vacuumWave),
             (ThunderIIICast, thunderIII),
             (ThunderIIIProximityCast, thunderIIItb));
+
+    public Sequence BuildTankSwap(IWorld world) =>
+        Sequence.Repeat(Group + "TankSwap", 30,
+            e => e.Is(EventKind.CastStart, ThunderIIIProximityCast),
+            async (start, run) =>
+            {
+                var hit = await run.WaitEvent(e =>
+                    e.Is(EventKind.AbilityHit, ThunderIIIProximityHit) && e.FirstTarget);
+                if (!JobKinds.Tanking(world)) return;
+                run.Call(hit.Target?.IsYou == true ? thunderSwapAway : thunderSwapNear, hit);
+            });
 
     public Sequence BuildTethers(IWorld world) =>
         Sequence.Repeat(Group + "Tethers", 180,

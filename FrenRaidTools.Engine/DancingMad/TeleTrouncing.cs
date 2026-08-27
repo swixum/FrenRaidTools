@@ -36,6 +36,10 @@ public sealed class TeleTrouncing
 
     public readonly Callout lightOfJudgment = Callout.Duration("Light of Judgment", "Raidwide");
 
+    public readonly Callout hyperdrive =
+        Callout.Of("Hyperdrive", "Buster 3 times", "Buster x3")
+            .Note("Tanks only. Lands shortly after Light of Judgment resolves and hits three times.");
+
     public readonly Callout arrowsInitial = Callout.Duration("Tele-trouncing", "Arrows");
 
     public readonly Callout doubleNorth = Callout.Duration("TT: Double N", "Double North").Icon(ArrowUpA, ArrowUpA);
@@ -249,12 +253,19 @@ public sealed class TeleTrouncing
     public const uint LightOfJudgmentA = 0xC622;
     public const uint LightOfJudgmentB = 0xBABD;
 
+    public const double HyperdriveWarnBeforeCastEndSeconds = 2.0;
+
     public Sequence BuildJudgment(IWorld world) =>
         Sequence.Indexed(Group + "Judgment", 30,
             e => e.Is(EventKind.CastStart, LightOfJudgmentA, LightOfJudgmentB),
-            (start, run, i) =>
+            async (start, run, i) =>
             {
                 run.Call(lightOfJudgment, start);
-                return Task.CompletedTask;
+
+                if (start.Id != LightOfJudgmentA) return;
+                if (!JobKinds.Tanking(world)) return;
+
+                await run.WaitSeconds(Math.Max(0, start.Duration - HyperdriveWarnBeforeCastEndSeconds));
+                run.Call(hyperdrive, start);
             });
 }

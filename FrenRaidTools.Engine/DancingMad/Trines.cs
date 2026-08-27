@@ -14,6 +14,7 @@ public sealed class Trines
 
     public const uint LightOfJudgmentEnrageCast = 0xBAE1;
     public const uint AeroIIIAssaultCast = 0xC3F7;
+    public const uint WingsBusterCast = 0xC487;
 
     public static readonly ArenaPos Tight = new(100.0, 100.0, 4.0, 4.0);
 
@@ -35,9 +36,22 @@ public sealed class Trines
     public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");
 
+    public readonly Callout wingsBuster =
+        Callout.Duration("Trines: Wings Buster", "Near and Far Buster", "Near/Far Buster")
+            .Note("Tanks only. One tank takes the near hit, the other the far hit, while the trines resolve.");
+
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 120, e => e.Is(EventKind.CastStart, TrinesCast),
             (start, run) => Run(start, run, world));
+
+    public Sequence BuildTankBuster(IWorld world) =>
+        Sequence.Indexed(Group + "TankBuster", 30,
+            e => e.Is(EventKind.CastStart, WingsBusterCast),
+            (start, run, i) =>
+            {
+                if (JobKinds.Tanking(world)) run.Call(wingsBuster, start);
+                return Task.CompletedTask;
+            });
 
     private static bool IsTrineDrop(GameEvent e) =>
         e.Kind == EventKind.ActorControl && e.Id == TrineControl &&

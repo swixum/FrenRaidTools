@@ -126,6 +126,9 @@ public sealed class DancingMadFight
         yield return Forsaken.BuildExtras(world);
         yield return TeleTrouncing.BuildJudgment(world);
         yield return Earthquake.BuildCasts(world);
+        yield return Earthquake.BuildTankSwap(world);
+        yield return Trines.BuildTankBuster(world);
+        yield return DirectCalls.BuildTankActions(world);
         yield return Flood.BuildCasts(world);
         yield return P5Forsaken.BuildCasts(world);
         yield return BuildVfxTracking();
