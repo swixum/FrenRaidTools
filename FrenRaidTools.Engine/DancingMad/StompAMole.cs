@@ -41,8 +41,8 @@ public sealed class StompAMole
         Callout.Duration("Stomp-a-Mole: Move 2", "Move");
 
     public readonly Callout stompAMoleSwitch =
-        Callout.Of("Stomp-a-Mole: Swap", "Swap").Quiet()
-            .Note("Said once, the first time a stomp or knockdown lands on you. The marker calls name the new job after that.");
+        Callout.Of("Stomp-a-Mole: Swap", "Swap")
+            .Note("Tanks only. Said once, the first time a stomp or knockdown lands on you. The marker calls name the new job after that.");
 
     public readonly Callout bigBangAndB3 =
         Callout.Duration("Stomp-a-Mole: Blizzard + Big Bang", "Out of middle, Keep Moving");
@@ -113,7 +113,7 @@ public sealed class StompAMole
             if (swapped) continue;
 
             swapped = true;
-            run.Call(stompAMoleSwitch, e);
+            if (JobKinds.Tanking(world)) run.Call(stompAMoleSwitch, e);
         }
 
         var enrages = await run.WaitEventsQuickSuccession(

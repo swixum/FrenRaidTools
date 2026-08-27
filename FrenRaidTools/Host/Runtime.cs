@@ -22,6 +22,7 @@ public sealed class Runtime : IDisposable
     private readonly RunGate _gate = new();
     private readonly CombatWatch _combat = new();
     private readonly ParserSocket _socket = new();
+    private readonly IinactGate _iinact = new();
     private readonly ParserActorBook _book = new();
     private readonly NetworkLineReader _reader;
     private readonly FeedWorld _world;
@@ -75,6 +76,13 @@ public sealed class Runtime : IDisposable
 
     public bool Replaying => _replaying;
 
+    public bool KnowsYou => _world.You is not null;
+
+    public string? Blind =>
+        !Running || KnowsYou
+            ? null
+            : "The fight cannot tell which character is you, so anything about your own debuffs stays quiet.";
+
     public bool SocketConnected => _socket.Connected;
 
     public bool VfxAttached => _vfx.Attached;
@@ -94,7 +102,28 @@ public sealed class Runtime : IDisposable
                 : _reader.Stamps.Lag > 1.0
                     ? $"Connected to {_socket.Endpoint}. Running {_reader.Stamps.Lag:0.0}s behind."
                     : $"Connected to {_socket.Endpoint}."
-        : _socket.LastError ?? (_socket.Enabled ? "Looking for a parser." : "Off.");
+        : _socket.LastError is { } error ? error.EndsWith('.') ? error : error + "."
+        : _socket.Enabled ? "Looking for a parser." : "Off.";
+
+    public bool FeedUp => _iinact.Subscribed || _socket.Connected;
+
+    public string FeedDetail =>
+        _iinact.Subscribed ? "Connected to IINACT in-process."
+        : _socket.Enabled || _socket.Connected ? SocketDetail
+        : !_config.ParserOn ? "Off."
+        : _iinact.LastError is { } error ? error.EndsWith('.') ? error : error + "."
+        : "Looking for IINACT.";
+
+    public void RetryFeed()
+    {
+        _iinact.Stop();
+        _nextIpcTry = 0;
+        _socket.Kick();
+    }
+
+    public const double IpcTrySeconds = 3.0;
+
+    private double _nextIpcTry;
 
     public void Tick(double now)
     {
@@ -107,6 +136,24 @@ public sealed class Runtime : IDisposable
 
         _gate.ParserLive = _feed.ParserLive;
         _gate.HooksBroken = HooksBroken;
+        _gate.SourceIpcOnly = _config.ParserSource == Configuration.SourceIinact;
+        _gate.SourceSocketOnly = _config.ParserSource == Configuration.SourceAct;
+
+        if (_gate.WantsIpc)
+        {
+            _iinact.Watch(_clock.Now);
+            if (!_iinact.Subscribed && _clock.Now >= _nextIpcTry)
+            {
+                _nextIpcTry = _clock.Now + IpcTrySeconds;
+                _iinact.Start();
+            }
+        }
+        else if (_iinact.Subscribed)
+        {
+            _iinact.Stop();
+        }
+
+        _gate.IpcFeeding = _iinact.Subscribed;
 
         if (_gate.WantsSocket) _socket.Start(_config.ParserAddress);
         else if (_socket.Enabled) _socket.Stop();
@@ -124,8 +171,9 @@ public sealed class Runtime : IDisposable
         _client.Tick(_clock.Now);
 
         _feed.ClientOwnsEverything = _gate.ClientOwnsEverything;
-        _feed.ParserAttached = _socket.Connected;
+        _feed.ParserAttached = _socket.Connected || _iinact.Subscribed;
         _socket.Drain(Line, LinesPerTick);
+        _iinact.Drain(Line, LinesPerTick);
 
         if (now >= _nextPrune)
         {
@@ -153,7 +201,8 @@ public sealed class Runtime : IDisposable
 
     private void Watch()
     {
-        if (Game.You is { } you) _book.KnowYou(you.EntityId, you.Name.TextValue);
+        if (Game.You is { } you)
+            _book.KnowYou(you.EntityId, you.Name.TextValue, Jobs.Name(you.ClassJob.RowId));
 
         if (_diag.On != _watching)
         {
@@ -187,8 +236,8 @@ public sealed class Runtime : IDisposable
 
     private string Shape() =>
         string.Join('/',
-            _zone, _replaying, Running, _feed.ParserLive, _socket.Connected, HooksBroken,
-            _world.You?.Name ?? "", _world.Party.Count, SeatSync.SeatFor(_config));
+            _zone, _replaying, Running, _feed.ParserLive, _socket.Connected, _iinact.Subscribed,
+            HooksBroken, _world.You?.Name ?? "", _world.Party.Count, SeatSync.SeatFor(_config));
 
     private void Resettle()
     {
@@ -214,7 +263,7 @@ public sealed class Runtime : IDisposable
             $"zone {Game.Zone} ({Game.ZoneName()})",
             $"replay {(_replaying ? "yes" : "no")}, running {(Running ? "yes" : "no")}",
             $"events come from {owner}",
-            $"parser {SocketDetail}",
+            $"parser {FeedDetail}",
             $"hooks {(HooksBroken ? "BROKEN, the parser is covering what it can" : "attached")}",
             $"you {_world.You?.Name ?? "unknown"}, party {_world.Party.Count}, seat {(SeatSync.SeatFor(_config) is { Length: > 0 } seat ? seat : "none")}",
             "event lines are tagged [log] or [game] for where they came from",
@@ -329,6 +378,7 @@ public sealed class Runtime : IDisposable
     {
         ArenaPos.Trace = null;
         _socket.Dispose();
+        _iinact.Dispose();
         _vfx.Dispose();
         _effects.Dispose();
         _controls.Dispose();

@@ -67,6 +67,34 @@ public partial class MainWindow
 
     private const int FaultsShown = 5;
 
+    private string? Seatless()
+    {
+        if (!Game.InTheFight) return null;
+
+        var plan = C.PlanFor(PickedFight.Key);
+        if (!plan.Enabled) return "Your spot is off, so no call tells you where to stand. Strats page.";
+
+        if (plan.Seat.Length > 0) return null;
+
+        return C.Roles.Filled == 0
+            ? "Nobody is on the Roles page, so no call tells you where to stand."
+            : "You are not in a spot on the Roles page, so no call tells you where to stand.";
+    }
+
+    private string? Misspelled()
+    {
+        var verdicts = Verdicts();
+        if (verdicts is null) return null;
+
+        var off = verdicts.Count(v => v.Check is SpotCheck.NearMiss or SpotCheck.Absent);
+        return off switch
+        {
+            0 => null,
+            1 => "A name on the Roles page is not in this party. Roles page.",
+            _ => $"{off} names on the Roles page are not in this party. Roles page.",
+        };
+    }
+
     private void DrawDiagnostics()
     {
         var diag = _plugin.Diag;
@@ -94,6 +122,12 @@ public partial class MainWindow
             C.DiagInReplay = armed;
             Touch();
         }
+
+        if (_plugin.Runtime.Blind is { } blind) Widgets.RowNoteWrap(blind, Theme.Danger);
+
+        if (Seatless() is { } seatless) Widgets.RowNoteWrap(seatless, Theme.Warn);
+
+        if (Misspelled() is { } wrong) Widgets.RowNoteWrap(wrong, Theme.Warn);
 
         foreach (var fault in _plugin.Runtime.Faults.Take(FaultsShown))
             Widgets.RowNoteWrap(fault, Theme.Warn);

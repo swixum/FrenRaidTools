@@ -24,6 +24,7 @@ public sealed class Plugin : IDalamudPlugin
     public Diag Diag { get; } = new();
     public MainWindow MainWindow { get; }
     public OverlayWindow Overlay { get; }
+    public EntryWindow Entry { get; }
 
     public string Version { get; } =
         Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "0.1.0";
@@ -56,8 +57,10 @@ public sealed class Plugin : IDalamudPlugin
 
         MainWindow = new MainWindow(this);
         Overlay = new OverlayWindow(this);
+        Entry = new EntryWindow(this);
         Windows.AddWindow(MainWindow);
         Windows.AddWindow(Overlay);
+        Windows.AddWindow(Entry);
 
         Service.CommandManager.AddHandler(Command, new CommandInfo(OnCommand)
         {
@@ -123,7 +126,10 @@ public sealed class Plugin : IDalamudPlugin
         Board.Clear();
         Runtime.Wipe();
         SeatSync.Reset();
+        RosterGlance.Reset();
         ArmRoleFill();
+
+        if (Config.AskOnEntry && zone == EngineInfo.DancingMadTerritory) Entry.Open();
     }
 
     private bool _diagResumed;

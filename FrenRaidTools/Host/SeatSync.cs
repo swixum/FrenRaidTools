@@ -16,7 +16,9 @@ public static class SeatSync
         var seat = SeatFor(config);
         LastSeat = seat;
 
-        if (!config.SeatFromRoles || seat.Length == 0) return;
+        if (!config.SeatFromRoles) return;
+        if (Party.YouName().Length == 0) return;
+        if (seat.Length == 0 && config.Roles.Filled == 0) return;
 
         var moved = false;
         foreach (var fight in Engine.FightPlans.All)

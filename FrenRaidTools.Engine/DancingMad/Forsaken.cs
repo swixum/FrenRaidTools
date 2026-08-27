@@ -230,6 +230,7 @@ public sealed class Forsaken
         run.SetParam("myMechs", myMechs);
 
         var markers = await run.WaitEventsQuickSuccession(8, IsMechMarker);
+        if (world.You is null) return;
 
         var held = new Dictionary<uint, Marked>();
         Remember(held, markers);

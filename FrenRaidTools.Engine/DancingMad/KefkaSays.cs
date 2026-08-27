@@ -565,7 +565,7 @@ public sealed class KefkaSays
             else if (myBW is not null) wound = run.Call(real3 ? realBlackAllag : fakeBlackAllag, myAF);
         }
 
-        wound ??= run.Call(kefkaSaysError);
+        if (wound is null && world.You is not null) wound = run.Call(kefkaSaysError);
 
         var real4 = await NeoExdeathReal(run);
         var whiteIsSafe = standInRealWhite == real4;
@@ -707,7 +707,8 @@ public sealed class KefkaSays
         run.SetParam(MarkerParam, Waymark(world, spread: false));
 
         var stackBuff = stacks.FirstOrDefault();
-        On(run, myAccel is not null ? accelNothing : nothing, Timed(stackBuff));
+        if (world.You is not null)
+            On(run, myAccel is not null ? accelNothing : nothing, Timed(stackBuff));
         return stackBuff;
     }
 

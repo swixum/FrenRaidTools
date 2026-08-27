@@ -135,6 +135,8 @@ public static class JobKinds
 
     public static bool Support(string abbr) => Kind(abbr) is JobKind.Tank or JobKind.Healer;
 
+    public static bool Tanking(IWorld world) => Kind(world.You?.Job ?? "") == JobKind.Tank;
+
     private static readonly HashSet<string> RegenHealers =
         new(["WHM", "AST", "CNJ"], StringComparer.OrdinalIgnoreCase);
 
@@ -244,8 +246,9 @@ public sealed class Roster
     {
         if (string.IsNullOrWhiteSpace(player)) return -1;
         Normalize();
+        var wanted = player.Trim();
         for (var i = 0; i < Slots.Count; i++)
-            if (string.Equals(Players[i], player, StringComparison.OrdinalIgnoreCase)) return i;
+            if (string.Equals(Players[i].Trim(), wanted, StringComparison.OrdinalIgnoreCase)) return i;
         return -1;
     }
 
@@ -258,7 +261,7 @@ public sealed class Roster
     public string PartnerName(string player)
     {
         var at = Slots.PartnerOf(SlotOf(player));
-        return at < 0 ? "" : Players[at];
+        return at < 0 ? "" : Players[at].Trim();
     }
 
     public int Fill(IReadOnlyList<PartyMember> members, bool keepExisting)
@@ -269,7 +272,7 @@ public sealed class Roster
 
         var taken = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var name in Players)
-            if (!string.IsNullOrWhiteSpace(name)) taken.Add(name);
+            if (!string.IsNullOrWhiteSpace(name)) taken.Add(name.Trim());
 
         var pool = members
             .Where(m => !string.IsNullOrWhiteSpace(m.Name) && !taken.Contains(m.Name))
@@ -312,7 +315,7 @@ public sealed class Roster
 
         for (var i = 0; i < Slots.Count; i++)
         {
-            var name = Players[i];
+            var name = Players[i].Trim();
             if (string.IsNullOrWhiteSpace(name)) continue;
 
             if (seen.TryGetValue(name, out var first))

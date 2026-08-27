@@ -53,6 +53,12 @@ public sealed class Configuration : IPluginConfiguration
     public bool DiagInReplay { get; set; }
 
     public bool ParserOn { get; set; } = true;
+
+    public const int SourceAuto = 0;
+    public const int SourceIinact = 1;
+    public const int SourceAct = 2;
+
+    public int ParserSource { get; set; } = SourceAuto;
     public string ParserAddress { get; set; } = "ws://127.0.0.1:10501/ws";
     public bool ParserPreferIinact { get; set; } = true;
 
@@ -86,6 +92,7 @@ public sealed class Configuration : IPluginConfiguration
     public List<Roster> Setups { get; set; } = [];
     public int ActiveSetup { get; set; }
     public bool FillRolesOnJoin { get; set; } = true;
+    public bool AskOnEntry { get; set; } = true;
 
     public CleanseCalls CleanseCallMode { get; set; } = CleanseCalls.PriorSet;
     public bool DoubleTowerOnlyWithNoDebuff { get; set; }
@@ -147,6 +154,12 @@ public sealed class Configuration : IPluginConfiguration
         DropSpareBlankSetups();
         if (Setups.Count == 0) Setups.Add(new Roster());
         ActiveSetup = Math.Clamp(ActiveSetup, 0, Setups.Count - 1);
+        if (!ParserPreferIinact)
+        {
+            ParserSource = SourceAct;
+            ParserPreferIinact = true;
+        }
+        ParserSource = Math.Clamp(ParserSource, SourceAuto, SourceAct);
         UiScale = Math.Clamp(UiScale, 0.8f, 1.6f);
         OverlayTextScale = Math.Clamp(OverlayTextScale, 0.8f, 4f);
         if (OverlayFontPx <= 0) OverlayFontPx = Ui.Fonts.Snap(OverlayTextScale * BaseTextPx);

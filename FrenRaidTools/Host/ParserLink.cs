@@ -15,8 +15,6 @@ public enum ParserState
 public sealed class ParserLink : IDisposable
 {
     private const string IinactListening = "IINACT.Server.Listening";
-    private const string IinactSubscribe = "IINACT.CreateSubscriber";
-    private const string IinactUnsubscribe = "IINACT.Unsubscribe";
     private const double ProbeSeconds = 3.0;
     private const double StaleSeconds = 15.0;
     private const int ReceiveBuffer = 8192;
@@ -76,12 +74,21 @@ public sealed class ParserLink : IDisposable
 
         IinactFound = ProbeIinact();
 
-        if (_config.ParserPreferIinact && IinactFound)
+        if (_config.ParserSource != Configuration.SourceAct && IinactFound)
         {
             Stop(wait: false);
             Source = "IINACT";
             State = ParserState.Live;
             Detail = "IINACT is listening.";
+            return;
+        }
+
+        if (_config.ParserSource == Configuration.SourceIinact)
+        {
+            Stop(wait: false);
+            Source = "";
+            State = ParserState.Broken;
+            Detail = "IINACT is not running.";
             return;
         }
 
@@ -102,7 +109,7 @@ public sealed class ParserLink : IDisposable
             _socketTask = Task.Run(() => Listen(wanted, _socketStop.Token));
         }
 
-        Source = SocketOpen ? "ACT" : IinactFound ? "IINACT" : "";
+        Source = SocketOpen ? "ACT" : "";
 
         if (SocketOpen)
         {
@@ -113,14 +120,6 @@ public sealed class ParserLink : IDisposable
                 : quiet > StaleSeconds
                     ? $"Connected, quiet for {quiet:0}s."
                     : $"Connected, {Lines} lines.";
-            return;
-        }
-
-        if (IinactFound)
-        {
-            State = ParserState.Live;
-            Source = "IINACT";
-            Detail = "IINACT is listening.";
             return;
         }
 
@@ -217,15 +216,6 @@ public sealed class ParserLink : IDisposable
             _socketTask = null;
             _socketAddress = "";
             SocketOpen = false;
-        }
-
-        try
-        {
-            Service.PluginInterface.GetIpcSubscriber<string, bool>(IinactUnsubscribe)
-                .InvokeFunc(IinactSubscribe);
-        }
-        catch
-        {
         }
     }
 

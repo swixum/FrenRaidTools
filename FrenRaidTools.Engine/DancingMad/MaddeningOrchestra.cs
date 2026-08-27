@@ -57,7 +57,7 @@ public sealed class MaddeningOrchestra
         if (flare.Target?.IsYou == true) run.Call(maddeningOrchestraFlare, flare);
         else if (holy.Target?.IsYou == true) run.Call(maddeningOrchestraHoly, holy);
         else if (holyHits.Any(h => h.Target?.IsYou == true)) run.Call(maddeningHoly);
-        else run.Call(maddeningNoHoly);
+        else if (world.You is not null) run.Call(maddeningNoHoly);
 
         await run.WaitEventsQuickSuccession(3, IsHolyHit);
 

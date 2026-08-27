@@ -9,6 +9,7 @@ public sealed class ParserSocket : IDisposable
 {
     public const int MaxQueued = 4096;
     public const int ReceiveBufferBytes = 64 * 1024;
+    public const int MaxBackoffSeconds = 10;
 
     public static readonly string[] Defaults =
     [
@@ -66,6 +67,16 @@ public sealed class ParserSocket : IDisposable
         var stopping = new CancellationTokenSource();
         _stopping = stopping;
         _worker = Task.Run(() => Run(stopping.Token));
+    }
+
+    public void Kick()
+    {
+        if (!Enabled) return;
+
+        var wanted = Wanted;
+        Stop();
+        LastError = null;
+        Start(wanted);
     }
 
     public void Stop()
@@ -128,7 +139,7 @@ public sealed class ParserSocket : IDisposable
                 return;
             }
 
-            delay = TimeSpan.FromSeconds(Math.Min(30, delay.TotalSeconds * 2));
+            delay = TimeSpan.FromSeconds(Math.Min(MaxBackoffSeconds, delay.TotalSeconds * 2));
         }
     }
 

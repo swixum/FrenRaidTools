@@ -16,11 +16,19 @@ public sealed class RunGate
 
     public bool HooksBroken { get; set; }
 
+    public bool SourceIpcOnly { get; set; }
+
+    public bool SourceSocketOnly { get; set; }
+
+    public bool IpcFeeding { get; set; }
+
     public bool InTheFight => Zone == FightZone;
 
     public bool Running => Installed && InTheFight;
 
-    public bool WantsSocket => ParserOn;
+    public bool WantsIpc => ParserOn && !SourceSocketOnly;
+
+    public bool WantsSocket => ParserOn && !SourceIpcOnly && !IpcFeeding;
 
     public bool ClientReadsActors => Running && (Replaying || !ParserLive);
 

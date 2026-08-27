@@ -5,6 +5,8 @@ namespace FrenRaidTools.Ui;
 
 public partial class MainWindow
 {
+    private static readonly string[] SourceNames = ["Auto", "IINACT", "ACT"];
+
     private void DrawParser()
     {
         var link = _plugin.Parser;
@@ -13,7 +15,7 @@ public partial class MainWindow
 
         DrawParserCard(link);
 
-        Widgets.SectionHeader("Feed");
+        Widgets.SectionHeader("Parser");
         Widgets.ListBegin();
 
         var on = C.ParserOn;
@@ -30,14 +32,16 @@ public partial class MainWindow
             return;
         }
 
-        var prefer = C.ParserPreferIinact;
-        if (Widgets.RowCheckClick("Take IINACT first", "Use IINACT when it is running, ACT otherwise", ref prefer))
+        var source = C.ParserSource;
+        if (Widgets.RowCombo("Source", "Auto takes IINACT when it is running, ACT otherwise",
+                ref source, SourceNames, 160f))
         {
-            C.ParserPreferIinact = prefer;
+            C.ParserSource = source;
+            link.Retry();
             Touch();
         }
 
-        Widgets.RowBegin("ACT address", "Where OverlayPlugin listens", Theme.S(280f));
+        Widgets.RowBegin("Address", "Where OverlayPlugin listens", Theme.S(280f));
         var address = C.ParserAddress;
         if (ImGui.InputText("##addr", ref address, 200))
         {
@@ -51,17 +55,73 @@ public partial class MainWindow
         Widgets.ListEnd();
 
         ImGui.Spacing();
-        if (Widgets.AccentButton("Try again")) link.Retry();
+        if (Widgets.AccentButton("Reconnect"))
+        {
+            link.Retry();
+            _plugin.Runtime.RetryFeed();
+        }
+        Widgets.Tip("Drops both links and picks them up again.");
 
         ImGui.SameLine(0, Theme.S(6f));
         if (Widgets.GhostButton("Reset address"))
         {
             C.ParserAddress = "ws://127.0.0.1:10501/ws";
             link.Retry();
+            _plugin.Runtime.RetryFeed();
             Touch();
         }
 
-        DrawParserHelp(link);
+        Widgets.SectionHeader("In IINACT");
+        Faint("Nothing to connect: this links straight to it. On its Parser tab:");
+        StepToggle(1, "Disable Damage Shield Estimates", false, "or shields read zero.");
+        StepToggle(2, "End encounter automatically after leaving combat", true);
+        StepWord(3, "Player name: leave it as", "YOU", Theme.Accent, ".");
+        Faint("Writing out the network log file is for uploading logs, not for this.");
+
+        Widgets.SectionHeader("In ACT");
+        Step(1, "Run ACT, with its FFXIV plugin.");
+        Step(2, "Plugins > OverlayPlugin.dll > WSServer > Start.");
+        Step(3, "Options > Main Table/Encounters > Idle Limit: 180.");
+        Faint("Lower than that splits a fight at its own downtime.");
+    }
+
+    private static void Faint(string text) =>
+        ImGui.TextColored(Theme.V(Theme.Muted), text);
+
+    private static void StepNumber(int n)
+    {
+        ImGui.TextColored(Theme.V(Theme.Accent), $"{n}");
+        ImGui.SameLine(0, Theme.S(10f));
+    }
+
+    private static void Step(int n, string text)
+    {
+        StepNumber(n);
+        ImGui.TextUnformatted(text);
+    }
+
+    private static void StepToggle(int n, string setting, bool wanted, string why = "")
+    {
+        StepNumber(n);
+        ImGui.TextUnformatted(setting + ":");
+        ImGui.SameLine(0, Theme.S(5f));
+        ImGui.TextColored(Theme.V(wanted ? Theme.Good : Theme.Danger), wanted ? "ON" : "OFF");
+
+        if (why.Length == 0) return;
+        ImGui.SameLine(0, Theme.S(5f));
+        Faint(why);
+    }
+
+    private static void StepWord(int n, string before, string word, uint color, string after)
+    {
+        StepNumber(n);
+        ImGui.TextUnformatted(before);
+        ImGui.SameLine(0, Theme.S(5f));
+        ImGui.TextColored(Theme.V(color), word);
+
+        if (after.Length == 0) return;
+        ImGui.SameLine(0, 0);
+        ImGui.TextUnformatted(after);
     }
 
     private void DrawParserCard(ParserLink link)
@@ -83,6 +143,15 @@ public partial class MainWindow
 
         ImGui.Indent(Theme.S(21f));
         ImGui.TextColored(Theme.V(Theme.Muted), link.Detail);
+
+        var feed = _plugin.Runtime;
+        ImGui.TextColored(
+            Theme.V(feed.FeedUp ? Theme.Muted : Theme.Warn),
+            feed.FeedUp
+                ? $"Calls feed: {feed.FeedDetail}"
+                : C.ParserOn
+                    ? $"Calls feed: {feed.FeedDetail} Retrying, calls run off the game client meanwhile."
+                    : "Calls feed: off, calls run off the game client.");
         ImGui.Unindent(Theme.S(21f));
 
         ImGui.Dummy(new Vector2(0, Theme.S(3f)));
@@ -119,17 +188,5 @@ public partial class MainWindow
         dl.AddCircleFilled(center, radius * 1.9f, Theme.Wash(color, 0x33));
         dl.AddCircleFilled(center, radius, color);
         ImGui.Dummy(size);
-    }
-
-    private void DrawParserHelp(ParserLink link)
-    {
-        if (link.State == ParserState.Live || !C.ParserOn) return;
-
-        Widgets.SectionHeader("Getting it green");
-        Widgets.ListBegin();
-        Widgets.RowNote("On IINACT: install it and let it start. Nothing else to do.");
-        Widgets.RowNote("On ACT: Plugins, OverlayPlugin.dll, WSServer, Start.");
-        Widgets.RowNote("Check the port matches the one WSServer prints.");
-        Widgets.ListEnd();
     }
 }

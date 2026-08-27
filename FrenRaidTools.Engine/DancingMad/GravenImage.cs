@@ -142,7 +142,7 @@ public sealed class GravenImage
         {
             run.Call(gravenAvoidTower, myLaser);
         }
-        else
+        else if (world.You is not null)
         {
             var towerCast = await run.FindOrWaitForCast(world, e => e.Id == TowerCast);
             if (towerCast is not null) run.Call(gravenTakeTower, towerCast);

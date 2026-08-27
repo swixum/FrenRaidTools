@@ -4,7 +4,7 @@
   "InternalName": "FrenRaidTools",
   "Punchline": "It's raid tools with frens.",
   "Description": "Mechanics and callouts for fights.",
-  "AssemblyVersion": "1.0.0.3",
+  "AssemblyVersion": "1.0.0.4",
   "ApplicableVersion": "any",
   "RepoUrl": "https://github.com/swixum/FrenRaidTools",
   "Tags": ["raid", "ultimate", "callout", "dancing mad"],

@@ -39,12 +39,29 @@ public sealed class ParserActorBook
         Put(actor);
     }
 
-    public void KnowYou(uint id, string name)
+    public void KnowYou(uint id, string name, string job = "")
     {
-        if (id == YouId && name == YouName) return;
+        if (id == 0) return;
+
+        var moved = id != YouId || !string.Equals(name, YouName, StringComparison.Ordinal);
+        var held = Find(id);
+
+        if (!moved && held is { IsYou: true } && (job.Length == 0 || held.Job.Length > 0)) return;
 
         YouId = id;
         YouName = name;
+
+        Put(held is null
+            ? new Actor { ObjectId = id, Name = name, IsPlayer = true, IsYou = true, Job = job }
+            : held with
+            {
+                Name = name.Length > 0 ? name : held.Name,
+                Job = held.Job.Length > 0 ? held.Job : job,
+                IsPlayer = true,
+                IsYou = true,
+            });
+
+        if (!moved) return;
 
         foreach (var (known, actor) in _known)
         {

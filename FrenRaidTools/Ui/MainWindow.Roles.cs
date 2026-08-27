@@ -1,5 +1,6 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
 using FrenRaidTools.Engine;
 
 namespace FrenRaidTools.Ui;
@@ -8,6 +9,10 @@ public partial class MainWindow
 {
     private string _renaming = "";
     private int _renameIndex = -1;
+
+    private List<PartyMember> PartyGlance() => RosterGlance.Members(_now);
+
+    private SpotVerdict[]? Verdicts() => RosterGlance.Verdicts(C, _now);
 
     private void DrawRoles()
     {
@@ -116,33 +121,55 @@ public partial class MainWindow
 
         var duplicates = roster.Duplicates();
         var you = Party.YouName();
+        var verdicts = Verdicts();
 
         if (duplicates.Count > 0)
             Banner(Theme.Danger, "Same name in two spots. A call would pick the first one.");
 
         Widgets.ListBegin();
         for (var slot = 0; slot < Slots.Count; slot++)
-            DrawRoleRow(roster, slot, duplicates, you);
+            DrawRoleRow(roster, slot, duplicates, you, verdicts?[slot]);
         Widgets.ListEnd();
     }
 
-    private void DrawRoleRow(Roster roster, int slot, List<int> duplicates, string you)
+    private void DrawRoleRow(
+        Roster roster, int slot, List<int> duplicates, string you, SpotVerdict? verdict)
     {
         var name = roster.Players[slot];
         var isYou = name.Length > 0 && string.Equals(name, you, StringComparison.OrdinalIgnoreCase);
 
         var hint = Slots.Hint(slot);
         if (duplicates.Contains(slot)) hint = "This name is in two spots";
+        else if (verdict is { Check: SpotCheck.NearMiss } close) hint = $"Did you mean {close.Suggestion}?";
+        else if (verdict is { Check: SpotCheck.Absent }) hint = "Not in this party";
         else if (isYou) hint = $"{Slots.Hint(slot)}, you";
+
+        var (icon, iconColor) = verdict?.Check switch
+        {
+            SpotCheck.Confirmed => (FontAwesomeIcon.Check, Theme.Good),
+            SpotCheck.NearMiss => (FontAwesomeIcon.ExclamationTriangle, Theme.Warn),
+            SpotCheck.Absent => (FontAwesomeIcon.Times, Theme.Danger),
+            _ => (FontAwesomeIcon.None, 0u),
+        };
+
+        var fixing = verdict is { Check: SpotCheck.NearMiss };
 
         var nameWidth = Theme.S(254f);
         var arrowWidth = ImGui.GetFrameHeight();
         var clearWidth = Widgets.ButtonWidth("x");
         var gap = Theme.S(5f);
         var total = nameWidth + arrowWidth + clearWidth + gap * 2f;
+        if (fixing) total += Widgets.ButtonWidth("Fix") + gap;
 
         Widgets.RowBegin(Slots.Names[slot], hint, total, id: "slot" + slot,
-            edgeColor: JobLook.SlotColor(slot));
+            icon: icon, iconColor: iconColor,
+            edgeColor: JobLook.SlotColor(slot),
+            hintColor: verdict?.Check switch
+            {
+                SpotCheck.NearMiss => Theme.Warn,
+                SpotCheck.Absent => Theme.Danger,
+                _ => 0u,
+            });
 
         ImGui.SetNextItemWidth(nameWidth);
 
@@ -172,6 +199,19 @@ public partial class MainWindow
             Touch();
         }
         Widgets.Tip("Empty this spot.");
+
+        if (fixing && verdict is { } miss)
+        {
+            ImGui.SameLine(0, gap);
+            if (Widgets.AccentButton("Fix"))
+            {
+                var member = PartyGlance().FirstOrDefault(m =>
+                    string.Equals(m.Name, miss.Suggestion, StringComparison.OrdinalIgnoreCase));
+                roster.Set(slot, miss.Suggestion, member.Job ?? "");
+                Touch();
+            }
+            Widgets.Tip($"Set this spot to {miss.Suggestion}.");
+        }
 
         Widgets.RowEnd();
     }
@@ -259,6 +299,13 @@ public partial class MainWindow
         if (Widgets.RowCheckClick("Refill on zone in", "Fill blank spots when you load into the fight", ref refill))
         {
             C.FillRolesOnJoin = refill;
+            Touch();
+        }
+
+        var ask = C.AskOnEntry;
+        if (Widgets.RowCheckClick("Check in on entry", "Show this list when you zone into the fight, so a wrong name gets caught before the pull", ref ask))
+        {
+            C.AskOnEntry = ask;
             Touch();
         }
 

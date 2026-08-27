@@ -245,6 +245,8 @@ public sealed class Celestriad
         await run.WaitEventsQuickSuccession(
             6, e => e.Kind == EventKind.StatusGain && e.Id is FireDown or LightningDown or IceDown);
 
+        if (world.You is null) return;
+
         var myFire = Mine(world, FireDown);
         var myLightning = Mine(world, LightningDown);
         var myIce = Mine(world, IceDown);

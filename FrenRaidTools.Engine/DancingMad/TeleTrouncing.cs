@@ -188,7 +188,7 @@ public sealed class TeleTrouncing
         if (call is not null) run.Call(Spots(world, call, first, second), shortBuff!);
         else if (first is not null || second is not null)
             run.Call(Single((first ?? second)!.Value), (shortBuff ?? longBuff)!);
-        else run.Call(arrowError, start);
+        else if (world.You is not null) run.Call(arrowError, start);
 
         if (longBuff is not null)
             await run.WaitStatusRemovedOrExpired(longBuff, graceSeconds: 2.0);
