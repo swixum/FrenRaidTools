@@ -16,22 +16,17 @@ public sealed class Trines
     public const uint AeroIIIAssaultCast = 0xC3F7;
     public const uint WingsBusterCast = 0xC487;
 
-    public static readonly ArenaPos Tight = new(100.0, 100.0, 4.0, 4.0);
-
-    public static readonly ArenaSector[] TrinePositions =
-    [
-        ArenaSector.Center, ArenaSector.North, ArenaSector.Southeast, ArenaSector.Northeast,
-        ArenaSector.South, ArenaSector.Southwest, ArenaSector.Northwest,
-    ];
-
     public readonly Callout trinesInitial = Callout.Duration("Trines (Initial)", "Trines");
     public readonly Callout wingsOfDestruction =
         Callout.Duration("Trines: Wings of Destruction 1", "{wingsSafe} Safe");
 
-    public readonly Callout trinesSafe = Callout.Of(
-            "{bestStart} to {firstTrineLocations}",
-            "{bestStart} to {firstTrineLocations}")
-        .Note("This call will provide a starting position (prefers center if available, else one that is adjacent to one or more safe spots) and all of the safe spots. The whole route is spoken as well as shown.");
+    public readonly Callout trinesTankSpot =
+        Callout.Of("Trines: Tank Spot", "Center to {tankSpot}")
+            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot the opening trines left free, named by the waymark it sits on or between. Said once.");
+
+    public readonly Callout trinesPartySpot =
+        Callout.Of("Trines: DPS and Healer Spot", "Center to {partySpot}")
+            .Note("DPS and healers. Counting clockwise from the A waymark, the first spot the opening trines left free, named by the waymark it sits on or between. Said once.");
 
     public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");
@@ -57,47 +52,13 @@ public sealed class Trines
         e.Kind == EventKind.ActorControl && e.Id == TrineControl &&
         e.Arg1 == TrineArg1 && e.Arg2 == TrineArg2 && e.Arg3 == 0 && e.Arg4 == 0;
 
-    public static ArenaSector BestStart(
-        IReadOnlyList<ArenaSector> third, IReadOnlyList<ArenaSector> first)
-    {
-        if (third.Contains(ArenaSector.Center)) return ArenaSector.Center;
-
-        foreach (var candidate in third)
-        {
-            if (candidate.IsCardinal())
-            {
-                if (first.Any(f => f.IsStrictlyAdjacentTo(candidate))) return candidate;
-                continue;
-            }
-
-            foreach (var from in first)
-            {
-                if (from.IsCardinal())
-                {
-                    if (from.IsStrictlyAdjacentTo(candidate)) return candidate;
-                    continue;
-                }
-
-                var sameWest = from.IsStrictlyAdjacentTo(ArenaSector.West)
-                               && candidate.IsStrictlyAdjacentTo(ArenaSector.West);
-                var sameEast = from.IsStrictlyAdjacentTo(ArenaSector.East)
-                               && candidate.IsStrictlyAdjacentTo(ArenaSector.East);
-                if (sameWest || sameEast) return candidate;
-            }
-        }
-
-        return ArenaSector.Unknown;
-    }
-
     private async Task Run(GameEvent start, SequenceRun run, IWorld world)
     {
         run.Call(trinesInitial, start);
 
         var firstSet = await run.WaitEventsQuickSuccession(3, IsTrineDrop);
         await run.Settle();
-
-        var firstLocations = Locations(firstSet, world);
-        run.SetParam("firstTrineLocations", firstLocations.Told());
+        Spots(run, world, firstSet);
 
         var wings = await run.FindOrWaitForCast(world, e => e.Id is WingsRight or WingsLeft);
         if (wings is not null)
@@ -107,28 +68,41 @@ public sealed class Trines
             run.SetParam("wingsSafe", safe.Told());
             run.Call(wingsOfDestruction, wings);
         }
-
-        var secondSet = await run.WaitEventsQuickSuccession(3, IsTrineDrop);
-        await run.Settle();
-
-        var secondLocations = Locations(secondSet, world);
-        run.SetParam("secondTrineLocations", secondLocations.Told());
-
-        var third = TrinePositions
-            .Where(p => !firstLocations.Contains(p) && !secondLocations.Contains(p))
-            .ToList();
-
-        run.SetParam("thirdTrineLocations", third.Told());
-        run.SetParam("bestStart", BestStart(third, firstLocations).Told());
-
-        run.Call(trinesSafe);
     }
 
-    private static List<ArenaSector> Locations(IEnumerable<GameEvent> drops, IWorld world) =>
-        drops.Select(d => d.Target)
-             .OfType<Actor>()
-             .Select(a => Tight.For(world.Latest(a) ?? a, TrinePositions))
-             .ToList();
+    private void Spots(SequenceRun run, IWorld world, IReadOnlyList<GameEvent> wave)
+    {
+        if (world.You is not { } you) return;
+
+        var taken = Taken(wave, world);
+        if (taken.Count == 0) return;
+
+        var tank = TrineRing.FirstFree(taken, TrineRing.TankStart, -1);
+        var party = TrineRing.FirstFree(taken, TrineRing.PartyStart, 1);
+
+        run.SetParam("tankSpot", tank);
+        run.SetParam("partySpot", party);
+
+        var tanking = Tanking(world, you);
+        if (tanking && tank is null) return;
+        if (!tanking && party is null) return;
+
+        run.Call(tanking ? trinesTankSpot : trinesPartySpot);
+    }
+
+    public static bool Tanking(IWorld world, Actor you)
+    {
+        var seat = world.SeatOf(you);
+        return seat >= 0
+            ? Slots.RoleOf(seat) == SlotRole.Tank
+            : JobKinds.Kind(you.Job) == JobKind.Tank;
+    }
+
+    public static HashSet<int> Taken(IEnumerable<GameEvent> drops, IWorld world) =>
+        [.. drops.Select(d => d.Target)
+                 .OfType<Actor>()
+                 .Select(a => TrineRing.Spot((world.Latest(a) ?? a).Pos))
+                 .Where(spot => spot >= 0)];
 
     public Sequence BuildExtras(IWorld world) =>
         Sequence.Indexed(Group + "Extras", 30,
