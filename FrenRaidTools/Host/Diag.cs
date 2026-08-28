@@ -170,7 +170,7 @@ public sealed class Diag : IDisposable
         }
 
         Note("bearing",
-            $"{b.From} at=({b.X:0.0},{b.Y:0.0}) centre=({b.CenterX:0.0},{b.CenterY:0.0}) " +
+            $"{b.From} at=({b.X:0.0},{b.Y:0.0}) center=({b.CenterX:0.0},{b.CenterY:0.0}) " +
             $"off=({b.OffsetX:0.0},{b.OffsetY:0.0}) angle={b.Degrees:0.0} -> {b.Sector.Name()}");
     }
 

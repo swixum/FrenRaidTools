@@ -37,6 +37,15 @@ public static class Slots
 
     public static bool IsSupport(int slot) => slot < 4;
 
+    public static (int First, int Second) Pair(JobKind kind) => kind switch
+    {
+        JobKind.Tank => (0, 1),
+        JobKind.Healer => (2, 3),
+        JobKind.Melee => (4, 5),
+        JobKind.PhysRanged or JobKind.Caster => (6, 7),
+        _ => (-1, -1),
+    };
+
     public static readonly int[] Partners = [2, 3, 0, 1, 6, 7, 4, 5];
 
     public static readonly int[] TowerPrio = [2, 3, 0, 1, 4, 5, 6, 7];
@@ -264,7 +273,8 @@ public sealed class Roster
         return at < 0 ? "" : Players[at].Trim();
     }
 
-    public int Fill(IReadOnlyList<PartyMember> members, bool keepExisting)
+    public int Fill(IReadOnlyList<PartyMember> members, bool keepExisting,
+        JobSpots? spots = null, string you = "")
     {
         Normalize();
 
@@ -276,14 +286,19 @@ public sealed class Roster
 
         var pool = members
             .Where(m => !string.IsNullOrWhiteSpace(m.Name) && !taken.Contains(m.Name))
-            .OrderBy(m => JobKinds.Rank(m.Kind))
+            .OrderBy(m => IsYou(m.Name, you) ? 0 : 1)
+            .ThenBy(m => JobKinds.Rank(m.Kind))
             .ToList();
 
-        var placed = Place(pool, (slot, m) => Slots.Prefers(slot, m.Job));
+        var placed = Place(pool, (slot, m) =>
+            spots is null ? Slots.Prefers(slot, m.Job) : spots.Prefers(slot, m.Job));
         placed += Place(pool, (slot, m) => Slots.Accepts(slot, m.Kind));
         placed += Place(pool, (_, _) => true);
         return placed;
     }
+
+    private static bool IsYou(string name, string you) =>
+        you.Length > 0 && string.Equals(name.Trim(), you.Trim(), StringComparison.OrdinalIgnoreCase);
 
     private int Place(List<PartyMember> pool, Func<int, PartyMember, bool> fits)
     {

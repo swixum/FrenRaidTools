@@ -91,6 +91,10 @@ public sealed class Configuration : IPluginConfiguration
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public List<Roster> Setups { get; set; } = [];
     public int ActiveSetup { get; set; }
+
+    [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
+    public JobSpots JobSpots { get; set; } = new();
+
     public bool FillRolesOnJoin { get; set; } = true;
     public bool AskOnEntry { get; set; } = true;
 
@@ -150,6 +154,8 @@ public sealed class Configuration : IPluginConfiguration
             pick.Options ??= new Dictionary<string, string>(StringComparer.Ordinal);
         if (FightPlans.ByKey(PlanFight) is null) PlanFight = FightPlans.First.Key;
         Setups ??= [];
+        JobSpots ??= new JobSpots();
+        JobSpots.Normalize();
         foreach (var setup in Setups) setup.Normalize();
         DropSpareBlankSetups();
         if (Setups.Count == 0) Setups.Add(new Roster());

@@ -275,7 +275,7 @@ internal static partial class Widgets
         RowBegin(name, hint, Theme.S(width), sub);
         var hit = ImGui.DragFloat("##rd" + name, ref v, MathF.Max(0.001f, (max - min) / 200f),
             min, max, fmt, ImGuiSliderFlags.AlwaysClamp);
-        Tip("Drag, or double click to type.");
+        Tip("Drag or double click to type");
         RowEnd();
         return hit;
     }
@@ -286,7 +286,7 @@ internal static partial class Widgets
         RowBegin(name, hint, Theme.S(width), sub);
         var hit = ImGui.DragInt("##ri" + name, ref v, MathF.Max(0.05f, (max - min) / 200f),
             min, max, fmt, ImGuiSliderFlags.AlwaysClamp);
-        Tip("Drag, or double click to type.");
+        Tip("Drag or double click to type");
         RowEnd();
         return hit;
     }
@@ -342,6 +342,39 @@ internal static partial class Widgets
 
         var bottom = ImGui.GetCursorPosY() - ImGui.GetStyle().ItemSpacing.Y + pad;
         ImGui.SetCursorPos(new Vector2(start.X, bottom));
+    }
+
+    public static bool ConfirmPopup(string id, string question, string yes, string no)
+    {
+        if (!ImGui.BeginPopup(id)) return false;
+
+        ImGui.TextUnformatted(question);
+        ImGui.Spacing();
+
+        var hit = DangerButton(yes);
+        if (hit) ImGui.CloseCurrentPopup();
+
+        ImGui.SameLine(0, Theme.S(6f));
+        if (GhostButton(no)) ImGui.CloseCurrentPopup();
+
+        ImGui.EndPopup();
+        return hit;
+    }
+
+    public static void Banner(uint color, string text)
+    {
+        var padding = new Vector2(Theme.S(10f), Theme.S(6f));
+        var size = new Vector2(ImGui.GetContentRegionAvail().X,
+            ImGui.GetTextLineHeight() + padding.Y * 2f);
+        var p = ImGui.GetCursorScreenPos();
+        var dl = ImGui.GetWindowDrawList();
+
+        dl.AddRectFilled(p, p + size, Theme.Wash(color, 0x22), Theme.S(6f));
+        dl.AddRectFilled(p, p + new Vector2(Theme.S(3f), size.Y), color, 2f);
+        dl.AddText(p + new Vector2(RowPad, padding.Y), color, text);
+
+        ImGui.Dummy(size);
+        ImGui.Dummy(new Vector2(0, Theme.S(2f)));
     }
 
     public static bool RowDoor(string name, string hint, uint edgeColor = 0)

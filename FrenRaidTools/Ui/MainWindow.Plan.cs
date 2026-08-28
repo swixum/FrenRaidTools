@@ -38,8 +38,7 @@ public partial class MainWindow
     private void DrawSeatRow(StrategyAsset asset, PlannedFight fight)
     {
         var fromRoles = C.SeatFromRoles;
-        if (Widgets.RowCheckClick("Use my spot from Roles",
-                "Whoever you are on the Roles page", ref fromRoles,
+        if (Widgets.RowCheckClick("Use your spot from Roles", "", ref fromRoles,
                 id: "seatroles" + fight.Key, sub: true))
         {
             C.SeatFromRoles = fromRoles;
@@ -59,8 +58,8 @@ public partial class MainWindow
             }
 
             Widgets.RowNote(C.Roles.Filled == 0
-                ? "Nobody is on the Roles page yet."
-                : "You are not in a spot on the Roles page.", Theme.Warn);
+                ? "No names on the Roles page yet"
+                : "Your name is not in a spot on the Roles page", Theme.Warn);
 
             if (Widgets.RowDoor("Open Roles", "Put yourself in a spot")) Show(Nav.Roles);
             return;
@@ -76,7 +75,7 @@ public partial class MainWindow
         for (var i = 0; i < seats.Count; i++)
             if (seats[i].Key == Plan.Seat) index = i + 1;
 
-        if (Widgets.RowCombo("Your spot", "Which of the eight you play",
+        if (Widgets.RowCombo("Your spot", "",
                 ref index, labels, sub: true))
         {
             Plan.Seat = index == 0 ? "" : seats[index - 1].Key;
@@ -84,7 +83,7 @@ public partial class MainWindow
         }
 
         if (Plan.Seat.Length == 0)
-            Widgets.RowNote("Pick one, or no call can name your spot.", Theme.Warn);
+            Widgets.RowNote("No spot picked yet.", Theme.Warn);
         else if (mine.Length > 0 && mine != Plan.Seat)
             Widgets.RowNote($"The Roles page has you in {mine}, not {Plan.Seat}.", Theme.Warn);
     }

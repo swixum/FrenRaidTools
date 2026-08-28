@@ -26,6 +26,7 @@ public sealed class Plugin : IDalamudPlugin
     public MainWindow MainWindow { get; }
     public OverlayWindow Overlay { get; }
     public EntryWindow Entry { get; }
+    public PartyWindow Roles { get; }
 
     public string Version { get; } =
         Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "0.1.0";
@@ -59,13 +60,15 @@ public sealed class Plugin : IDalamudPlugin
         MainWindow = new MainWindow(this);
         Overlay = new OverlayWindow(this);
         Entry = new EntryWindow(this);
+        Roles = new PartyWindow(this);
         Windows.AddWindow(MainWindow);
         Windows.AddWindow(Overlay);
         Windows.AddWindow(Entry);
+        Windows.AddWindow(Roles);
 
         Service.CommandManager.AddHandler(Command, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Open Fren Raid Tools. /frt roles jumps straight to roles.",
+            HelpMessage = "Open Fren Raid Tools. /frt roles jumps to roles, /frt p opens the party list.",
         });
 
         Service.CommandManager.AddHandler(CommandAlias, new CommandInfo(OnCommand)
@@ -194,7 +197,7 @@ public sealed class Plugin : IDalamudPlugin
             var members = Party.Read();
             if (members.Count == 0) return;
 
-            _filled += Config.Roles.Fill(members, keepExisting: true);
+            _filled += Config.Roles.Fill(members, keepExisting: true, Config.JobSpots, Party.YouName());
             if (Config.Roles.Filled >= Slots.Count || members.Count >= Party.Max) Done();
         }
         catch (Exception ex)
@@ -222,7 +225,15 @@ public sealed class Plugin : IDalamudPlugin
 
     private void OnCommand(string command, string args)
     {
-        var page = args.Trim().ToLowerInvariant() switch
+        var word = args.Trim().ToLowerInvariant();
+
+        if (word is "p" or "party" or "list")
+        {
+            Roles.Open();
+            return;
+        }
+
+        var page = word switch
         {
             "roles" or "role" => MainWindow.Nav.Roles,
             "calls" or "call" => MainWindow.Nav.Calls,

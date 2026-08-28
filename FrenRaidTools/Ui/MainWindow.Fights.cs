@@ -12,7 +12,7 @@ public partial class MainWindow
 
         if (fights.Count == 0)
         {
-            Widgets.EmptyState("Nothing here yet", "Fights land in this list as they are built.");
+            Widgets.EmptyState("No fights here", "Nothing built yet");
             return;
         }
 
@@ -41,7 +41,7 @@ public partial class MainWindow
         var here = Game.Zone == fight.Territory;
         var loaded = fight.Key == C.PlanFight ? Board.Catalog.Count : 0;
 
-        var hint = here ? "You are in here now"
+        var hint = here ? "You are in this fight"
             : loaded > 0 ? $"{loaded} calls ready"
             : $"Zone {fight.Territory}";
 

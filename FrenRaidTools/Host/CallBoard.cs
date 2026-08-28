@@ -145,7 +145,7 @@ public sealed class CallBoard
         try
         {
             Raise(callout, null, EmptyArgs, test: true);
-            if (!_config.OverlayOn) Note("Overlay is off, so that one only lands in Recent.");
+            if (!_config.OverlayOn) Note("Overlay is off. That one only went to Recent.");
         }
         catch (Exception ex)
         {

@@ -21,11 +21,11 @@ public partial class MainWindow
             C.CallsOn = !C.CallsOn;
             Touch();
         }
-        Widgets.Tip(C.CallsOn ? "Click to go quiet." : "Click to turn calls back on.");
+        Widgets.Tip(C.CallsOn ? "Turn calls off" : "Turn calls on");
 
         ImGui.SameLine(0, Theme.S(6f));
         if (Widgets.GhostButton(testLabel)) _plugin.FireSample();
-        Widgets.Tip("Throw a line on the overlay.");
+        Widgets.Tip("Sample call on the overlay");
 
         ImGui.Spacing();
 

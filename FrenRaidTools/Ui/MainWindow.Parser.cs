@@ -19,7 +19,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var on = C.ParserOn;
-        if (Widgets.RowCheckClick("Use a parser", "Read the fight off IINACT or ACT", ref on))
+        if (Widgets.RowCheckClick("Use a parser", "Read off IINACT or ACT", ref on))
         {
             C.ParserOn = on;
             Touch();
@@ -27,13 +27,13 @@ public partial class MainWindow
 
         if (!on)
         {
-            Widgets.RowNote("Off. Calls run off the game client only.");
+            Widgets.RowNote("Off. Calls run off the game client.");
             Widgets.ListEnd();
             return;
         }
 
         var source = C.ParserSource;
-        if (Widgets.RowCombo("Source", "Auto takes IINACT when it is running, ACT otherwise",
+        if (Widgets.RowCombo("Source", "IINACT if running, else ACT",
                 ref source, SourceNames, 160f))
         {
             C.ParserSource = source;
@@ -60,7 +60,7 @@ public partial class MainWindow
             link.Retry();
             _plugin.Runtime.RetryFeed();
         }
-        Widgets.Tip("Drops both links and picks them up again.");
+        Widgets.Tip("Drops both links and starts over");
 
         ImGui.SameLine(0, Theme.S(6f));
         if (Widgets.GhostButton("Reset address"))
@@ -72,17 +72,17 @@ public partial class MainWindow
         }
 
         Widgets.SectionHeader("In IINACT");
-        Faint("Nothing to connect: this links straight to it. On its Parser tab:");
+        Faint("Links straight to it. On its Parser tab:");
         StepToggle(1, "Disable Damage Shield Estimates", false, "or shields read zero.");
         StepToggle(2, "End encounter automatically after leaving combat", true);
         StepWord(3, "Player name: leave it as", "YOU", Theme.Accent, ".");
-        Faint("Writing out the network log file is for uploading logs, not for this.");
+        Faint("The network log file is for uploads, not this.");
 
         Widgets.SectionHeader("In ACT");
         Step(1, "Run ACT, with its FFXIV plugin.");
         Step(2, "Plugins > OverlayPlugin.dll > WSServer > Start.");
         Step(3, "Options > Main Table/Encounters > Idle Limit: 180.");
-        Faint("Lower than that splits a fight at its own downtime.");
+        Faint("Lower splits a fight at downtime.");
     }
 
     private static void Faint(string text) =>

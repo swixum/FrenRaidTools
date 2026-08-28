@@ -59,7 +59,7 @@ public partial class MainWindow
     private void DrawFightRow(PlannedFight fight, PlannedFight picked, PlannedFight? here)
     {
         var isPicked = fight.Key == picked.Key;
-        var hint = fight.Key == here?.Key ? "You are in here now" : fight.Category;
+        var hint = fight.Key == here?.Key ? "You are in this fight" : fight.Category;
         var shown = isPicked && OpenFights.Contains(fight.Key);
         var wasShown = shown;
 
@@ -96,7 +96,7 @@ public partial class MainWindow
 
         var noDebuff = C.DoubleTowerOnlyWithNoDebuff;
         if (Widgets.RowCheckClick("Skip double tower when you start with a debuff",
-                "Only call the double tower if you go in clean", ref noDebuff, sub: true))
+                "Only when you go in clean", ref noDebuff, sub: true))
         {
             C.DoubleTowerOnlyWithNoDebuff = noDebuff;
             Touch();

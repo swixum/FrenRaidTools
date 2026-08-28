@@ -4,33 +4,22 @@ using Dalamud.Interface.Windowing;
 
 namespace FrenRaidTools.Ui;
 
-public sealed class EntryWindow : Window
+public sealed class PartyWindow : Window
 {
     private readonly Plugin _plugin;
-    private readonly PartyPanel _panel = new("entry");
+    private readonly PartyPanel _panel = new("party");
     private Configuration C => _plugin.Config;
 
-    public EntryWindow(Plugin plugin) : base("Check In###frtentry")
+    public PartyWindow(Plugin plugin) : base("Party###frtparty")
     {
         _plugin = plugin;
-        Flags = ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse;
+        Flags = ImGuiWindowFlags.AlwaysAutoResize;
     }
 
     public void Open()
     {
         _panel.Forget();
         IsOpen = true;
-    }
-
-    public override bool DrawConditions()
-    {
-        if (!Game.InTheFight)
-        {
-            IsOpen = false;
-            return false;
-        }
-
-        return !Game.InFight;
     }
 
     public override void PreDraw()
@@ -61,7 +50,7 @@ public sealed class EntryWindow : Window
         catch (Exception ex)
         {
             Widgets.ListAbort();
-            Service.Log.Error(ex, "Check In draw failed.");
+            Service.Log.Error(ex, "Party draw failed.");
         }
         finally
         {
@@ -76,8 +65,5 @@ public sealed class EntryWindow : Window
         ImGui.Spacing();
 
         if (Widgets.GhostButton("Open Roles")) _plugin.MainWindow.Show(MainWindow.Nav.Roles);
-
-        ImGui.SameLine(0, Theme.S(6f));
-        if (Widgets.AccentButton("OK")) IsOpen = false;
     }
 }

@@ -30,7 +30,7 @@ public partial class MainWindow
 
         if (catalog.Count == 0)
         {
-            Widgets.EmptyState("No calls loaded", "Phases show up here as they land.");
+            Widgets.EmptyState("No calls loaded", "Phases appear with a fight");
             return;
         }
 
@@ -164,7 +164,7 @@ public partial class MainWindow
                 foreach (var entry in Board.Catalog) C.DropEdit(entry.Key);
                 Touch();
             }
-            Widgets.Tip($"Put every {boss.FullName} call back to how it was written.");
+            Widgets.Tip($"Put every {boss.FullName} call back");
         }
 
         if (_search.Length > 0)
@@ -233,11 +233,11 @@ public partial class MainWindow
             if (open) _openEditors.Remove(entry.Key);
             else _openEditors.Add(entry.Key);
         }
-        Widgets.Tip("Change what it says.");
+        Widgets.Tip("Change the wording");
 
         ImGui.SameLine(0, gap);
         if (Widgets.GhostButton("Test", new Vector2(testWidth, 0))) Board.Test(call);
-        Widgets.Tip("Fire it now, on screen and out loud.");
+        Widgets.Tip("Fire it now");
 
         ImGui.SameLine(0, gap);
         var on = !muted;
@@ -281,7 +281,7 @@ public partial class MainWindow
         Widgets.RowEnd();
 
         if (call.NeedsParams)
-            Widgets.RowNote("Keep the {braces}, they get swapped for names in the fight.", Theme.Warn);
+            Widgets.RowNote("Keep the {braces}. They swap for names.", Theme.Warn);
 
         var resetWidth = Widgets.ButtonWidth("Put it back", "Copy the wording");
         Widgets.RowBegin("", "", resetWidth, sub: true, id: entry.Key + "#acts");
@@ -302,7 +302,6 @@ public partial class MainWindow
             slot.Text = call.Text;
             Touch();
         }
-        Widgets.Tip("Start from what it says now.");
 
         Widgets.RowEnd();
     }

@@ -15,4 +15,6 @@ public static class TextLines
 
         return lines;
     }
+
+    public static string Spots(int count) => count == 1 ? "1 spot" : $"{count} spots";
 }

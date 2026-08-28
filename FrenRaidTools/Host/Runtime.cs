@@ -81,7 +81,7 @@ public sealed class Runtime : IDisposable
     public string? Blind =>
         !Running || KnowsYou
             ? null
-            : "The fight cannot tell which character is you, so anything about your own debuffs stays quiet.";
+            : "Cannot tell which character is you. Calls about your own debuffs stay quiet.";
 
     public bool SocketConnected => _socket.Connected;
 
@@ -266,6 +266,7 @@ public sealed class Runtime : IDisposable
             $"parser {FeedDetail}",
             $"hooks {(HooksBroken ? "BROKEN, the parser is covering what it can" : "attached")}",
             $"you {_world.You?.Name ?? "unknown"}, party {_world.Party.Count}, seat {(SeatSync.SeatFor(_config) is { Length: > 0 } seat ? seat : "none")}",
+            $"roster names come from {Party.Source()}",
             "event lines are tagged [log] or [game] for where they came from",
         ]);
     }

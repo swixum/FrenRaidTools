@@ -1,3 +1,4 @@
+using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
 using FrenRaidTools.Engine;
@@ -11,29 +12,89 @@ public static class Party
     public static List<PartyMember> Read()
     {
         var found = FromPartyList();
-        return found.Count > 1 || !(Game.InDuty || Game.InReplay) ? found : FromDuty(found);
+        if (found.Count > 1) return found;
+
+        found = FromCrossRealm(found);
+        if (found.Count > 1) return found;
+
+        return Game.InDuty || Game.InReplay ? FromWorld(found, Max) : found;
     }
 
-    private static List<PartyMember> FromDuty(List<PartyMember> found)
+    public static string Source()
+    {
+        var list = FromPartyList();
+        if (list.Count > 1) return $"party list, {list.Count}";
+
+        var cross = FromCrossRealm([.. list]);
+        if (cross.Count > 1) return $"cross-world party, {cross.Count}";
+
+        if (!(Game.InDuty || Game.InReplay)) return "no party";
+
+        var here = FromWorld([.. cross], Max);
+        return here.Count > cross.Count ? $"duty zone, {here.Count}" : "no party";
+    }
+
+    private static unsafe List<PartyMember> FromCrossRealm(List<PartyMember> found)
     {
         try
         {
-            foreach (var obj in Service.ObjectTable)
+            var proxy = FFXIVClientStructs.FFXIV.Client.UI.Info.InfoProxyCrossRealm.Instance();
+            if (proxy == null) return found;
+            if (!FFXIVClientStructs.FFXIV.Client.UI.Info.InfoProxyCrossRealm.IsCrossRealmParty())
+                return found;
+
+            var group = (int)proxy->LocalPlayerGroupIndex;
+            var count = FFXIVClientStructs.FFXIV.Client.UI.Info
+                .InfoProxyCrossRealm.GetGroupMemberCount(group);
+
+            for (uint i = 0; i < count && found.Count < Max; i++)
             {
-                if (found.Count >= Max) break;
-                if (obj.ObjectKind != ObjectKind.Pc) continue;
+                var member = FFXIVClientStructs.FFXIV.Client.UI.Info
+                    .InfoProxyCrossRealm.GetGroupMember(i, group);
+                if (member == null) continue;
 
-                var name = obj.Name.TextValue;
-                if (string.IsNullOrWhiteSpace(name)) continue;
-                if (found.Any(m => string.Equals(m.Name, name, StringComparison.Ordinal))) continue;
+                var name = member->NameString;
+                if (PartyPool.Holds(found, name)) continue;
 
-                var job = obj is ICharacter character ? JobKinds.Abbr(character.ClassJob.RowId) : "";
-                found.Add(new PartyMember(name, job));
+                found.Add(new PartyMember(name, JobKinds.Abbr(member->ClassJobId)));
             }
         }
         catch (Exception ex)
         {
-            Service.Log.Error(ex, "Duty party read failed.");
+            Service.Log.Error(ex, "Cross-world party read failed.");
+        }
+
+        return found;
+    }
+
+    private static List<PartyMember> FromWorld(List<PartyMember> found, int limit)
+    {
+        try
+        {
+            var you = Game.You?.Position;
+
+            var players = new List<(float Away, PartyMember Member)>();
+
+            foreach (var obj in Service.ObjectTable)
+            {
+                if (obj.ObjectKind != ObjectKind.Pc) continue;
+
+                var name = obj.Name.TextValue;
+                if (PartyPool.Holds(found, name)) continue;
+                if (players.Any(p =>
+                        string.Equals(p.Member.Name, name, StringComparison.OrdinalIgnoreCase)))
+                    continue;
+
+                var job = obj is ICharacter character ? JobKinds.Abbr(character.ClassJob.RowId) : "";
+                var away = you is { } spot ? Vector3.Distance(spot, obj.Position) : 0f;
+                players.Add((away, new PartyMember(name, job)));
+            }
+
+            PartyPool.Take(found, players, limit);
+        }
+        catch (Exception ex)
+        {
+            Service.Log.Error(ex, "Nearby player read failed.");
         }
 
         return found;

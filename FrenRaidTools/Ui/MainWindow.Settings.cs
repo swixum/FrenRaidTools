@@ -19,14 +19,14 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var on = C.OverlayOn;
-        if (Widgets.RowCheckClick("Show overlay", "Text in the middle of your screen", ref on))
+        if (Widgets.RowCheckClick("Show overlay", "Calls on screen", ref on))
         {
             C.OverlayOn = on;
             Touch();
         }
 
         var background = C.OverlayBackground;
-        if (Widgets.RowCheckClick("Backing box", "A panel behind the text", ref background))
+        if (Widgets.RowCheckClick("Backing box", "Panel behind the text", ref background))
         {
             C.OverlayBackground = background;
             Touch();
@@ -50,14 +50,14 @@ public partial class MainWindow
         }
 
         var outline = C.OverlayOutline;
-        if (Widgets.RowCheckClick("Outline", "Dark edge so it reads over anything", ref outline))
+        if (Widgets.RowCheckClick("Outline", "Dark edge on the text", ref outline))
         {
             C.OverlayOutline = outline;
             Touch();
         }
 
         var icons = C.OverlayIcons;
-        if (Widgets.RowCheckClick("Debuff icons", "Show the game icon next to a call about a debuff", ref icons))
+        if (Widgets.RowCheckClick("Debuff icons", "Game icon on debuff calls", ref icons))
         {
             C.OverlayIcons = icons;
             Touch();
@@ -69,35 +69,35 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var px = C.OverlayFontPx;
-        if (Widgets.RowDragInt("Text size", "Drawn at this size, so it stays sharp", ref px, 12, 72, "%dpx"))
+        if (Widgets.RowDragInt("Text size", "Drawn at this size", ref px, 12, 72, "%dpx"))
         {
             C.OverlayFontPx = Fonts.Snap(px);
             Touch();
         }
 
         var lines = C.OverlayMaxLines;
-        if (Widgets.RowDragInt("Lines", "How many calls stack up at once", ref lines, 1, 8))
+        if (Widgets.RowDragInt("Lines", "Calls at once", ref lines, 1, 8))
         {
             C.OverlayMaxLines = lines;
             Touch();
         }
 
         var linger = C.OverlayLingerScale;
-        if (Widgets.RowDrag("Hold time", "Stretch how long a call sits there", ref linger, 0.4f, 3f, "%.2fx"))
+        if (Widgets.RowDrag("Hold time", "Multiplier on the built-in time", ref linger, 0.4f, 3f, "%.2fx"))
         {
             C.OverlayLingerScale = linger;
             Touch();
         }
 
         var countdown = C.OverlayCountdown;
-        if (Widgets.RowCheckClick("Countdown", "Seconds left on a cast, next to the call", ref countdown))
+        if (Widgets.RowCheckClick("Countdown", "Seconds left on the cast", ref countdown))
         {
             C.OverlayCountdown = countdown;
             Touch();
         }
 
         var newestTop = C.OverlayNewestOnTop;
-        if (Widgets.RowCheckClick("Newest on top", "Latest call at the top of the stack", ref newestTop))
+        if (Widgets.RowCheckClick("Newest on top", "", ref newestTop))
         {
             C.OverlayNewestOnTop = newestTop;
             Touch();
@@ -109,7 +109,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var align = C.OverlayAlign;
-        if (Widgets.RowCombo("Line up", "Where the lines sit against the anchor", ref align, AlignNames, 140f))
+        if (Widgets.RowCombo("Line up", "", ref align, AlignNames, 140f))
         {
             C.OverlayAlign = align;
             _plugin.Overlay.Reposition();
@@ -124,14 +124,14 @@ public partial class MainWindow
         }
 
         var rounding = C.OverlayRounding;
-        if (Widgets.RowDrag("Corners", "How round the box is", ref rounding, 0f, 20f, "%.0f"))
+        if (Widgets.RowDrag("Corners", "", ref rounding, 0f, 20f, "%.0f"))
         {
             C.OverlayRounding = rounding;
             Touch();
         }
 
         var lineGap = C.OverlayLineGap;
-        if (Widgets.RowDrag("Line gap", "Space between stacked calls", ref lineGap, 0f, 24f, "%.0f"))
+        if (Widgets.RowDrag("Line gap", "Space between calls", ref lineGap, 0f, 24f, "%.0f"))
         {
             C.OverlayLineGap = lineGap;
             Touch();
@@ -140,7 +140,7 @@ public partial class MainWindow
         Widgets.ListEnd();
 
         ImGui.Spacing();
-        if (Widgets.AccentButton("Test line")) _plugin.FireSample();
+        if (Widgets.AccentButton("Test call")) _plugin.FireSample();
 
         ImGui.SameLine(0, Theme.S(6f));
         if (Widgets.DangerButton("Clear screen")) Board.Clear();
@@ -154,7 +154,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var locked = C.OverlayLocked;
-        if (Widgets.RowCheckClick("Locked", locked ? "Unlock to grab it" : "Grab it anywhere and drag",
+        if (Widgets.RowCheckClick("Locked", locked ? "Unlock to move it" : "Drag it anywhere",
                 ref locked))
         {
             C.OverlayLocked = locked;
@@ -163,12 +163,12 @@ public partial class MainWindow
         }
 
         var preview = _overlayPreview;
-        if (Widgets.RowCheckClick("Show sample lines", "Keep it on screen while you set it up", ref preview))
+        if (Widgets.RowCheckClick("Show sample lines", "Stays up while you place it", ref preview))
             _overlayPreview = preview;
 
         var position = C.OverlayPosition;
 
-        Widgets.RowBegin("Across", "How far from the left of the screen", Theme.S(150f));
+        Widgets.RowBegin("Across", "From the left", Theme.S(150f));
         var x = position.X * 100f;
         if (ImGui.DragFloat("##ovx", ref x, 0.25f, 2f, 98f, "%.1f%%", ImGuiSliderFlags.AlwaysClamp))
         {
@@ -178,7 +178,7 @@ public partial class MainWindow
         }
         Widgets.RowEnd();
 
-        Widgets.RowBegin("Down", "How far from the top of the screen", Theme.S(150f));
+        Widgets.RowBegin("Down", "From the top", Theme.S(150f));
         var y = position.Y * 100f;
         if (ImGui.DragFloat("##ovy", ref y, 0.25f, 1f, 97f, "%.1f%%", ImGuiSliderFlags.AlwaysClamp))
         {
@@ -211,10 +211,10 @@ public partial class MainWindow
         }
 
         ImGui.Spacing();
-        Banner(C.OverlayLocked ? Theme.Accent : Theme.Warn,
+        Widgets.Banner(C.OverlayLocked ? Theme.Accent : Theme.Warn,
             C.OverlayLocked
-                ? "Locked, so clicks go through it."
-                : "Unlocked. Drag the teal box anywhere, then lock it.");
+                ? "Locked. Clicks go through it."
+                : "Unlocked. Drag the teal box, then lock it.");
     }
 
     private static readonly (string Label, Vector2 Spot)[] Spots =
@@ -233,7 +233,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var on = C.TtsOn;
-        if (Widgets.RowCheckClick("Voice", "Speak every call that fires", ref on))
+        if (Widgets.RowCheckClick("Voice", "Speak every call", ref on))
         {
             C.TtsOn = on;
             Touch();
@@ -266,7 +266,7 @@ public partial class MainWindow
         }
 
         var rate = C.TtsRate;
-        if (Widgets.RowDragInt("Speed", "Slow on the left, fast on the right", ref rate, -10, 10))
+        if (Widgets.RowDragInt("Speed", "", ref rate, -10, 10))
         {
             C.TtsRate = rate;
             Touch();
@@ -280,14 +280,14 @@ public partial class MainWindow
         }
 
         var gap = C.TtsMinGap;
-        if (Widgets.RowDrag("Min gap", "Drop a call if one just spoke", ref gap, 0f, 5f, "%.1fs"))
+        if (Widgets.RowDrag("Min gap", "Least time between spoken calls", ref gap, 0f, 5f, "%.1fs"))
         {
             C.TtsMinGap = gap;
             Touch();
         }
 
         var onlyInFight = C.TtsOnlyInFight;
-        if (Widgets.RowCheckClick("Only in combat", "Stay quiet out of a pull", ref onlyInFight))
+        if (Widgets.RowCheckClick("Only in combat", "Quiet outside a pull", ref onlyInFight))
         {
             C.TtsOnlyInFight = onlyInFight;
             Touch();
@@ -296,14 +296,14 @@ public partial class MainWindow
         Widgets.ListEnd();
 
         ImGui.Spacing();
-        if (Widgets.AccentButton("Say something"))
+        if (Widgets.AccentButton("Test voice"))
             _plugin.Speech.Say("Stack north, tank buster", C.TtsRate, C.TtsVolume, C.TtsVoice);
 
         ImGui.SameLine(0, Theme.S(8f));
         ImGui.AlignTextToFramePadding();
         var dropped = _plugin.Speech.Dropped;
         ImGui.TextColored(Theme.V(dropped > 0 ? Theme.Warn : Theme.Muted),
-            dropped > 0 ? $"{dropped} lines dropped, queue was full" : _plugin.Speech.Status);
+            dropped > 0 ? $"{dropped} dropped, queue full" : _plugin.Speech.Status);
     }
 
     private void DrawLook()
@@ -314,7 +314,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var skin = C.Skin;
-        if (Widgets.RowCombo("Background", "How dark the window reads", ref skin, Theme.SkinNames, 150f))
+        if (Widgets.RowCombo("Background", "", ref skin, Theme.SkinNames, 150f))
         {
             C.Skin = skin;
             Touch();
@@ -352,21 +352,21 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var accent = Theme.V(C.AccentColor);
-        if (Widgets.RowColor("Pick your own", "Any color you want", ref accent))
+        if (Widgets.RowColor("Pick your own", "", ref accent))
         {
             C.AccentColor = Theme.Pack(accent);
             Touch();
         }
 
         var scale = C.UiScale;
-        if (Widgets.RowDrag("Window size", "Text and spacing in this window", ref scale, 0.8f, 1.6f, "%.2fx"))
+        if (Widgets.RowDrag("Window size", "Text and spacing", ref scale, 0.8f, 1.6f, "%.2fx"))
         {
             C.UiScale = scale;
             Touch();
         }
 
         var colorblind = C.Colorblind;
-        if (Widgets.RowCheckClick("Colorblind safe", "Drop the red and green pairing", ref colorblind))
+        if (Widgets.RowCheckClick("Colorblind safe", "No red and green pairs", ref colorblind))
         {
             C.Colorblind = colorblind;
             Touch();

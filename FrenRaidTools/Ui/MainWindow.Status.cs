@@ -29,7 +29,7 @@ public partial class MainWindow
 
         Widgets.SectionHeader("Replay");
         Widgets.ListBegin();
-        Widgets.RowNoteWrap($"Reading the game itself. {_plugin.Runtime.ClientDetail}");
+        Widgets.RowNoteWrap($"Reading the game. {_plugin.Runtime.ClientDetail}");
         Widgets.RowNoteWrap(_plugin.Runtime.VfxDetail);
         Widgets.RowNoteWrap(_plugin.Runtime.EffectDetail);
         Widgets.RowNoteWrap(_plugin.Runtime.ControlDetail);
@@ -41,13 +41,6 @@ public partial class MainWindow
         Widgets.SectionHeader("Switches");
         Widgets.ListBegin();
 
-        var only = C.OnlyInFight;
-        if (Widgets.RowCheckClick("Only in Dancing Mad", "Stay quiet in every other zone", ref only))
-        {
-            C.OnlyInFight = only;
-            Touch();
-        }
-
         var overlay = C.OverlayOn;
         if (Widgets.RowCheckClick("Overlay", "Text on screen", ref overlay))
         {
@@ -56,7 +49,7 @@ public partial class MainWindow
         }
 
         var tts = C.TtsOn;
-        if (Widgets.RowCheckClick("Voice", "Calls read out loud", ref tts))
+        if (Widgets.RowCheckClick("Voice", "Calls spoken", ref tts))
         {
             C.TtsOn = tts;
             Touch();
@@ -75,8 +68,8 @@ public partial class MainWindow
         if (plan.Seat.Length > 0) return null;
 
         return C.Roles.Filled == 0
-            ? "Nobody is on the Roles page, so no call tells you where to stand."
-            : "You are not in a spot on the Roles page, so no call tells you where to stand.";
+            ? "No names on the Roles page"
+            : "Your name is not in a spot";
     }
 
     private string? Misspelled()
@@ -88,8 +81,8 @@ public partial class MainWindow
         return off switch
         {
             0 => null,
-            1 => "A name on the Roles page is not in this party. Roles page.",
-            _ => $"{off} names on the Roles page are not in this party. Roles page.",
+            1 => "A name is not in this party",
+            _ => $"{off} names are not in this party",
         };
     }
 
@@ -102,7 +95,7 @@ public partial class MainWindow
 
         var recording = diag.On;
         if (Widgets.RowCheckClick("Write a diagnostics file",
-                "Everything the fight sees and says, for working out a bad call",
+                "Every event and call",
                 ref recording, id: "diaglog"))
         {
             if (recording) diag.Start();
@@ -113,8 +106,7 @@ public partial class MainWindow
         }
 
         var armed = C.DiagInReplay;
-        if (Widgets.RowCheckClick("Start it for a duty replay",
-                "Turns on by itself when a replay starts, so the file has the opening",
+        if (Widgets.RowCheckClick("Start it for a duty replay", "",
                 ref armed, id: "diagreplay"))
         {
             C.DiagInReplay = armed;
@@ -134,8 +126,8 @@ public partial class MainWindow
 
         if (diag.On && Game.InReplay)
             Widgets.RowNoteWrap(
-                "A replay reads the game directly, so this file shows the client feed. "
-                + "The log feed only runs on a live pull.");
+                "A replay shows the client feed. "
+                + "The log feed needs a live pull.");
 
         Widgets.ListEnd();
     }
@@ -149,7 +141,7 @@ public partial class MainWindow
         if (history.Count == 0)
         {
             Widgets.ListBegin();
-            Widgets.RowNote("Nothing yet. Hit Test up top to see one land.");
+            Widgets.RowNote("Nothing yet");
             Widgets.ListEnd();
             return;
         }

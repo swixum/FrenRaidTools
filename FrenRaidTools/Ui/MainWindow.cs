@@ -125,7 +125,7 @@ public partial class MainWindow : Window
         {
             Widgets.ListAbort();
             Service.Log.Error(ex, "Page draw failed.");
-            ImGui.TextColored(Theme.V(Theme.Danger), "This page hit a snag. The log has it.");
+            ImGui.TextColored(Theme.V(Theme.Danger), "This page failed to draw. See the log.");
         }
 
         ImGui.EndChild();
@@ -142,7 +142,7 @@ public partial class MainWindow : Window
 
         if (notice.Length > 0) ImGui.TextColored(Theme.V(Theme.Accent), Widgets.Elide(notice, room));
         else if (fault.Length > 0) ImGui.TextColored(Theme.V(Theme.Warn), Widgets.Elide(fault, room));
-        else ImGui.TextColored(Theme.V(Theme.Muted), "Everything saves as you go.");
+        else ImGui.TextColored(Theme.V(Theme.Muted), "Saved automatically");
 
         const string hint = "/frt";
         ImGui.SameLine(MathF.Max(ImGui.GetCursorPosX(),

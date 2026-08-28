@@ -16,7 +16,7 @@ public partial class MainWindow
         {
             Widgets.SectionHeader("Your directions");
             Widgets.ListBegin();
-            Widgets.RowNote("Pick your spot above and the calls show up here.", Theme.Warn);
+            Widgets.RowNote("Pick your spot above.", Theme.Warn);
             Widgets.ListEnd();
             return;
         }
@@ -49,8 +49,8 @@ public partial class MainWindow
             _foldedSpots, openByDefault: true, () =>
             {
                 Widgets.RowNoteWrap(
-                    "Which hole is yours depends on where Kefka ports, so it reads as a "
-                    + "tether number here and as a direction in the fight.");
+                    "Your hole depends on where Kefka ports. Tether number "
+                    + "here, direction in the fight.");
 
                 foreach (var place in PlanTether.Places)
                 foreach (var group in PlanTether.Groups)
