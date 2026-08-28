@@ -67,6 +67,12 @@ public sealed class Celestriad
     public readonly Callout celestriadNoResDown =
         Callout.Of("Celestriad: No Res Down", "No Debuff");
 
+    public readonly Callout celestriadNoResDownTower =
+        Callout.Of("Celestriad: No Debuff Tower",
+            "Soak {takeElement}, 1st Counterclockwise",
+            "Soak {takeElement}, 1st CCW")
+            .Note("Only fires when you go in clean. Names the colour that has two towers up that set, which is where the pair without a resistance down goes every time, and the first of those two going counterclockwise.");
+
     public readonly Callout celestriadIn =
         Callout.Duration("Celestriad: Catastrophic Choice (In)", "In");
 
@@ -308,6 +314,13 @@ public sealed class Celestriad
             }
 
             var colour = DoubleTowerColour(towers);
+
+            if (noDebuff && Element(colour) is { } soak)
+            {
+                run.SetParam(TakeParam, soak);
+                run.Call(celestriadNoResDownTower);
+            }
+
             if (colour == 0 || !shouldCall) continue;
 
             run.Call(colour switch
