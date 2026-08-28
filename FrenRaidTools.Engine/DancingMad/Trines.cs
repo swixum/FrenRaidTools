@@ -22,11 +22,11 @@ public sealed class Trines
 
     public readonly Callout trinesTankSpot =
         Callout.Of("Trines: Tank Spot", "Center to {tankSpot}")
-            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot the opening trines left free, named by the waymark it sits on or between. Said once.");
+            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once.");
 
     public readonly Callout trinesPartySpot =
         Callout.Of("Trines: DPS and Healer Spot", "Center to {partySpot}")
-            .Note("DPS and healers. Counting clockwise from the A waymark, the first spot the opening trines left free, named by the waymark it sits on or between. Said once.");
+            .Note("DPS and healers. Counting clockwise from the A waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once.");
 
     public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");
@@ -77,8 +77,8 @@ public sealed class Trines
         var taken = Taken(wave, world);
         if (taken.Count == 0) return;
 
-        var tank = TrineRing.FirstFree(taken, TrineRing.TankStart, -1);
-        var party = TrineRing.FirstFree(taken, TrineRing.PartyStart, 1);
+        var tank = TrineRing.FirstPopped(taken, TrineRing.TankStart, -1);
+        var party = TrineRing.FirstPopped(taken, TrineRing.PartyStart, 1);
 
         run.SetParam("tankSpot", tank);
         run.SetParam("partySpot", party);

@@ -44,7 +44,7 @@ public static class TrineRing
         return best;
     }
 
-    public static string? FirstFree(IReadOnlyCollection<int> taken, string from, int step)
+    public static string? FirstPopped(IReadOnlyCollection<int> opening, string from, int step)
     {
         var start = IndexOf(from);
         if (start < 0) return null;
@@ -52,7 +52,7 @@ public static class TrineRing
         for (var i = 0; i < Names.Length; i++)
         {
             var at = ((start + i * step) % Names.Length + Names.Length) % Names.Length;
-            if (!taken.Contains(at)) return Names[at];
+            if (opening.Contains(at)) return Names[at];
         }
 
         return null;
