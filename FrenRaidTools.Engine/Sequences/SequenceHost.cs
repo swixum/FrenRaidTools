@@ -35,6 +35,45 @@ public sealed class SequenceHost
 
     public List<string> Faults { get; } = [];
 
+    public const int MaxStalls = 64;
+
+    public List<SequenceStall> Stalls { get; } = [];
+
+    public int StallsDropped { get; private set; }
+
+    public Action<SequenceStall>? OnStall { get; set; }
+
+    public void ClearStalls()
+    {
+        Stalls.Clear();
+        StallsDropped = 0;
+    }
+
+    private void NoteStall(string name, Live live, StallReason reason)
+    {
+        if (live.Task.IsCompleted) return;
+
+        var stall = new SequenceStall
+        {
+            Name = name,
+            Reason = reason,
+            StartedAt = live.Run.StartedAt,
+            EndedAt = _clock.Now,
+            Calls = live.Run.Calls,
+            Awaiting = live.Run.Awaiting,
+            AwaitingFor = live.Run.AwaitingFor,
+        };
+
+        if (Stalls.Count >= MaxStalls)
+        {
+            Stalls.RemoveAt(0);
+            StallsDropped++;
+        }
+
+        Stalls.Add(stall);
+        OnStall?.Invoke(stall);
+    }
+
     public List<Action> ResetHooks { get; } = [];
 
     public Action<string>? ExpireCall { get; set; }
@@ -52,6 +91,7 @@ public sealed class SequenceHost
         if (e.Kind is EventKind.CombatStart or EventKind.CombatEnd or EventKind.ZoneChange)
         {
             Reset();
+            if (e.Kind is EventKind.CombatStart or EventKind.ZoneChange) ClearStalls();
             return;
         }
 
@@ -202,6 +242,7 @@ public sealed class SequenceHost
             }
 
             if (now < live.Deadline) continue;
+            NoteStall(name, live, StallReason.Timeout);
             live.Run.Stop();
             _running.Remove(name);
         }
@@ -209,8 +250,11 @@ public sealed class SequenceHost
 
     public void Reset()
     {
-        foreach (var live in _running.Values.ToList())
+        foreach (var (name, live) in _running.ToList())
+        {
+            NoteStall(name, live, StallReason.Reset);
             live.Run.Stop();
+        }
 
         _raised.Clear();
         Pump();

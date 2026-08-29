@@ -229,6 +229,25 @@ public sealed class Runtime : IDisposable
         _diag.Note("replay", speed <= 0f ? "paused" : $"speed {speed:0.##}x");
     }
 
+    public const int UnseenKindsShown = 12;
+
+    public string Unseen()
+    {
+        var kinds = _reader.UnreadByKind
+            .OrderByDescending(p => p.Value)
+            .Take(UnseenKindsShown)
+            .Select(p => $"{p.Key}={p.Value}");
+
+        return $"unread {_reader.Unread} over {_reader.UnreadByKind.Count} kinds" +
+               (_reader.UnreadOffKinds > 0 ? $" +{_reader.UnreadOffKinds} past the cap" : "") +
+               $", skipped moves {_reader.Ignored}, stalls {_host.Stalls.Count}" +
+               (_reader.UnreadByKind.Count > 0 ? "  [" + string.Join(" ", kinds) + "]" : "");
+    }
+
+    private void NoteUnseen() => _diag.Note("unseen", Unseen());
+
+    public IReadOnlyList<SequenceStall> Stalls => _host.Stalls;
+
     public const double SettleEverySeconds = 2.0;
 
     private double _nextSettle;
@@ -277,6 +296,7 @@ public sealed class Runtime : IDisposable
         if (!_fight.PlanReady) return;
 
         _host.ExpireCall = _board.Expire;
+        _host.OnStall = stall => _diag.Note("STALL", stall.Line());
         _world.Options = _fight.Chosen;
         _world.Buddy = Buddy;
         _world.Seat = actor => _config.Roles.SlotOf(actor.Name);
@@ -332,6 +352,7 @@ public sealed class Runtime : IDisposable
         if (_combat.Take(Game.PartyFighting(), _clock.Now) is { } boundary)
         {
             _diag.Note("pull", boundary.Kind == EventKind.CombatStart ? "started" : "ended");
+            if (boundary.Kind == EventKind.CombatEnd) NoteUnseen();
             _feed.Publish(EventSource.Client, boundary);
         }
     }

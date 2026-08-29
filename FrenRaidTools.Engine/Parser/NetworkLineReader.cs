@@ -29,6 +29,22 @@ public sealed class NetworkLineReader
 
     public long Ignored { get; private set; }
 
+    public const int MaxUnreadKinds = 32;
+
+    public const int MaxUnreadSample = 160;
+
+    private readonly Dictionary<int, long> _unread = [];
+
+    private readonly Dictionary<int, string> _unreadFirst = [];
+
+    public IReadOnlyDictionary<int, long> UnreadByKind => _unread;
+
+    public IReadOnlyDictionary<int, string> UnreadFirstLine => _unreadFirst;
+
+    public long Unread { get; private set; }
+
+    public long UnreadOffKinds { get; private set; }
+
     private readonly LogStamps _stamps = new();
 
     public LogStamps Stamps => _stamps;
@@ -37,6 +53,27 @@ public sealed class NetworkLineReader
     {
         _stamps.Reset();
         _placed.Clear();
+        _unread.Clear();
+        _unreadFirst.Clear();
+        Unread = 0;
+        UnreadOffKinds = 0;
+    }
+
+    private void NoteUnread(int kind, string line)
+    {
+        Unread++;
+
+        if (_unread.ContainsKey(kind) || _unread.Count < MaxUnreadKinds)
+        {
+            _unread[kind] = _unread.GetValueOrDefault(kind) + 1;
+            if (!_unreadFirst.ContainsKey(kind))
+                _unreadFirst[kind] = line.Length <= MaxUnreadSample
+                    ? line
+                    : line[..MaxUnreadSample];
+            return;
+        }
+
+        UnreadOffKinds++;
     }
 
     public int PlacedCount => _placed.Count;
@@ -248,6 +285,7 @@ public sealed class NetworkLineReader
             }
 
             default:
+                NoteUnread(kind, line);
                 return null;
         }
     }

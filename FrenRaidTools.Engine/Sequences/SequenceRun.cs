@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace FrenRaidTools.Engine;
 
 public delegate void CallSink(Callout callout, GameEvent? on, IReadOnlyDictionary<string, object?> args);
@@ -39,6 +41,14 @@ public sealed class SequenceRun
     public bool Waiting => _waiter is not null;
 
     public double NextDeadline => _deadline;
+
+    public string Awaiting { get; private set; } = "";
+
+    public double AwaitingSince { get; private set; }
+
+    public double AwaitingFor => Waiting ? _clock.Now - AwaitingSince : 0;
+
+    public int Calls { get; private set; }
 
     public void Feed(GameEvent e)
     {
@@ -86,6 +96,7 @@ public sealed class SequenceRun
         _waiter = null;
         _deadline = double.PositiveInfinity;
         _waiterTakesEvents = false;
+        Awaiting = "";
     }
 
     public Action<GameEvent>? Emit { get; set; }
@@ -118,12 +129,14 @@ public sealed class SequenceRun
 
     public CallTicket Call(Callout callout)
     {
+        Calls++;
         _sink(callout, null, Snapshot());
         return new CallTicket(callout.Key, ExpireCall);
     }
 
     public CallTicket Call(Callout callout, GameEvent on)
     {
+        Calls++;
         _params["event"] = on;
         _sink(callout, on, Snapshot());
         return new CallTicket(callout.Key, ExpireCall);
@@ -164,6 +177,24 @@ public sealed class SequenceRun
         int max, Func<GameEvent, bool> match, double window = QuickSuccessionSeconds)
     {
         var found = new List<GameEvent> { await WaitEvent(match) };
+        var deadline = _clock.Now + window;
+
+        while (found.Count < max)
+        {
+            if (_clock.Now >= deadline) break;
+
+            var e = await NextEventOrDeadline(deadline);
+            if (e is null) break;
+            if (match(e)) found.Add(e);
+        }
+
+        return found;
+    }
+
+    public async Task<List<GameEvent>> WaitEventsWithin(
+        int max, Func<GameEvent, bool> match, double window = QuickSuccessionSeconds)
+    {
+        var found = new List<GameEvent>();
         var deadline = _clock.Now + window;
 
         while (found.Count < max)
@@ -309,34 +340,38 @@ public sealed class SequenceRun
         if (Stopped) throw new SequenceStopped();
     }
 
-    private TaskCompletionSource<GameEvent?> Arm(double deadline, bool takesEvents)
+    private TaskCompletionSource<GameEvent?> Arm(
+        double deadline, bool takesEvents, [CallerMemberName] string awaiting = "")
     {
         var waiter = new TaskCompletionSource<GameEvent?>();
         _waiter = waiter;
         _deadline = deadline;
         _waiterTakesEvents = takesEvents;
+        Awaiting = awaiting;
+        AwaitingSince = _clock.Now;
         return waiter;
     }
 
-    private async Task<GameEvent> NextEvent()
+    private async Task<GameEvent> NextEvent([CallerMemberName] string awaiting = "")
     {
         Guard();
 
         if (_pending.Count > 0) return _pending.Dequeue();
 
-        var waiter = Arm(double.PositiveInfinity, takesEvents: true);
+        var waiter = Arm(double.PositiveInfinity, takesEvents: true, awaiting);
         var e = await waiter.Task;
         Guard();
         return e!;
     }
 
-    private async Task<GameEvent?> NextEventOrDeadline(double deadline)
+    private async Task<GameEvent?> NextEventOrDeadline(
+        double deadline, [CallerMemberName] string awaiting = "")
     {
         Guard();
 
         if (_pending.Count > 0) return _pending.Dequeue();
 
-        var waiter = Arm(deadline, takesEvents: true);
+        var waiter = Arm(deadline, takesEvents: true, awaiting);
         var e = await waiter.Task;
         Guard();
         return e;

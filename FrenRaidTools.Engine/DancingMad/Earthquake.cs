@@ -337,7 +337,7 @@ public sealed class Earthquake
 
     private async Task Cleanses(GameEvent start, SequenceRun run, IWorld world)
     {
-        var gains = await run.WaitEventsQuickSuccession(
+        var gains = await run.WaitEventsWithin(
             MaxOpeningDebuffs,
             e => e.Kind == EventKind.StatusGain && e.Id is Crust or Accretion);
         if (!gains.Contains(start)) gains.Insert(0, start);
@@ -353,11 +353,22 @@ public sealed class Earthquake
 
         await run.WaitMs(100);
 
+        var known = new HashSet<uint>();
+        foreach (var crust in crusts)
+            if (crust.Target is { } had) known.Add(had.ObjectId);
+
+        var missed = new List<GameEvent>();
+
         foreach (var status in world.ActiveStatuses())
         {
-            if (status.Id != Accretion || status.Target is not { } target) continue;
-            carriers[target.ObjectId] = target;
+            if (status.Target is not { } target) continue;
+
+            if (status.Id == Accretion) carriers[target.ObjectId] = target;
+            else if (status.Id == Crust && known.Add(target.ObjectId)) missed.Add(status);
         }
+
+        missed.Sort((a, b) => a.Target!.ObjectId.CompareTo(b.Target!.ObjectId));
+        crusts.AddRange(missed);
 
         var accretionOn = carriers.Keys.ToHashSet();
 
