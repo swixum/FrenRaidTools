@@ -30,8 +30,8 @@ public sealed class PartyWindow : Window
 
         SizeConstraints = new WindowSizeConstraints
         {
-            MinimumSize = new Vector2(Theme.S(560f), Theme.S(100f)),
-            MaximumSize = new Vector2(Theme.S(1000f), Theme.S(1200f)),
+            MinimumSize = new Vector2(Theme.S(470f), Theme.S(100f)),
+            MaximumSize = new Vector2(Theme.S(720f), Theme.S(900f)),
         };
 
         Theme.PushWindow();

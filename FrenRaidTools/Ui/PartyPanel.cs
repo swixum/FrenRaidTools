@@ -1,3 +1,4 @@
+using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using FrenRaidTools.Engine;
 
@@ -8,8 +9,13 @@ internal sealed class PartyPanel
     private readonly string _id;
     private string _note = "";
     private double _noteUntil;
+    private readonly RolePool _rolePool;
 
-    public PartyPanel(string id) => _id = id;
+    public PartyPanel(string id)
+    {
+        _id = id;
+        _rolePool = new RolePool(id);
+    }
 
     private string ClearPopup => "##clear" + _id;
 
@@ -17,6 +23,7 @@ internal sealed class PartyPanel
     {
         _note = "";
         _noteUntil = 0;
+        _rolePool.Forget();
     }
 
     public void Draw(Configuration config, double now)
@@ -25,6 +32,9 @@ internal sealed class PartyPanel
         var verdicts = RosterGlance.Verdicts(config, now);
 
         DrawGroupPicker(config, now);
+
+        var found = _rolePool.Draw(config, now);
+        if (found.Length > 0) Say(now, found);
 
         var glance = RosterGlance.Members(now);
         var duplicates = config.Roles.Duplicates();
@@ -37,6 +47,8 @@ internal sealed class PartyPanel
             if (RoleRows.Row(config.Roles, slot, _id + slot, duplicates, you, verdicts?[slot], glance))
                 config.Save(now);
         Widgets.ListEnd();
+
+        if (DragParty.Settle(config.Roles)) config.Save(now);
 
         ImGui.Spacing();
 

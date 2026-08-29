@@ -149,6 +149,9 @@ public partial class MainWindow
     {
         Widgets.SectionHeader("Party");
 
+        var found = _rolePool.Draw(C, _plugin.Now);
+        if (found.Length > 0) Board.Note(found);
+
         var duplicates = roster.Duplicates();
         var you = Party.YouName();
         var verdicts = Verdicts();
@@ -163,7 +166,11 @@ public partial class MainWindow
             if (RoleRows.Row(roster, slot, "slot" + slot, duplicates, you, verdicts?[slot], glance))
                 Touch();
         Widgets.ListEnd();
+
+        if (DragParty.Settle(roster)) Touch();
     }
+
+    private readonly RolePool _rolePool = new RolePool("roles");
 
     private void DrawRoleActions(Roster roster)
     {
@@ -214,13 +221,6 @@ public partial class MainWindow
 
         ImGui.Spacing();
         Widgets.ListBegin();
-
-        var refill = C.FillRolesOnJoin;
-        if (Widgets.RowCheckClick("Refill on zone in", "Fill blanks when you load in", ref refill))
-        {
-            C.FillRolesOnJoin = refill;
-            Touch();
-        }
 
         var ask = C.AskOnEntry;
         if (Widgets.RowCheckClick("Check in on entry", "Party list on zone in", ref ask))

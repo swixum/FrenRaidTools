@@ -1,20 +1,10 @@
 using Dalamud.Bindings.ImGui;
 using FrenRaidTools.Engine;
-using FrenRaidTools.Engine.DancingMad;
 
 namespace FrenRaidTools.Ui;
 
 public partial class MainWindow
 {
-    private const string DancingMadKey = "umad";
-
-    private static readonly string[] CleanseModes =
-    [
-        "Every cleanse",
-        "Prior set, same role",
-        "Whole prior set",
-    ];
-
     private HashSet<string>? _openStratExpansions;
 
     private HashSet<string> StratFolds =>
@@ -78,37 +68,5 @@ public partial class MainWindow
         if (!isPicked || !shown) return;
 
         DrawFightStrats(fight);
-        if (fight.Key == DancingMadKey) DrawDancingMadStrats();
     }
-
-    private void DrawDancingMadStrats()
-    {
-        Widgets.SectionHeader("Call choices");
-        Widgets.ListBegin();
-
-        var cleanse = (int)C.CleanseCallMode;
-        if (Widgets.RowCombo("Earthquake cleanses", CleanseHint(C.CleanseCallMode),
-                ref cleanse, CleanseModes, sub: true))
-        {
-            C.CleanseCallMode = (CleanseCalls)Math.Clamp(cleanse, 0, CleanseModes.Length - 1);
-            Touch();
-        }
-
-        var noDebuff = C.DoubleTowerOnlyWithNoDebuff;
-        if (Widgets.RowCheckClick("Skip double tower when you start with a debuff",
-                "Only when you go in clean", ref noDebuff, sub: true))
-        {
-            C.DoubleTowerOnlyWithNoDebuff = noDebuff;
-            Touch();
-        }
-
-        Widgets.ListEnd();
-    }
-
-    private static string CleanseHint(CleanseCalls mode) => mode switch
-    {
-        CleanseCalls.All => "Every cleanse that lands, whoever it was",
-        CleanseCalls.Matched => "Only whoever took your spot in the set before yours",
-        _ => "Everyone in the set before yours",
-    };
 }

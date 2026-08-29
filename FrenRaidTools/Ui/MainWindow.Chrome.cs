@@ -52,7 +52,7 @@ public partial class MainWindow
         {
             ImGui.Dummy(new Vector2(0, Theme.S(4f)));
 
-            NavRow(Nav.Status, "Status", FontAwesomeIcon.Home, "");
+            NavRow(Nav.Home, "Home", FontAwesomeIcon.Home, "");
 
             NavGroup("Fights");
             foreach (var category in FightCategories())
@@ -76,7 +76,10 @@ public partial class MainWindow
 
             NavGroup("Setup");
             NavRow(Nav.Parser, "Parser", FontAwesomeIcon.Plug, "", _plugin.Parser.Dot);
-            NavRow(Nav.Look, "Look", FontAwesomeIcon.Palette, "");
+            NavRow(Nav.Diagnostics, "Diagnostics", FontAwesomeIcon.Stethoscope, "",
+                mark: _plugin.Diag.On ? FontAwesomeIcon.Eye : FontAwesomeIcon.None,
+                markColor: Theme.Good);
+            NavRow(Nav.Appearance, "Appearance", FontAwesomeIcon.Palette, "");
         }
         ImGui.EndChild();
         ImGui.PopStyleColor();
@@ -163,7 +166,10 @@ public partial class MainWindow
         ImGui.Dummy(new Vector2(0, Theme.S(2f)));
     }
 
-    private void NavRow(Nav page, string label, FontAwesomeIcon icon, string badge, uint dot = 0)
+    private const float MarkScale = 0.68f;
+
+    private void NavRow(Nav page, string label, FontAwesomeIcon icon, string badge, uint dot = 0,
+        FontAwesomeIcon mark = FontAwesomeIcon.None, uint markColor = 0)
     {
         var on = _nav == page && _search.Length == 0;
         var height = ImGui.GetFrameHeight() + Theme.S(6f);
@@ -195,7 +201,22 @@ public partial class MainWindow
         dl.AddText(new Vector2(iconX + Theme.S(24f), start.Y + (height - textSize.Y) * 0.5f),
             on ? Theme.TextBright : Theme.NavText, label);
 
-        if (badge.Length > 0)
+        var markMiddle = new Vector2(start.X + width - Theme.S(14f), start.Y + height * 0.5f);
+
+        if (mark != FontAwesomeIcon.None)
+        {
+            using (Service.PluginInterface.UiBuilder.IconFontHandle.Push())
+            {
+                var glyph = mark.ToIconString();
+                var full = ImGui.GetFontSize();
+                var small = full * MarkScale;
+                var size = ImGui.CalcTextSize(glyph) * (small / full);
+
+                dl.AddText(ImGui.GetFont(), small, markMiddle - size * 0.5f,
+                    markColor == 0 ? Theme.Muted : markColor, glyph);
+            }
+        }
+        else if (badge.Length > 0)
         {
             var badgeSize = ImGui.CalcTextSize(badge);
             dl.AddText(new Vector2(start.X + width - Theme.S(10f) - badgeSize.X,
@@ -203,9 +224,8 @@ public partial class MainWindow
         }
         else if (dot != 0)
         {
-            var at = new Vector2(start.X + width - Theme.S(13f), start.Y + height * 0.5f);
-            dl.AddCircleFilled(at, Theme.S(6f), Theme.Wash(dot, 0x33));
-            dl.AddCircleFilled(at, Theme.S(3.2f), dot);
+            dl.AddCircleFilled(markMiddle, Theme.S(6f), Theme.Wash(dot, 0x33));
+            dl.AddCircleFilled(markMiddle, Theme.S(3.2f), dot);
         }
 
         if (!clicked) return;

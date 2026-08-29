@@ -186,7 +186,7 @@ public sealed class Plugin : IDalamudPlugin
         if (_clock < _nextFill) return;
         _nextFill = _clock + RoleFillEverySeconds;
 
-        if (!Config.FillRolesOnJoin || Game.Zone != EngineInfo.DancingMadTerritory)
+        if (Game.Zone != EngineInfo.DancingMadTerritory)
         {
             Done();
             return;
@@ -241,7 +241,8 @@ public sealed class Plugin : IDalamudPlugin
             "overlay" => MainWindow.Nav.Overlay,
             "voice" or "tts" => MainWindow.Nav.Voice,
             "parser" or "act" or "iinact" => MainWindow.Nav.Parser,
-            _ => MainWindow.Nav.Status,
+            "diag" or "diags" or "diagnostics" => MainWindow.Nav.Diagnostics,
+            _ => MainWindow.Nav.Home,
         };
 
         MainWindow.Show(page);

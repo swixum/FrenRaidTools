@@ -129,6 +129,8 @@ internal static partial class Widgets
     private static float RowHeight(bool hasHint) =>
         MathF.Max(ImGui.GetFrameHeight(), RowTextHeight(hasHint)) + Theme.S(8f) * 2f;
 
+    public static float RowHeightFor(bool hasHint) => RowHeight(hasHint);
+
     public static void RowBegin(string name, string hint, float controlWidth,
         bool sub = false, float controlHeight = 0f, bool clickable = false,
         FontAwesomeIcon icon = FontAwesomeIcon.None, uint iconColor = 0, string id = "",
@@ -300,6 +302,20 @@ internal static partial class Widgets
         var hit = ImGui.InputInt("##rn" + name, ref typed, 1, 2);
         if (hit) v = Math.Clamp(typed, min, max);
         Tip($"{min} to {max}");
+
+        RowEnd();
+        return hit;
+    }
+
+    public static bool RowInputFloat(string name, string hint, ref float v, float min, float max,
+        float step, string fmt, float width = 130f, bool sub = false)
+    {
+        RowBegin(name, hint, Theme.S(width), sub);
+
+        var typed = v;
+        var hit = ImGui.InputFloat("##rf" + name, ref typed, step, step * 4f, fmt);
+        if (hit) v = Math.Clamp(typed, min, max);
+        Tip($"{min:0.#} to {max:0.#}");
 
         RowEnd();
         return hit;

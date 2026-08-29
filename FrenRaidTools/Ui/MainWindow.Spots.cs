@@ -46,7 +46,7 @@ public partial class MainWindow
         var rules = TextLines.Of(mechanic.Description?.Text);
 
         Fold("spotsHoles", "Black Holes", Short(mechanic.Name), Theme.Muted,
-            _foldedSpots, openByDefault: true, () =>
+            _foldedSpots, openByDefault: false, () =>
             {
                 Widgets.RowNoteWrap(
                     "Your hole depends on where Kefka ports. Tether number "
@@ -90,7 +90,7 @@ public partial class MainWindow
             if (!mechanic.Seats.TryGetValue(book.Pick.Seat, out var seat)) continue;
 
             Fold("spots" + group, group, "8 towers", Theme.Muted,
-                _foldedSpots, openByDefault: true, () =>
+                _foldedSpots, openByDefault: false, () =>
                 {
                     for (var tower = 1; tower <= Forsaken.LastTowerSet; tower++)
                         DrawTower(book, mechanic, seat, tower);
@@ -134,7 +134,7 @@ public partial class MainWindow
             .ToList();
 
         Fold("spotsPlain", "Everything else", $"{spots.Count}", Theme.Muted,
-            _foldedSpots, openByDefault: true, () =>
+            _foldedSpots, openByDefault: false, () =>
             {
                 foreach (var (phase, name) in spots)
                 {

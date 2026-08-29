@@ -246,7 +246,7 @@ public sealed class CallBoard
     private void Queue(string speech, double at, CallRank rank, bool test)
     {
         if (!_config.TtsOn || string.IsNullOrWhiteSpace(speech)) return;
-        if (!test && _config.TtsOnlyInFight && !Game.Fighting) return;
+        if (!test && !Game.Fighting) return;
 
         lock (_gate) _lines.Add(speech, at, rank);
     }

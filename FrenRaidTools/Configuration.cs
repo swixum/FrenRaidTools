@@ -86,7 +86,6 @@ public sealed class Configuration : IPluginConfiguration
     public int TtsRate { get; set; } = 1;
     public int TtsVolume { get; set; } = 90;
     public float TtsMinGap { get; set; } = 0.4f;
-    public bool TtsOnlyInFight { get; set; } = true;
 
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public List<Roster> Setups { get; set; } = [];
@@ -95,7 +94,6 @@ public sealed class Configuration : IPluginConfiguration
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public JobSpots JobSpots { get; set; } = new();
 
-    public bool FillRolesOnJoin { get; set; } = true;
     public bool AskOnEntry { get; set; } = true;
 
     public CleanseCalls CleanseCallMode { get; set; } = CleanseCalls.PriorSet;
@@ -103,7 +101,6 @@ public sealed class Configuration : IPluginConfiguration
 
     public Dictionary<string, StrategyPick> Plans { get; set; } = new(StringComparer.Ordinal);
     public string PlanFight { get; set; } = "";
-    public bool SeatFromRoles { get; set; } = true;
 
     [Newtonsoft.Json.JsonProperty("Plan")]
     public StrategyPick? PlanBeforeFights { get; set; }
@@ -150,7 +147,13 @@ public sealed class Configuration : IPluginConfiguration
             PlanBeforeFights = null;
         }
         foreach (var pick in Plans.Values)
+        {
             pick.Options ??= new Dictionary<string, string>(StringComparer.Ordinal);
+            pick.Alignment = StrategyPick.BossNorth;
+        }
+
+        CleanseCallMode = CleanseCalls.PriorSet;
+        DoubleTowerOnlyWithNoDebuff = false;
         if (FightPlans.ByKey(PlanFight) is null) PlanFight = FightPlans.First.Key;
         Setups ??= [];
         JobSpots ??= new JobSpots();

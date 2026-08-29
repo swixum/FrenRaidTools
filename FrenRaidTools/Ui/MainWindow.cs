@@ -9,7 +9,7 @@ public partial class MainWindow : Window
 {
     public enum Nav
     {
-        Status,
+        Home,
         Fights,
         Calls,
         Roles,
@@ -17,14 +17,15 @@ public partial class MainWindow : Window
         Overlay,
         Voice,
         Parser,
-        Look,
+        Diagnostics,
+        Appearance,
     }
 
     private readonly Plugin _plugin;
     private Configuration C => _plugin.Config;
     private CallBoard Board => _plugin.Board;
 
-    private Nav _nav = Nav.Status;
+    private Nav _nav = Nav.Home;
     private string _search = "";
     private double _now;
 
@@ -109,7 +110,7 @@ public partial class MainWindow : Window
             else
                 switch (_nav)
                 {
-                    case Nav.Status: DrawStatus(); break;
+                    case Nav.Home: DrawHome(); break;
                     case Nav.Fights: DrawFightCategory(); break;
                     case Nav.Calls: DrawCalls(); break;
                     case Nav.Roles: DrawRoles(); break;
@@ -117,7 +118,8 @@ public partial class MainWindow : Window
                     case Nav.Overlay: DrawOverlaySettings(); break;
                     case Nav.Voice: DrawVoice(); break;
                     case Nav.Parser: DrawParser(); break;
-                    case Nav.Look: DrawLook(); break;
+                    case Nav.Diagnostics: DrawDiagnosticsPage(); break;
+                    case Nav.Appearance: DrawAppearance(); break;
                 }
         }
         catch (Exception ex)

@@ -243,6 +243,36 @@ public sealed class Roster
         Jobs[slot] = job ?? "";
     }
 
+    public bool Place(int slot, string player, string job)
+    {
+        Normalize();
+        if (slot < 0 || slot >= Slots.Count) return false;
+
+        var name = (player ?? "").Trim();
+        if (name.Length == 0) return false;
+
+        var from = SlotOf(name);
+
+        if (from == slot)
+        {
+            if (string.IsNullOrEmpty(job) || string.Equals(Jobs[slot], job, StringComparison.Ordinal))
+                return false;
+            Jobs[slot] = job;
+            return true;
+        }
+
+        if (from >= 0)
+        {
+            Swap(from, slot);
+            if (!string.IsNullOrEmpty(job)) Jobs[slot] = job;
+            return true;
+        }
+
+        Players[slot] = name;
+        Jobs[slot] = job ?? "";
+        return true;
+    }
+
     public void Swap(int a, int b)
     {
         Normalize();

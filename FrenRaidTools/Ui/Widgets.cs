@@ -175,6 +175,46 @@ internal static partial class Widgets
         return clicked;
     }
 
+    public static float MemberChipHeight() => ImGui.GetTextLineHeight() + ChipPad.Y * 2;
+
+    public static float MemberChipWidth(string job, string name, string slot)
+    {
+        var width = ImGui.CalcTextSize(name).X;
+        if (job.Length > 0) width += ImGui.CalcTextSize(job).X + ChipGap;
+        if (slot.Length > 0) width += ImGui.CalcTextSize(slot).X + ChipGap;
+        return width + ChipPad.X * 2;
+    }
+
+    public static void MemberChip(string job, string name, uint jobColor, string slot, string id)
+    {
+        var pad = ChipPad;
+        var placed = slot.Length > 0;
+        var size = new Vector2(MemberChipWidth(job, name, slot),
+            ImGui.GetTextLineHeight() + pad.Y * 2);
+        var p = ImGui.GetCursorScreenPos();
+
+        ImGui.InvisibleButton("##mc" + id, size);
+        var hovered = ImGui.IsItemHovered();
+        if (hovered) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
+
+        var dl = ImGui.GetWindowDrawList();
+        dl.AddRectFilled(p, p + size, hovered ? Theme.FrameHover : Theme.FrameBg, Theme.S(5f));
+        dl.AddRect(p, p + size, placed ? Theme.Accent : Theme.Border, Theme.S(5f));
+
+        var at = new Vector2(p.X + pad.X, p.Y + pad.Y);
+        if (job.Length > 0)
+        {
+            dl.AddText(at, placed ? Theme.Fade(jobColor, 0.5f) : jobColor, job);
+            at.X += ImGui.CalcTextSize(job).X + ChipGap;
+        }
+
+        dl.AddText(at, placed ? Theme.Muted : Theme.TextBright, name);
+        if (!placed) return;
+
+        at.X += ImGui.CalcTextSize(name).X + ChipGap;
+        dl.AddText(at, Theme.Accent, slot);
+    }
+
     public static float SwatchChipWidth(string name) =>
         ImGui.GetTextLineHeight() * 0.72f + ChipGap + ImGui.CalcTextSize(name).X + ChipPad.X * 2;
 

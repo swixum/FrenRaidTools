@@ -273,23 +273,16 @@ public partial class MainWindow
         }
 
         var volume = C.TtsVolume;
-        if (Widgets.RowDragInt("Volume", "", ref volume, 0, 100))
+        if (Widgets.RowInputInt("Volume", "", ref volume, 0, 100))
         {
             C.TtsVolume = volume;
             Touch();
         }
 
         var gap = C.TtsMinGap;
-        if (Widgets.RowDrag("Minimum gap", "", ref gap, 0f, 5f, "%.1fs"))
+        if (Widgets.RowInputFloat("Minimum gap", "", ref gap, 0f, 5f, 0.1f, "%.1fs"))
         {
             C.TtsMinGap = gap;
-            Touch();
-        }
-
-        var onlyInFight = C.TtsOnlyInFight;
-        if (Widgets.RowCheckClick("Only in combat", "", ref onlyInFight))
-        {
-            C.TtsOnlyInFight = onlyInFight;
             Touch();
         }
 
@@ -306,9 +299,9 @@ public partial class MainWindow
             dropped > 0 ? $"{dropped} dropped, queue full" : _plugin.Speech.Status);
     }
 
-    private void DrawLook()
+    private void DrawAppearance()
     {
-        PageHeader("Look", "");
+        PageHeader("Appearance", "");
 
         Widgets.SectionHeader("Accent");
 
@@ -363,7 +356,7 @@ public partial class MainWindow
         Widgets.ListEnd();
 
         ImGui.Spacing();
-        if (Widgets.DangerButton("Reset look"))
+        if (Widgets.DangerButton("Reset appearance"))
         {
             C.AccentColor = Theme.DefaultAccent;
             C.UiScale = 1f;
