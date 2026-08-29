@@ -54,7 +54,7 @@ internal static partial class Widgets
         var h = ImGui.GetFrameHeight();
         ImGui.GetWindowDrawList().AddRectFilled(
             p + new Vector2(0, 2), p + new Vector2(Theme.S(3f), h - 2), Theme.Accent, 2f);
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + RowPad);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Theme.S(10f));
         ImGui.AlignTextToFramePadding();
         ImGui.TextColored(Theme.V(Theme.Accent), title);
         if (detail.Length == 0) return;
@@ -69,8 +69,8 @@ internal static partial class Widgets
         var p = ImGui.GetCursorScreenPos();
         var h = ImGui.GetTextLineHeight();
         dl.AddRectFilled(p + new Vector2(0, 1), p + new Vector2(Theme.S(3f), h), Theme.Accent, 2f);
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + RowPad);
-        ImGui.TextColored(Theme.V(Theme.Heading), text.ToUpperInvariant());
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + Theme.S(10f));
+        ImGui.TextColored(Theme.V(Theme.SectionText), text.ToUpperInvariant());
         ImGui.Spacing();
     }
 
@@ -107,8 +107,8 @@ internal static partial class Widgets
         var end = new Vector2(_cardTop.X + _cardWidth, ImGui.GetCursorScreenPos().Y);
         var dl = ImGui.GetWindowDrawList();
         dl.ChannelsSetCurrent(0);
-        dl.AddRectFilled(_cardTop, end, Theme.ListBg, Theme.S(7f));
-        dl.AddRect(_cardTop, end, Theme.Border, Theme.S(7f));
+        dl.AddRectFilled(_cardTop, end, Theme.ListBg, Theme.S(8f));
+        dl.AddRect(_cardTop, end, Theme.Border, Theme.S(8f));
         dl.ChannelsMerge();
     }
 
@@ -117,10 +117,10 @@ internal static partial class Widgets
         var on = v;
         if (on)
         {
-            ImGui.PushStyleColor(ImGuiCol.FrameBg, Theme.Accent);
-            ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, Theme.AccentHover);
-            ImGui.PushStyleColor(ImGuiCol.FrameBgActive, Theme.Accent);
-            ImGui.PushStyleColor(ImGuiCol.CheckMark, Theme.OnAccent);
+            ImGui.PushStyleColor(ImGuiCol.FrameBg, Theme.CheckOn);
+            ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, Theme.CheckOnHover);
+            ImGui.PushStyleColor(ImGuiCol.FrameBgActive, Theme.CheckOn);
+            ImGui.PushStyleColor(ImGuiCol.CheckMark, Theme.CheckMark);
         }
 
         var changed = ImGui.Checkbox(label, ref v);
@@ -166,7 +166,7 @@ internal static partial class Widgets
 
         var dl = ImGui.GetWindowDrawList();
         dl.AddRectFilled(p, p + size,
-            on ? Theme.AccentSoft : hovered ? Theme.RowHover : Theme.PanelBg, Theme.S(5f));
+            on ? Theme.AccentSoft : hovered ? Theme.FrameBg : Theme.PanelBg, Theme.S(5f));
         dl.AddRect(p, p + size, on ? Theme.Accent : Theme.Border, Theme.S(5f));
 
         var y = p.Y + (size.Y - square) * 0.5f;

@@ -117,7 +117,7 @@ public partial class MainWindow
         var byGroup = _plugin.Fight.MechanicFor(entry.Group);
         if (!string.IsNullOrWhiteSpace(byGroup)) return byGroup;
         if (entry.Call.Mechanic.Length > 0) return entry.Call.Mechanic;
-        return entry.Group.Length > 0 ? entry.Group : "Loose calls";
+        return entry.Group.Length > 0 ? entry.Group : "Other calls";
     }
 
     private readonly HashSet<string> _foldedMechanics = [];

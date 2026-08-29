@@ -129,7 +129,7 @@ public partial class MainWindow
 
         var textSize = ImGui.CalcTextSize(label);
         dl.AddText(new Vector2(iconX + Theme.S(24f), start.Y + (height - textSize.Y) * 0.5f),
-            picked ? Theme.TextBright : Theme.Heading, label);
+            picked ? Theme.TextBright : Theme.NavText, label);
 
         if (badge.Length > 0)
         {
@@ -193,7 +193,7 @@ public partial class MainWindow
 
         var textSize = ImGui.CalcTextSize(label);
         dl.AddText(new Vector2(iconX + Theme.S(24f), start.Y + (height - textSize.Y) * 0.5f),
-            on ? Theme.TextBright : Theme.Heading, label);
+            on ? Theme.TextBright : Theme.NavText, label);
 
         if (badge.Length > 0)
         {

@@ -3,176 +3,63 @@ using Dalamud.Bindings.ImGui;
 
 namespace FrenRaidTools.Ui;
 
-internal sealed class Palette
-{
-    public required uint WindowBg { get; init; }
-    public required uint PanelBg { get; init; }
-    public required uint ListBg { get; init; }
-    public required uint SubBg { get; init; }
-    public required uint PopupBg { get; init; }
-    public required uint Border { get; init; }
-    public required uint RowLine { get; init; }
-    public required uint RowHover { get; init; }
-    public required uint TitleBg { get; init; }
-    public required uint TitleBgActive { get; init; }
-    public required uint TextBright { get; init; }
-    public required uint Muted { get; init; }
-    public required uint Heading { get; init; }
-    public required uint FrameBg { get; init; }
-    public required uint FrameHover { get; init; }
-    public required uint FrameActive { get; init; }
-    public required uint Button { get; init; }
-    public required uint ButtonHover { get; init; }
-    public required uint ButtonActive { get; init; }
-    public required uint Header { get; init; }
-    public required uint HeaderHover { get; init; }
-    public required uint HeaderActive { get; init; }
-    public required uint Tab { get; init; }
-    public required uint Separator { get; init; }
-    public required uint ScrollGrab { get; init; }
-    public required uint ScrollGrabHover { get; init; }
-}
-
 internal static class Theme
 {
-    public const uint DefaultAccent = Ice;
+    public const uint DefaultAccent = Violet;
 
-    private const uint Ice = 0xFFE8C24C;
-    private const uint Teal = 0xFFA8D614;
+    private const uint Blue = 0xFFF6823B;
+    private const uint Amber = 0xFF3B88F0;
+    private const uint Violet = 0xFFF56B9B;
+    private const uint Teal = 0xFFA8C93B;
+    private const uint Rose = 0xFF7A5CF0;
 
     public static uint Accent = DefaultAccent;
     public static float Scale = 1f;
     public static bool Colorblind;
-    public static int Skin;
 
-    public static uint AccentHover => Lighten(Accent, 0.26f);
+    public static uint AccentHover => Lighten(Accent, 0.28f);
     public static uint AccentSoft => Wash(Accent, 0x2A);
     public static uint AccentFaint => Wash(Accent, 0x14);
 
-    public static readonly string[] SkinNames = ["Black", "Purple", "Warm"];
+    public const uint WindowBg = 0xFF120E0D;
+    public const uint PopupBg = 0xFF1B1614;
+    public const uint PanelBg = 0xFF14110E;
+    public const uint ListBg = 0xFF110D0B;
+    public const uint SubBg = 0xFF0F0C0A;
+    public const uint Border = 0xFF2F2724;
+    public const uint RowLine = 0xFF1F1916;
+    public const uint RowHover = 0xFF191310;
+    public const uint TitleBg = 0xFF191311;
+    public const uint TitleBgActive = 0xFF221A16;
 
-    private static readonly Palette Black = new()
-    {
-        WindowBg = 0xFF0A0A0A,
-        PanelBg = 0xFF111111,
-        ListBg = 0xFF101010,
-        SubBg = 0xFF0E0E0E,
-        PopupBg = 0xFF161616,
-        Border = 0xFF303030,
-        RowLine = 0xFF242424,
-        RowHover = 0xFF1B1B1B,
-        TitleBg = 0xFF0D0D0D,
-        TitleBgActive = 0xFF161616,
-        TextBright = 0xFFE8E8E8,
-        Muted = 0xFF8C8C8C,
-        Heading = 0xFFB7B7B7,
-        FrameBg = 0xFF1A1A1A,
-        FrameHover = 0xFF242424,
-        FrameActive = 0xFF2E2E2E,
-        Button = 0xFF1F1F1F,
-        ButtonHover = 0xFF2B2B2B,
-        ButtonActive = 0xFF383838,
-        Header = 0xFF242424,
-        HeaderHover = 0xFF303030,
-        HeaderActive = 0xFF3C3C3C,
-        Tab = 0xFF1B1B1B,
-        Separator = 0xFF262626,
-        ScrollGrab = 0xFF333333,
-        ScrollGrabHover = 0xFF454545,
-    };
+    public const uint TextBright = 0xFFECE8E6;
+    public const uint Muted = 0xFF81766E;
+    public const uint Heading = 0xFFB0A398;
+    public const uint SectionText = 0xFFB8A89E;
+    public const uint NavText = 0xFFD1C4BD;
+    public const uint OnAccent = WindowBg;
 
-    private static readonly Palette Purple = new()
-    {
-        WindowBg = 0xFF150A0F,
-        PanelBg = 0xFF211017,
-        ListBg = 0xFF1D0E14,
-        SubBg = 0xFF190B11,
-        PopupBg = 0xFF26121A,
-        Border = 0xFF40212C,
-        RowLine = 0xFF341A24,
-        RowHover = 0xFF29141D,
-        TitleBg = 0xFF1B0D13,
-        TitleBgActive = 0xFF29141D,
-        TextBright = 0xFFF0E4E9,
-        Muted = 0xFF936E7B,
-        Heading = 0xFFC49BA9,
-        FrameBg = 0xFF29151D,
-        FrameHover = 0xFF381D28,
-        FrameActive = 0xFF472532,
-        Button = 0xFF341922,
-        ButtonHover = 0xFF46222E,
-        ButtonActive = 0xFF582C3A,
-        Header = 0xFF3C1B26,
-        HeaderHover = 0xFF4F2533,
-        HeaderActive = 0xFF622F40,
-        Tab = 0xFF30161E,
-        Separator = 0xFF40212C,
-        ScrollGrab = 0xFF582C3A,
-        ScrollGrabHover = 0xFF6E3A4A,
-    };
+    public const uint FrameBg = 0xFF241D1A;
+    public const uint FrameHover = 0xFF332723;
+    public const uint FrameActive = 0xFF40312B;
 
-    private static readonly Palette Warm = new()
-    {
-        WindowBg = 0xFF13100E,
-        PanelBg = 0xFF1D1916,
-        ListBg = 0xFF1A1613,
-        SubBg = 0xFF171310,
-        PopupBg = 0xFF231E1A,
-        Border = 0xFF382F29,
-        RowLine = 0xFF2B2520,
-        RowHover = 0xFF241F1B,
-        TitleBg = 0xFF181411,
-        TitleBgActive = 0xFF241F1B,
-        TextBright = 0xFFEDE7E2,
-        Muted = 0xFF8C8078,
-        Heading = 0xFFB8ACA3,
-        FrameBg = 0xFF241F1B,
-        FrameHover = 0xFF322B25,
-        FrameActive = 0xFF40372F,
-        Button = 0xFF2A2420,
-        ButtonHover = 0xFF3A322B,
-        ButtonActive = 0xFF4B4138,
-        Header = 0xFF322B25,
-        HeaderHover = 0xFF443A32,
-        HeaderActive = 0xFF554940,
-        Tab = 0xFF221D1A,
-        Separator = 0xFF382F29,
-        ScrollGrab = 0xFF453B33,
-        ScrollGrabHover = 0xFF594D43,
-    };
+    public const uint CheckOn = 0xFF5AC832;
+    public const uint CheckOnHover = 0xFF6FD647;
+    public const uint CheckMark = 0xFFFFFFFF;
 
-    private static Palette P => Skin switch
-    {
-        1 => Purple,
-        2 => Warm,
-        _ => Black,
-    };
+    public static uint Said => Lighten(Muted, 0.55f);
 
-    public static uint WindowBg => P.WindowBg;
-    public static uint PanelBg => P.PanelBg;
-    public static uint ListBg => P.ListBg;
-    public static uint SubBg => P.SubBg;
-    public static uint Border => P.Border;
-    public static uint RowLine => P.RowLine;
-    public static uint RowHover => P.RowHover;
-    public static uint TextBright => P.TextBright;
-    public static uint Muted => P.Muted;
-    public static uint Heading => P.Heading;
-    public static uint Said => Lighten(P.Muted, 0.55f);
-    public static uint OnAccent => P.WindowBg;
-
-    public static uint Good => Colorblind ? 0xFF9BD64F : 0xFF7ED13F;
-    public static uint Warn => Colorblind ? 0xFF2E9FE0 : 0xFF3CB2F2;
-    public static uint Danger => Colorblind ? 0xFFB07AD8 : 0xFF5B54F2;
+    public static uint Good => Colorblind ? 0xFF739E00 : 0xFF4FB45A;
+    public static uint Warn => Colorblind ? 0xFF009FE6 : 0xFF3BC0F0;
+    public static uint Danger => Colorblind ? 0xFFA779CC : 0xFF5050E0;
 
     public static readonly (string Name, uint Color)[] Swatches =
     [
-        ("Ice", Ice),
+        ("Blue", Blue),
+        ("Amber", Amber),
+        ("Violet", Violet),
         ("Teal", Teal),
-        ("Mint", 0xFF9BE86A),
-        ("Plum", 0xFFD86AB0),
-        ("Ember", 0xFF4C7CF2),
-        ("Bone", 0xFFC8CFD2),
+        ("Rose", Rose),
     ];
 
     public static float S(float px) => px * Scale;
@@ -213,23 +100,61 @@ internal static class Theme
         return r * 299 + g * 587 + b * 114 > 140_000 ? OnAccent : TextBright;
     }
 
-    private const int WindowColorCount = 7;
-    private const int WidgetColorCount = 26;
+    private static readonly (ImGuiCol Col, uint Val)[] WindowColors =
+    [
+        (ImGuiCol.WindowBg, WindowBg),
+        (ImGuiCol.PopupBg, PopupBg),
+        (ImGuiCol.Border, Border),
+        (ImGuiCol.TitleBg, TitleBg),
+        (ImGuiCol.TitleBgActive, TitleBgActive),
+        (ImGuiCol.TitleBgCollapsed, TitleBg),
+        (ImGuiCol.ScrollbarBg, WindowBg),
+    ];
+
+    private static readonly (ImGuiCol Col, uint Val)[] WidgetColors =
+    [
+        (ImGuiCol.Text, TextBright),
+        (ImGuiCol.TextDisabled, Muted),
+        (ImGuiCol.ChildBg, 0x00000000),
+        (ImGuiCol.FrameBg, FrameBg),
+        (ImGuiCol.FrameBgHovered, FrameHover),
+        (ImGuiCol.FrameBgActive, FrameActive),
+        (ImGuiCol.Button, 0xFF30231F),
+        (ImGuiCol.ButtonHovered, 0xFF42312A),
+        (ImGuiCol.ButtonActive, 0xFF564034),
+        (ImGuiCol.Header, 0xFF34271F),
+        (ImGuiCol.HeaderHovered, 0xFF50362A),
+        (ImGuiCol.HeaderActive, 0xFF634032),
+        (ImGuiCol.Tab, 0xFF2A211C),
+        (ImGuiCol.TabHovered, 0xFF50362A),
+        (ImGuiCol.TabActive, 0xFF634032),
+        (ImGuiCol.TabUnfocused, 0xFF241D1A),
+        (ImGuiCol.TabUnfocusedActive, 0xFF4A362C),
+        (ImGuiCol.Separator, 0xFF2F2724),
+        (ImGuiCol.SeparatorHovered, 0xFF50362A),
+        (ImGuiCol.ScrollbarGrab, 0xFF382E2A),
+        (ImGuiCol.ScrollbarGrabHovered, 0xFF4C3F3A),
+    ];
+
+    private static readonly ImGuiCol[] AccentColors =
+    [
+        ImGuiCol.CheckMark, ImGuiCol.SliderGrab, ImGuiCol.SeparatorActive, ImGuiCol.ScrollbarGrabActive,
+    ];
 
     private static readonly (ImGuiStyleVar Var, float Val)[] WindowVars =
     [
-        (ImGuiStyleVar.WindowRounding, 8f),
+        (ImGuiStyleVar.WindowRounding, 9f),
         (ImGuiStyleVar.WindowBorderSize, 1f),
-        (ImGuiStyleVar.ChildRounding, 7f),
+        (ImGuiStyleVar.ChildRounding, 8f),
         (ImGuiStyleVar.PopupRounding, 7f),
     ];
 
     private static readonly (ImGuiStyleVar Var, float Val)[] WidgetVars =
     [
-        (ImGuiStyleVar.FrameRounding, 4f),
+        (ImGuiStyleVar.FrameRounding, 5f),
         (ImGuiStyleVar.GrabRounding, 4f),
         (ImGuiStyleVar.TabRounding, 5f),
-        (ImGuiStyleVar.ScrollbarRounding, 8f),
+        (ImGuiStyleVar.ScrollbarRounding, 6f),
     ];
 
     private static readonly (ImGuiStyleVar Var, Vector2 Val)[] WidgetPads =
@@ -241,62 +166,29 @@ internal static class Theme
 
     public static void PushWindow()
     {
-        var p = P;
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, p.WindowBg);
-        ImGui.PushStyleColor(ImGuiCol.PopupBg, p.PopupBg);
-        ImGui.PushStyleColor(ImGuiCol.Border, p.Border);
-        ImGui.PushStyleColor(ImGuiCol.TitleBg, p.TitleBg);
-        ImGui.PushStyleColor(ImGuiCol.TitleBgActive, p.TitleBgActive);
-        ImGui.PushStyleColor(ImGuiCol.TitleBgCollapsed, p.TitleBg);
-        ImGui.PushStyleColor(ImGuiCol.ScrollbarBg, p.WindowBg);
-
-        foreach (var (v, val) in WindowVars) ImGui.PushStyleVar(v, val);
+        foreach (var (col, val) in WindowColors) ImGui.PushStyleColor(col, val);
+        foreach (var (var, val) in WindowVars) ImGui.PushStyleVar(var, val);
     }
 
     public static void PopWindow()
     {
         ImGui.PopStyleVar(WindowVars.Length);
-        ImGui.PopStyleColor(WindowColorCount);
+        ImGui.PopStyleColor(WindowColors.Length);
     }
 
     public static void PushWidgets()
     {
-        var p = P;
-        ImGui.PushStyleColor(ImGuiCol.Text, p.TextBright);
-        ImGui.PushStyleColor(ImGuiCol.TextDisabled, p.Muted);
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, 0x00000000);
-        ImGui.PushStyleColor(ImGuiCol.FrameBg, p.FrameBg);
-        ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, p.FrameHover);
-        ImGui.PushStyleColor(ImGuiCol.FrameBgActive, p.FrameActive);
-        ImGui.PushStyleColor(ImGuiCol.Button, p.Button);
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, p.ButtonHover);
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, p.ButtonActive);
-        ImGui.PushStyleColor(ImGuiCol.Header, p.Header);
-        ImGui.PushStyleColor(ImGuiCol.HeaderHovered, p.HeaderHover);
-        ImGui.PushStyleColor(ImGuiCol.HeaderActive, p.HeaderActive);
-        ImGui.PushStyleColor(ImGuiCol.Tab, p.Tab);
-        ImGui.PushStyleColor(ImGuiCol.TabHovered, p.HeaderHover);
-        ImGui.PushStyleColor(ImGuiCol.TabActive, p.HeaderActive);
-        ImGui.PushStyleColor(ImGuiCol.TabUnfocused, p.FrameBg);
-        ImGui.PushStyleColor(ImGuiCol.TabUnfocusedActive, p.FrameActive);
-        ImGui.PushStyleColor(ImGuiCol.Separator, p.Separator);
-        ImGui.PushStyleColor(ImGuiCol.SeparatorHovered, p.HeaderHover);
-        ImGui.PushStyleColor(ImGuiCol.ScrollbarGrab, p.ScrollGrab);
-        ImGui.PushStyleColor(ImGuiCol.ScrollbarGrabHovered, p.ScrollGrabHover);
-
-        ImGui.PushStyleColor(ImGuiCol.CheckMark, Accent);
-        ImGui.PushStyleColor(ImGuiCol.SliderGrab, Accent);
-        ImGui.PushStyleColor(ImGuiCol.SeparatorActive, Accent);
-        ImGui.PushStyleColor(ImGuiCol.ScrollbarGrabActive, Accent);
+        foreach (var (col, val) in WidgetColors) ImGui.PushStyleColor(col, val);
+        foreach (var col in AccentColors) ImGui.PushStyleColor(col, Accent);
         ImGui.PushStyleColor(ImGuiCol.SliderGrabActive, AccentHover);
 
-        foreach (var (v, val) in WidgetVars) ImGui.PushStyleVar(v, val * Scale);
-        foreach (var (v, val) in WidgetPads) ImGui.PushStyleVar(v, val * Scale);
+        foreach (var (var, val) in WidgetVars) ImGui.PushStyleVar(var, val * Scale);
+        foreach (var (var, val) in WidgetPads) ImGui.PushStyleVar(var, val * Scale);
     }
 
     public static void PopWidgets()
     {
         ImGui.PopStyleVar(WidgetVars.Length + WidgetPads.Length);
-        ImGui.PopStyleColor(WidgetColorCount);
+        ImGui.PopStyleColor(WidgetColors.Length + AccentColors.Length + 1);
     }
 }

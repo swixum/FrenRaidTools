@@ -42,14 +42,14 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var overlay = C.OverlayOn;
-        if (Widgets.RowCheckClick("Overlay", "Text on screen", ref overlay))
+        if (Widgets.RowCheckClick("Overlay", "", ref overlay))
         {
             C.OverlayOn = overlay;
             Touch();
         }
 
         var tts = C.TtsOn;
-        if (Widgets.RowCheckClick("Voice", "Calls spoken", ref tts))
+        if (Widgets.RowCheckClick("Voice", "", ref tts))
         {
             C.TtsOn = tts;
             Touch();
@@ -94,8 +94,7 @@ public partial class MainWindow
         Widgets.ListBegin();
 
         var recording = diag.On;
-        if (Widgets.RowCheckClick("Write a diagnostics file",
-                "Every event and call",
+        if (Widgets.RowCheckClick("Write a diagnostics file", "",
                 ref recording, id: "diaglog"))
         {
             if (recording) diag.Start();
@@ -106,7 +105,7 @@ public partial class MainWindow
         }
 
         var armed = C.DiagInReplay;
-        if (Widgets.RowCheckClick("Start it for a duty replay", "",
+        if (Widgets.RowCheckClick("Start on a duty replay", "",
                 ref armed, id: "diagreplay"))
         {
             C.DiagInReplay = armed;

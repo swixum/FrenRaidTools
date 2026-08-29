@@ -116,7 +116,6 @@ public sealed class Configuration : IPluginConfiguration
         return pick;
     }
 
-    public int Skin { get; set; }
     public uint AccentColor { get; set; } = Theme.DefaultAccent;
     public float UiScale { get; set; } = 1f;
     public bool Colorblind { get; set; }
@@ -183,8 +182,7 @@ public sealed class Configuration : IPluginConfiguration
         TtsVolume = Math.Clamp(TtsVolume, 0, 100);
         TtsMinGap = Math.Clamp(TtsMinGap, 0f, 5f);
         TtsVoice ??= "";
-        Skin = Math.Clamp(Skin, 0, Theme.SkinNames.Length - 1);
-        if (AccentColor >> 24 == 0) AccentColor = Theme.DefaultAccent;
+        if (AccentColor >> 24 == 0 || AccentColor == RetiredAccent) AccentColor = Theme.DefaultAccent;
     }
 
     private void DropSpareBlankSetups()
@@ -207,6 +205,8 @@ public sealed class Configuration : IPluginConfiguration
         _dirty = false;
         Service.PluginInterface.SavePluginConfig(this);
     }
+
+    private const uint RetiredAccent = 0xFFE8C24C;
 
     private const double SaveDelaySeconds = 0.6;
 

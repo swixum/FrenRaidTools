@@ -38,7 +38,6 @@ public sealed class EntryWindow : Window
         Theme.Accent = C.AccentColor;
         Theme.Scale = Math.Clamp(C.UiScale, 0.8f, 1.6f);
         Theme.Colorblind = C.Colorblind;
-        Theme.Skin = C.Skin;
 
         SizeConstraints = new WindowSizeConstraints
         {
@@ -78,6 +77,6 @@ public sealed class EntryWindow : Window
         if (Widgets.GhostButton("Open Roles")) _plugin.MainWindow.Show(MainWindow.Nav.Roles);
 
         ImGui.SameLine(0, Theme.S(6f));
-        if (Widgets.AccentButton("OK")) IsOpen = false;
+        if (Widgets.AccentButton("Done")) IsOpen = false;
     }
 }

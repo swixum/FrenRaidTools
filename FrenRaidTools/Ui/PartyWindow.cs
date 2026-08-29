@@ -27,7 +27,6 @@ public sealed class PartyWindow : Window
         Theme.Accent = C.AccentColor;
         Theme.Scale = Math.Clamp(C.UiScale, 0.8f, 1.6f);
         Theme.Colorblind = C.Colorblind;
-        Theme.Skin = C.Skin;
 
         SizeConstraints = new WindowSizeConstraints
         {

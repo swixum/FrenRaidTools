@@ -90,7 +90,7 @@ public partial class MainWindow
             }
 
             var index = C.ActiveSetup;
-            Widgets.RowBegin("Group", "Swap between statics", Theme.S(290f));
+            Widgets.RowBegin("Group", "", Theme.S(290f));
             ImGui.SetNextItemWidth(Theme.S(190f));
             if (ImGui.Combo("##setup", ref index, names, names.Length))
             {
@@ -109,7 +109,7 @@ public partial class MainWindow
 
         Widgets.RowBegin("Saved groups", $"{C.Setups.Count} on file", Theme.S(290f));
 
-        if (Widgets.GhostButton("New"))
+        if (Widgets.GhostButton("Add"))
         {
             C.Setups.Add(new Roster { Name = $"Group {C.Setups.Count + 1}" });
             C.ActiveSetup = C.Setups.Count - 1;

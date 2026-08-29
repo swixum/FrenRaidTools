@@ -38,8 +38,8 @@ internal static partial class Widgets
         var dl = ImGui.GetWindowDrawList();
         var max = new Vector2(_listTop.X + _listWidth, ImGui.GetCursorScreenPos().Y);
         dl.ChannelsSetCurrent(0);
-        dl.AddRectFilled(_listTop, max, Theme.ListBg, Theme.S(7f));
-        dl.AddRect(_listTop, max, Theme.Border, Theme.S(7f));
+        dl.AddRectFilled(_listTop, max, Theme.ListBg, Theme.S(8f));
+        dl.AddRect(_listTop, max, Theme.Border, Theme.S(8f));
         dl.ChannelsMerge();
     }
 
@@ -57,7 +57,7 @@ internal static partial class Widgets
 
         var dl = ImGui.GetWindowDrawList();
         dl.AddRectFilled(start, start + new Vector2(width, height),
-            hovered ? Theme.RowHover : Theme.SubBg, Theme.S(7f),
+            hovered ? Theme.RowHover : Theme.SubBg, Theme.S(8f),
             open ? ImDrawFlags.RoundCornersTop : ImDrawFlags.RoundCornersAll);
 
         Caret(dl, start, height, open);
@@ -291,6 +291,20 @@ internal static partial class Widgets
         return hit;
     }
 
+    public static bool RowInputInt(string name, string hint, ref int v, int min, int max,
+        float width = 130f, bool sub = false)
+    {
+        RowBegin(name, hint, Theme.S(width), sub);
+
+        var typed = v;
+        var hit = ImGui.InputInt("##rn" + name, ref typed, 1, 2);
+        if (hit) v = Math.Clamp(typed, min, max);
+        Tip($"{min} to {max}");
+
+        RowEnd();
+        return hit;
+    }
+
     public static bool RowCombo(string name, string hint, ref int index, string[] items,
         float width = 190f, bool sub = false)
     {
@@ -415,7 +429,7 @@ internal static partial class Widgets
         const string chevron = ">";
         ImGui.SetCursorPos(new Vector2(start.X + width - RowPad - ImGui.CalcTextSize(chevron).X,
             start.Y + (rowH - lineH) * 0.5f));
-        ImGui.TextColored(Theme.V(Theme.Accent), chevron);
+        ImGui.TextColored(Theme.V(Theme.Muted), chevron);
 
         ImGui.SetCursorPos(new Vector2(start.X, start.Y + rowH));
         return hit;
