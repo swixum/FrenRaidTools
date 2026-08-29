@@ -6,8 +6,7 @@ namespace FrenRaidTools.Ui;
 
 public partial class MainWindow
 {
-    private string _renaming = "";
-    private int _renameIndex = -1;
+    private readonly GroupBar _groups = new("roles");
 
     private List<PartyMember> PartyGlance() => RosterGlance.Members(_now);
 
@@ -15,13 +14,15 @@ public partial class MainWindow
 
     private void DrawRoles()
     {
-        var roster = C.Roles;
+        var shown = C.Roles;
 
-        PageHeader("Roles", roster.Complete ? "full party" : $"{roster.Filled} of 8 set");
+        PageHeader("Roles", shown.Complete ? "full party" : $"{shown.Filled} of {Slots.Count} set");
 
         Widgets.PageNote("Who is MT, M1, R2 when a call names a spot.");
 
-        DrawSetupBar(roster);
+        DrawSetupBar();
+
+        var roster = C.Roles;
         DrawJobSpots();
         DrawRoleRows(roster);
         DrawRoleActions(roster);
@@ -57,92 +58,10 @@ public partial class MainWindow
         Widgets.FoldEnd();
     }
 
-    private void DrawSetupBar(Roster roster)
+    private void DrawSetupBar()
     {
         Widgets.SectionHeader("Group");
-        Widgets.ListBegin();
-
-        if (_renameIndex == C.ActiveSetup)
-        {
-            Widgets.RowBegin("Name", "Enter to keep it", Theme.S(290f));
-            ImGui.SetNextItemWidth(Theme.S(210f));
-            var buffer = _renaming;
-            var done = ImGui.InputText("##rename", ref buffer, 40, ImGuiInputTextFlags.EnterReturnsTrue);
-            _renaming = buffer;
-
-            ImGui.SameLine(0, Theme.S(6f));
-            if (Widgets.AccentButton("Save") || done)
-            {
-                var name = _renaming.Trim();
-                if (name.Length > 0) roster.Name = name;
-                _renameIndex = -1;
-                Touch();
-            }
-            Widgets.RowEnd();
-        }
-        else
-        {
-            var names = new string[C.Setups.Count];
-            for (var i = 0; i < C.Setups.Count; i++)
-            {
-                var label = C.Setups[i].Name ?? "";
-                names[i] = label.Length > 0 ? label : $"Group {i + 1}";
-            }
-
-            var index = C.ActiveSetup;
-            Widgets.RowBegin("Group", "", Theme.S(290f));
-            ImGui.SetNextItemWidth(Theme.S(190f));
-            if (ImGui.Combo("##setup", ref index, names, names.Length))
-            {
-                C.ActiveSetup = Math.Clamp(index, 0, C.Setups.Count - 1);
-                Touch();
-            }
-
-            ImGui.SameLine(0, Theme.S(6f));
-            if (Widgets.GhostButton("Rename"))
-            {
-                _renaming = roster.Name ?? "";
-                _renameIndex = C.ActiveSetup;
-            }
-            Widgets.RowEnd();
-        }
-
-        Widgets.RowBegin("Saved groups", $"{C.Setups.Count} on file", Theme.S(290f));
-
-        if (Widgets.GhostButton("Add"))
-        {
-            C.Setups.Add(new Roster { Name = $"Group {C.Setups.Count + 1}" });
-            C.ActiveSetup = C.Setups.Count - 1;
-            _renameIndex = -1;
-            Touch();
-        }
-
-        ImGui.SameLine(0, Theme.S(6f));
-        if (Widgets.GhostButton("Copy"))
-        {
-            var copy = roster.Copy();
-            copy.Name = (roster.Name ?? "Group") + " copy";
-            C.Setups.Add(copy);
-            C.ActiveSetup = C.Setups.Count - 1;
-            _renameIndex = -1;
-            Touch();
-        }
-
-        ImGui.SameLine(0, Theme.S(6f));
-        var canDelete = C.Setups.Count > 1;
-        if (!canDelete) ImGui.BeginDisabled();
-        if (Widgets.DangerButton("Delete"))
-        {
-            C.Setups.RemoveAt(C.ActiveSetup);
-            C.ActiveSetup = Math.Clamp(C.ActiveSetup, 0, C.Setups.Count - 1);
-            _renameIndex = -1;
-            Touch();
-        }
-        if (!canDelete) ImGui.EndDisabled();
-        if (!canDelete) Widgets.Tip("The last group stays");
-
-        Widgets.RowEnd();
-        Widgets.ListEnd();
+        _groups.Draw(C, _now);
     }
 
     private void DrawRoleRows(Roster roster)

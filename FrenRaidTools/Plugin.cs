@@ -68,7 +68,8 @@ public sealed class Plugin : IDalamudPlugin
 
         Service.CommandManager.AddHandler(Command, new CommandInfo(OnCommand)
         {
-            HelpMessage = "Open Fren Raid Tools. /frt roles jumps to roles, /frt p opens the party list.",
+            HelpMessage = "Open Fren Raid Tools. /frt p opens the party list, "
+                          + "/frt g <name> switches group.",
         });
 
         Service.CommandManager.AddHandler(CommandAlias, new CommandInfo(OnCommand)
@@ -114,6 +115,7 @@ public sealed class Plugin : IDalamudPlugin
             Board.Tick(_clock);
             AddStratSpots();
             ResumeDiag();
+            OfferGroup();
             FillRoles();
             Parser.Tick(_clock);
             Runtime.Tick(_fightClock);
@@ -137,6 +139,7 @@ public sealed class Plugin : IDalamudPlugin
         SeatSync.Reset();
         RosterGlance.Reset();
         ArmRoleFill();
+        ArmOffer(zone);
 
         if (Config.AskOnEntry && zone == EngineInfo.DancingMadTerritory) Entry.Open();
     }
@@ -150,6 +153,7 @@ public sealed class Plugin : IDalamudPlugin
 
         if (Config.DiagOn && !Diag.On) Diag.Start();
         ArmRoleFill();
+        ArmOffer(Game.Zone);
     }
 
     public const double RoleFillWindowSeconds = 60.0;
@@ -167,12 +171,28 @@ public sealed class Plugin : IDalamudPlugin
         _filled = 0;
     }
 
+    private void ArmOffer(uint zone)
+    {
+        if (FightPlans.InZone(zone) is not null) Offer.Arm(_clock);
+        else Offer.Drop();
+    }
+
+    private void OfferGroup()
+    {
+        if (!Offer.Waiting || Game.Fighting) return;
+        if (FightPlans.InZone(Game.Zone) is null) return;
+
+        Offer.Look(Config, RosterGlance.Members(_clock), _clock);
+        if (Offer.Pending >= 0) Entry.Open();
+    }
+
     private void FillRoles()
     {
         if (Runtime.Replaying != _wasReplaying)
         {
             _wasReplaying = Runtime.Replaying;
             ArmRoleFill();
+            ArmOffer(Game.Zone);
         }
 
         if (_fillUntil <= 0) return;
@@ -225,7 +245,16 @@ public sealed class Plugin : IDalamudPlugin
 
     private void OnCommand(string command, string args)
     {
-        var word = args.Trim().ToLowerInvariant();
+        var text = args.Trim();
+        var space = text.IndexOf(' ');
+        var word = (space < 0 ? text : text[..space]).ToLowerInvariant();
+        var rest = space < 0 ? "" : text[(space + 1)..].Trim();
+
+        if (word is "g" or "group")
+        {
+            PickGroup(rest);
+            return;
+        }
 
         if (word is "p" or "party" or "list")
         {
@@ -246,6 +275,53 @@ public sealed class Plugin : IDalamudPlugin
         };
 
         MainWindow.Show(page);
+    }
+
+    private void PickGroup(string wanted)
+    {
+        var on = GroupMatch.Label(Config.Setups, Config.ActiveSetup);
+
+        if (wanted.Length == 0)
+        {
+            Service.ChatGui.Print($"On {on}. Groups: {GroupList()}");
+            return;
+        }
+
+        var at = GroupMatch.ByName(Config.Setups, wanted);
+
+        if (at == GroupMatch.Ambiguous)
+        {
+            Service.ChatGui.Print($"More than one group matches {wanted}. Groups: {GroupList()}");
+            return;
+        }
+
+        if (at < 0)
+        {
+            Service.ChatGui.Print($"No group called {wanted}. Groups: {GroupList()}");
+            return;
+        }
+
+        var label = GroupMatch.Label(Config.Setups, at);
+
+        if (at == Config.ActiveSetup)
+        {
+            Service.ChatGui.Print($"Already on {label}.");
+            return;
+        }
+
+        Config.ActiveSetup = at;
+        Offer.Dismiss();
+        Config.Save(_clock);
+
+        Service.ChatGui.Print($"Now on {label}.");
+        Board.Note($"Now on {label}.");
+    }
+
+    private string GroupList()
+    {
+        var names = new List<string>();
+        for (var i = 0; i < Config.Setups.Count; i++) names.Add(GroupMatch.Label(Config.Setups, i));
+        return string.Join(", ", names);
     }
 
     private void Open() => MainWindow.IsOpen = true;

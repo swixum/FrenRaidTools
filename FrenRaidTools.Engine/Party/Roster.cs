@@ -202,6 +202,46 @@ public sealed class Roster
         return moved >= 0 ? moved : Math.Clamp(active, 0, setups.Count - 1);
     }
 
+    public static int Drop(List<Roster> setups, Roster? doomed, int active)
+    {
+        if (setups is null || setups.Count <= 1 || doomed is null) return active;
+
+        var at = setups.IndexOf(doomed);
+        if (at < 0) return active;
+
+        var staying = setups[Math.Clamp(active, 0, setups.Count - 1)];
+        setups.RemoveAt(at);
+
+        var back = ReferenceEquals(staying, doomed) ? -1 : setups.IndexOf(staying);
+        return back >= 0 ? back : Math.Clamp(at, 0, setups.Count - 1);
+    }
+
+    public static string FreeName(List<Roster> setups, string wanted)
+    {
+        var name = (wanted ?? "").Trim();
+        if (name.Length == 0) name = DefaultName;
+        if (!NameTaken(setups, name)) return name;
+
+        for (var n = 2; n < 100; n++)
+        {
+            var tried = $"{name} {n}";
+            if (!NameTaken(setups, tried)) return tried;
+        }
+
+        return name;
+    }
+
+    public static bool NameTaken(List<Roster> setups, string name)
+    {
+        if (setups is null) return false;
+
+        foreach (var setup in setups)
+            if (string.Equals(setup.Name ?? "", name, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+        return false;
+    }
+
     public void Normalize()
     {
         Players ??= [];

@@ -10,11 +10,13 @@ internal sealed class PartyPanel
     private string _note = "";
     private double _noteUntil;
     private readonly RolePool _rolePool;
+    private readonly GroupBar _groups;
 
     public PartyPanel(string id)
     {
         _id = id;
         _rolePool = new RolePool(id);
+        _groups = new GroupBar(id);
     }
 
     private string ClearPopup => "##clear" + _id;
@@ -24,15 +26,17 @@ internal sealed class PartyPanel
         _note = "";
         _noteUntil = 0;
         _rolePool.Forget();
+        _groups.Forget();
     }
 
     public void Draw(Configuration config, double now)
     {
         var you = Party.YouName();
+
+        _groups.Draw(config, now);
+        ImGui.Spacing();
+
         var verdicts = RosterGlance.Verdicts(config, now);
-
-        DrawGroupPicker(config, now);
-
         var found = _rolePool.Draw(config, now);
         if (found.Length > 0) Say(now, found);
 
@@ -81,32 +85,6 @@ internal sealed class PartyPanel
         else
             ImGui.TextColored(Theme.V(Theme.Warn),
                 "Your name is not in a spot");
-    }
-
-    private void DrawGroupPicker(Configuration config, double now)
-    {
-        if (config.Setups.Count <= 1) return;
-
-        var names = new string[config.Setups.Count];
-        for (var i = 0; i < config.Setups.Count; i++)
-        {
-            var label = config.Setups[i].Name ?? "";
-            names[i] = label.Length > 0 ? label : $"Group {i + 1}";
-        }
-
-        ImGui.AlignTextToFramePadding();
-        ImGui.TextColored(Theme.V(Theme.Muted), "Group");
-        ImGui.SameLine(0, Theme.S(8f));
-
-        var index = config.ActiveSetup;
-        ImGui.SetNextItemWidth(Theme.S(200f));
-        if (ImGui.Combo("##group" + _id, ref index, names, names.Length))
-        {
-            config.ActiveSetup = Math.Clamp(index, 0, config.Setups.Count - 1);
-            config.Save(now);
-        }
-
-        ImGui.Spacing();
     }
 
     private void FillBlanks(Configuration config, double now)
