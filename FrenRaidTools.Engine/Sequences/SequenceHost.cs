@@ -82,6 +82,13 @@ public sealed class SequenceHost
 
     public void AddRange(IEnumerable<Sequence> sequences) => _sequences.AddRange(sequences);
 
+    public void Clear()
+    {
+        Reset();
+        _sequences.Clear();
+        ResetHooks.Clear();
+    }
+
     public int RunningCount => _running.Count;
 
     public int RaisedDropped { get; private set; }

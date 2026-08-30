@@ -190,7 +190,7 @@ public sealed class CallBoard
 
         speech = SpeechText.Plain(speech);
 
-        var duration = on?.Duration ?? (test ? 8.0 : 0.0);
+        var duration = callout.CountdownDuration(on?.Duration, test ? 8.0 : 0.0);
         var linger = Math.Max(0.5, callout.LingerSeconds * _config.OverlayLingerScale);
 
         var remaining = Callout.Remaining(on?.At, duration, FightNow?.Invoke() ?? now);
@@ -239,7 +239,9 @@ public sealed class CallBoard
         var result = Placeholders.Fill(template, args);
         if (result.Ok) return Placeholders.Tidy(result.Text);
 
-        if (!test) LastFault = $"Unresolved: {string.Join(", ", result.Unresolved)}";
+        if (test) return CallText.Words(result.Text);
+
+        LastFault = $"Unresolved: {string.Join(", ", result.Unresolved)}";
         return Placeholders.Bare(result.Text);
     }
 

@@ -24,6 +24,7 @@ public partial class MainWindow : Window
     private readonly Plugin _plugin;
     private Configuration C => _plugin.Config;
     private CallBoard Board => _plugin.Board;
+    private Fight Fight => _plugin.Fight;
 
     private Nav _nav = Nav.Home;
     private string _search = "";

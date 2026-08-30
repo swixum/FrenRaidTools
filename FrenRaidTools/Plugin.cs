@@ -90,16 +90,18 @@ public sealed class Plugin : IDalamudPlugin
 
     private void AddStratSpots()
     {
-        if (Fight.PlanReady) return;
-
         var planned = FightPlans.ByKey(Config.PlanFight) ?? FightPlans.First;
+        if (Fight.PlanReady && Fight.Key == planned.Key) return;
+
         var asset = PlanSource.Asset(planned);
         if (asset is null) return;
 
-        if (!Fight.UsePlan(asset, () => PlanSource.Book(planned, Config.PlanFor(planned.Key)))) return;
+        if (!Fight.Load(planned, asset, () => PlanSource.Book(planned, Config.PlanFor(planned.Key))))
+            return;
 
         Board.PlanCarriesItsOwnCalls();
         Board.SetCatalog(Fight.Catalog);
+        Runtime.FightChanged();
     }
 
     private void OnUpdate(Dalamud.Plugin.Services.IFramework framework)

@@ -17,11 +17,13 @@ public partial class MainWindow
     private CallFilter _filter = CallFilter.All;
     private readonly HashSet<string> _openEditors = [];
 
+    private const int NoPhase = 0;
+
     private void DrawCalls()
     {
-        var catalog = Board.Catalog;
-
         var boss = FightPlans.ByKey(C.PlanFight) ?? FightPlans.First;
+
+        var catalog = Fight.Owners.Only(boss.Key, Board.Catalog).ToList();
 
         DrawBackToCategory();
 
@@ -46,12 +48,14 @@ public partial class MainWindow
 
         if (_search.Length > 0) Widgets.SectionHeader($"{matches.Count} found");
 
-        DrawPhaseTabs(catalog, matches);
+        DrawPhaseTabs(boss, catalog, matches);
     }
 
-    private void DrawPhaseTabs(IReadOnlyList<CatalogEntry> catalog, List<CatalogEntry> matches)
+    private void DrawPhaseTabs(PlannedFight boss, IReadOnlyList<CatalogEntry> catalog,
+        List<CatalogEntry> matches)
     {
-        var phases = catalog.Select(e => e.Call.Phase).Distinct().OrderBy(p => p).ToList();
+        var phases = catalog.Select(e => e.Call.Phase).Distinct()
+            .OrderBy(p => p == NoPhase ? int.MaxValue : p).ToList();
 
         if (phases.Count <= 1)
         {
@@ -67,7 +71,7 @@ public partial class MainWindow
         {
             var all = catalog.Where(e => e.Call.Phase == phase).ToList();
             var on = all.Count(e => !C.MutedCalls.Contains(e.Key));
-            var name = Fight.PhaseName(phase);
+            var name = Fight.PhaseNameFor(boss.Key, phase);
             var shown = matches.Where(e => e.Call.Phase == phase).ToList();
 
             var label = _search.Length > 0
@@ -112,13 +116,7 @@ public partial class MainWindow
         }
     }
 
-    private string MechanicOf(CatalogEntry entry)
-    {
-        var byGroup = _plugin.Fight.MechanicFor(entry.Group);
-        if (!string.IsNullOrWhiteSpace(byGroup)) return byGroup;
-        if (entry.Call.Mechanic.Length > 0) return entry.Call.Mechanic;
-        return entry.Group.Length > 0 ? entry.Group : "Other calls";
-    }
+    private string MechanicOf(CatalogEntry entry) => _plugin.Fight.FoldFor(entry);
 
     private readonly HashSet<string> _foldedMechanics = [];
 
@@ -215,6 +213,12 @@ public partial class MainWindow
         var hint = screen.Length == 0 ? says : $"{says}      on screen: {screen}";
         var (name, tags) = CallText.Head(call, mechanic);
 
+        if (CallText.RepeatsTheMechanic(name, mechanic))
+        {
+            name = says;
+            hint = screen;
+        }
+
         var editWidth = MathF.Max(Widgets.ButtonWidth("Close"), Widgets.ButtonWidth("Edit"));
         var testWidth = Widgets.ButtonWidth("Test");
         var gap = Theme.S(5f);
@@ -282,6 +286,9 @@ public partial class MainWindow
 
         if (call.NeedsParams)
             Widgets.RowNote("Keep the {braces}. They swap for names.", Theme.Warn);
+
+        foreach (var line in CallNotes.Lines(call.Notes))
+            Widgets.RowNoteWrap(line, Theme.Muted);
 
         var resetWidth = Widgets.ButtonWidth("Put it back", "Copy the wording");
         Widgets.RowBegin("", "", resetWidth, sub: true, id: entry.Key + "#acts");

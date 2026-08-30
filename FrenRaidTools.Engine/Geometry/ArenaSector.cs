@@ -50,6 +50,14 @@ public static class ArenaSectors
     public static ArenaSector PlusQuads(this ArenaSector sector, int quads) =>
         sector.PlusEighths(quads * 2);
 
+    public static ArenaSector Between(ArenaSector a, ArenaSector b)
+    {
+        if (!a.IsCardinal() || !b.IsCardinal()) return ArenaSector.Unknown;
+        var step = a.EighthsTo(b);
+        if (step is not (2 or Eighths - 2)) return ArenaSector.Unknown;
+        return a.PlusEighths(step == 2 ? 1 : -1);
+    }
+
     public static ArenaSector Wrap(int index) =>
         Clockwise[((index % Eighths) + Eighths) % Eighths];
 

@@ -33,6 +33,8 @@ public sealed record Callout
 
     public double CountdownOffsetSeconds { get; init; }
 
+    public double CountdownFromStartSeconds { get; init; }
+
     public double SpeechDelaySeconds { get; init; }
 
     public bool OnByDefault { get; init; } = true;
@@ -70,6 +72,9 @@ public sealed record Callout
 
         return Math.Max(now + linger, countdownEnds);
     }
+
+    public double CountdownDuration(double? eventDuration, double fallback = 0.0) =>
+        CountdownFromStartSeconds > 0 ? CountdownFromStartSeconds : eventDuration ?? fallback;
 
     public static double Remaining(double? begunAt, double duration, double fightNow) =>
         begunAt is null ? duration : Math.Max(0, begunAt.Value + duration - fightNow);

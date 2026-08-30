@@ -16,6 +16,7 @@ public interface IWorld
     string? Chosen(string optionKey) => null;
     Actor? Partner() => null;
     int SeatOf(Actor actor) => -1;
+    WaymarkPreset Marks => WaymarkPreset.None;
 }
 
 public sealed class LiveClock : IClock

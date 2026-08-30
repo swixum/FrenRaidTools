@@ -290,6 +290,12 @@ public sealed class Runtime : IDisposable
         ]);
     }
 
+    public void FightChanged()
+    {
+        _installed = false;
+        _host.Clear();
+    }
+
     private void Install()
     {
         if (_installed) return;
@@ -300,7 +306,23 @@ public sealed class Runtime : IDisposable
         _world.Options = _fight.Chosen;
         _world.Buddy = Buddy;
         _world.Seat = actor => _config.Roles.SlotOf(actor.Name);
-        _fight.DancingMad.Install(_host);
+        _world.Preset = () => WaymarkPresets.For(_fight.Key ?? "");
+        if (_fight.RunsDancingMad) _fight.DancingMad.Install(_host);
+
+        foreach (var part in _fight.Local)
+        {
+            try
+            {
+                if (part.Build is not null) _host.Add(part.Build());
+                if (part.Extra is not null)
+                    foreach (var extra in part.Extra(_world)) _host.Add(extra);
+            }
+            catch (Exception ex)
+            {
+                _fight.Faults.Add($"{part.Group}: {ex.Message}");
+                Service.Log.Error(ex, "Local fight sequence would not install.");
+            }
+        }
 
         _installed = true;
     }

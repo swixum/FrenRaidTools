@@ -13,6 +13,8 @@ public static class CallText
             ["buddy"] = "partner",
             ["spot"] = "your spot",
             ["spotSpeech"] = "your spot",
+            ["seat"] = "your seat",
+            ["seatSpeech"] = "your seat",
             ["safe"] = "safe side",
             ["remaining"] = "countdown",
             ["myNumber"] = "your number",
@@ -27,8 +29,13 @@ public static class CallText
     public static string Says(string speech, string text)
     {
         var source = speech.Length > 0 ? speech : text;
-        return Opening(Readable(Strip(source)));
+        return Words(source);
     }
+
+    public static string Words(string template) => Opening(Readable(Strip(template)));
+
+    public static bool RepeatsTheMechanic(string name, string mechanic) =>
+        mechanic.Length > 0 && string.Equals(name, mechanic, StringComparison.OrdinalIgnoreCase);
 
     public static string Screen(string speech, string text)
     {

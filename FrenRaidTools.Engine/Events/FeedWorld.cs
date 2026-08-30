@@ -33,6 +33,10 @@ public sealed class FeedWorld : IWorld
 
     public int SeatOf(Actor actor) => Seat?.Invoke(actor) ?? -1;
 
+    public Func<WaymarkPreset>? Preset { get; set; }
+
+    public WaymarkPreset Marks => Preset?.Invoke() ?? WaymarkPreset.None;
+
     public int StatusCount => _statuses.Count;
 
     public int CastCount => _casts.Count;
