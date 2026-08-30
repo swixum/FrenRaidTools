@@ -17,7 +17,9 @@ public static class Game
         || Service.Condition[ConditionFlag.BoundByDuty56]
         || Service.Condition[ConditionFlag.BoundByDuty95];
 
-    public static bool InTheFight => Zone == EngineInfo.DancingMadTerritory;
+    public static ushort FightZone { get; set; } = EngineInfo.DancingMadTerritory;
+
+    public static bool InTheFight => Zone == FightZone;
 
     public static bool InReplay => Service.Condition[ConditionFlag.DutyRecorderPlayback];
 
@@ -104,7 +106,7 @@ public static class Game
     public static string ZoneName()
     {
         var zone = Zone;
-        if (zone == EngineInfo.DancingMadTerritory) return "Dancing Mad";
+        if (FightPlans.InZone(zone) is { } here) return here.Name;
 
         try
         {

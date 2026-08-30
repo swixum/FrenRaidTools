@@ -367,6 +367,8 @@ public sealed class Runtime : IDisposable
 
         _gate.Installed = _installed;
         _gate.Zone = zone;
+        _gate.FightZone = _fight.Territory;
+        Game.FightZone = _fight.Territory;
         _gate.Replaying = replay;
         _gate.ParserOn = _config.ParserOn;
         Running = _gate.Running;
