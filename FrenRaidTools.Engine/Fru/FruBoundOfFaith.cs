@@ -18,6 +18,10 @@ public sealed class FruBoundOfFaith
 
     public const double TimeoutSeconds = 20;
 
+    public const double PairSeconds = 1.0;
+
+    public const double CastSeconds = 3.0;
+
     public static readonly Callout boundSide = new()
     {
         Description = "Bound of Faith",
@@ -46,11 +50,13 @@ public sealed class FruBoundOfFaith
             e => e.Is(EventKind.Tether, FireTether),
             async (first, run) =>
             {
-                var rest = await run.WaitEvents(Tethers - 1, EventKind.Tether,
-                    e => e.Id == FireTether);
+                var rest = await run.WaitEventsWithin(Tethers - 1,
+                    e => e.Is(EventKind.Tether, FireTether), PairSeconds);
                 if (rest.Count < Tethers - 1) return;
 
-                var start = await run.FindOrWaitForCast(world, e => e.Id == BoundOfFaith);
+                var start = world.ActiveCasts().FirstOrDefault(c => c.Id == BoundOfFaith)
+                    ?? await run.WaitEventUntil(
+                        e => e.Is(EventKind.CastStart, BoundOfFaith), run.Now + CastSeconds);
                 if (start is null) return;
 
                 var tethers = new List<GameEvent> { first };

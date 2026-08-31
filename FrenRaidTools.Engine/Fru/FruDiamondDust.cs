@@ -10,6 +10,8 @@ public sealed class FruDiamondDust
 
     public const string SequenceName = Group + ".kicks";
 
+    public const uint DiamondDust = 0x9D05;
+
     public const uint AxeKick = 0x9D0A;
 
     public const uint ScytheKick = 0x9D0B;
@@ -148,9 +150,12 @@ public sealed class FruDiamondDust
 
     public static Sequence Build(IWorld world) =>
         Sequence.Repeat(SequenceName, TimeoutSeconds,
-            e => e.Is(EventKind.CastStart, AxeKick, ScytheKick),
-            async (start, run) =>
+            e => e.Is(EventKind.CastStart, DiamondDust),
+            async (dust, run) =>
             {
+                var start = await run.WaitEvent(EventKind.CastStart, AxeKick, ScytheKick);
+                if (start is null) return;
+
                 var axe = start.Id == AxeKick;
 
                 var marks = await run.WaitEvents(Markers, EventKind.HeadMarker, e => true);

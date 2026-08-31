@@ -47,14 +47,6 @@ public sealed class FruFight
     public const uint SpiritTaker = 0x9D60;
     public const uint TheHouseOfLight = 0x9CFD;
     public const uint ThePathOfDarkness = 0x9CB6;
-    public const uint ExplosionTank = 0x9CBA;
-    public const uint ExplosionTankAt9CBB = 0x9CBB;
-    public const uint ExplosionTankAt9CBC = 0x9CBC;
-    public const uint ExplosionTankAt9CBD = 0x9CBD;
-    public const uint ExplosionTankAt9CBE = 0x9CBE;
-    public const uint ExplosionTankAt9CBF = 0x9CBF;
-    public const uint ExplosionTankAt9CC3 = 0x9CC3;
-    public const uint ExplosionTankAt9CC7 = 0x9CC7;
 
     public static readonly Callout absoluteZero = new()
     {
@@ -540,18 +532,6 @@ public sealed class FruFight
         FromPlan = true,
         Notes = "P5 Fulgent Blade, Step In\nNext Wave: Next crossing\nP5 Fulgent Blade, Next Wave",
     };
-    public static readonly Callout explosionTank = new()
-    {
-        Description = "Explosion",
-        Mechanic = "Explosion",
-        Phase = 1,
-        Key = "explosionTank",
-        Speech = "Stay away from the towers",
-        Text = "Away from the towers" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        Notes = "Tanks only.",
-    };
 
     public static readonly Callout cyclonicBreakB0 = new()
     {
@@ -559,8 +539,8 @@ public sealed class FruFight
         Mechanic = "Cyclonic Break",
         Phase = 1,
         Key = "cyclonicBreakB0",
-        Speech = "Partners",
-        Text = "Partners" + Callout.CountdownToken,
+        Speech = "Proteans, then partners",
+        Text = "Proteans, then partners" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
@@ -571,19 +551,20 @@ public sealed class FruFight
         Mechanic = "Cyclonic Break",
         Phase = 1,
         Key = "cyclonicBreakB1",
-        Speech = "Spread",
-        Text = "Spread" + Callout.CountdownToken,
+        Speech = "Proteans, then spread",
+        Text = "Proteans, then spread" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
-    public static readonly Callout cyclonicBreakB2 = new()
+    public static readonly Callout cyclonicBreakB3 = new()
     {
         Description = "Cyclonic Break",
         Mechanic = "Cyclonic Break",
         Phase = 1,
-        Key = "cyclonicBreakB2",
-        Speech = "Move",
-        Text = "Move" + Callout.CountdownToken,
+        Key = "cyclonicBreakB3",
+        Speech = "Move, partners",
+        Text = "Move, partners" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
@@ -594,8 +575,8 @@ public sealed class FruFight
         Mechanic = "Cyclonic Break",
         Phase = 1,
         Key = "cyclonicBreakB4",
-        Speech = "Dodge",
-        Text = "Dodge" + Callout.CountdownToken,
+        Speech = "Move, spread",
+        Text = "Move, spread" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
@@ -606,6 +587,18 @@ public sealed class FruFight
         Mechanic = "Cyclonic Break",
         Phase = 1,
         Key = "cyclonicBreakB6",
+        Speech = "Move",
+        Text = "Move" + Callout.CountdownToken,
+        FromDuration = true,
+        LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
+    };
+    public static readonly Callout cyclonicBreakB8 = new()
+    {
+        Description = "Cyclonic Break",
+        Mechanic = "Cyclonic Break",
+        Phase = 1,
+        Key = "cyclonicBreakB8",
         Speech = "Move",
         Text = "Move" + Callout.CountdownToken,
         FromDuration = true,
@@ -905,7 +898,7 @@ public sealed class FruFight
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
-        Notes = "MT: West if tanking\nOT: West if tanking\nH1: Stack middle, seven\nH2: Stack middle, seven\nM1: Stack middle, seven\nM2: Stack middle, seven\nR1: Stack middle, seven\nR2: Stack middle, seven",
+        Notes = "MT: West if baiting, else middle\nOT: West if baiting, else middle\nH1: Stack middle, seven\nH2: Stack middle, seven\nM1: Stack middle, seven\nM2: Stack middle, seven\nR1: Stack middle, seven\nR2: Stack middle, seven",
     };
     public static readonly Callout akhMornB1 = new()
     {
@@ -1252,18 +1245,19 @@ public sealed class FruFight
                 if (start.Id is 0x9CD0 or 0x9D89) run.Call(cyclonicBreakB0, start);
                 if (start.Id is 0x9CD4 or 0x9D8A) run.Call(cyclonicBreakB1, start);
                 var e2 = await run.WaitEvent(EventKind.AbilityHit, 0x9CD1);
-                run.Call(cyclonicBreakB2, e2);
+                if (start.Id is 0x9CD0 or 0x9D89) run.Call(cyclonicBreakB3, e2);
+                if (start.Id is 0x9CD4 or 0x9D8A) run.Call(cyclonicBreakB4, e2);
                 await run.WaitMs(1000);
-                var e4 = await run.WaitEvent(EventKind.AbilityHit, 0x9CD2);
-                run.Call(cyclonicBreakB4, e4);
+                var e6 = await run.WaitEvent(EventKind.AbilityHit, 0x9CD2);
+                run.Call(cyclonicBreakB6, e6);
                 if (start.Id is 0x9CD0 or 0x9CD4)
                 {
                 await run.WaitMs(1000);
                 }
                 if (start.Id is 0x9CD0 or 0x9CD4)
                 {
-                var e6 = await run.WaitEvent(EventKind.AbilityHit, 0x9CD2);
-                run.Call(cyclonicBreakB6, e6);
+                var e8 = await run.WaitEvent(EventKind.AbilityHit, 0x9CD2);
+                run.Call(cyclonicBreakB8, e8);
                 }
             });
     public static Sequence TurnOfTheHeavensBeats(IWorld world) =>
@@ -1376,8 +1370,8 @@ public sealed class FruFight
             async (start, run) =>
             {
                 SeatCalls.Say(run, akhMornB0, start, world,
-                    ["West if tanking", "West if tanking", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven"],
-                    ["West if tanking, otherwise middle", "West if tanking, otherwise middle", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven"]);
+                    ["West if baiting, else middle", "West if baiting, else middle", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven", "Stack middle, seven"],
+                    ["West if baiting, otherwise stack middle", "West if baiting, otherwise stack middle", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven", "Stack middle with the seven"]);
                 var e1 = await run.FindOrWaitForCast(world, e => e.Id is 0x9D39);
                 if (e1 is null) return;
                 run.Call(akhMornB1, e1);
@@ -1525,8 +1519,7 @@ public sealed class FruFight
             (DarkestDanceTank, darkestDanceTank),
             (PowderMarkTrailTank, powderMarkTrailTank),
             (QuadrupleSlapXTank, quadrupleSlapXTank),
-            (SomberDanceTank, somberDanceTank),
-            (ExplosionTank, explosionTank), (ExplosionTankAt9CBB, explosionTank), (ExplosionTankAt9CBC, explosionTank), (ExplosionTankAt9CBD, explosionTank), (ExplosionTankAt9CBE, explosionTank), (ExplosionTankAt9CBF, explosionTank), (ExplosionTankAt9CC3, explosionTank), (ExplosionTankAt9CC7, explosionTank));
+            (SomberDanceTank, somberDanceTank));
 
         yield return CastCalls.CooledWhen(Group + "NotTank", Cooldown,
             () => !JobKinds.Tanking(world),

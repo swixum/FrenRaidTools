@@ -8,9 +8,9 @@
     <Platforms>x64</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>FrenRaidTools</AssemblyName>
-    <Version>1.0.0.27</Version>
-    <AssemblyVersion>1.0.0.27</AssemblyVersion>
-    <FileVersion>1.0.0.27</FileVersion>
+    <Version>1.0.0.28</Version>
+    <AssemblyVersion>1.0.0.28</AssemblyVersion>
+    <FileVersion>1.0.0.28</FileVersion>
     <RootNamespace>FrenRaidTools</RootNamespace>
     <OutputType>Library</OutputType>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
