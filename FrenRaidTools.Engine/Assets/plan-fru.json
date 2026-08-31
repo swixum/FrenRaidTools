@@ -1,0 +1,911 @@
+{
+  "licence": "MIT",
+  "fightKey": "fru",
+  "title": "Futures Rewritten (Ultimate)",
+  "subtitle": "FRU Patch 7.11",
+  "plan": {
+    "name": "naur",
+    "label": "NAUR",
+    "links": [
+      {
+        "name": "P1: Fatebreaker",
+        "url": "https://tinyurl.com/lesbin-p1"
+      },
+      {
+        "name": "P2: Diamond Dust / Light Rampant",
+        "url": "https://tinyurl.com/lesbin-p2"
+      },
+      {
+        "name": "P2: Ice Veil Intermission",
+        "url": "https://tinyurl.com/lesbin-intermission"
+      },
+      {
+        "name": "P3: Ultimate Relativity",
+        "url": "https://tinyurl.com/lesbin-ur"
+      },
+      {
+        "name": "P3: Sextuple Apoc",
+        "url": "https://raidplan.io/plan/gU44027CtpmKs-sC"
+      },
+      {
+        "name": "P4: Darklit Dragonsong",
+        "url": "https://tinyurl.com/lesbin-darklit"
+      },
+      {
+        "name": "P4: Crystalize Time",
+        "url": "https://tinyurl.com/lesbin-ct"
+      },
+      {
+        "name": "P5: Pandora",
+        "url": "https://slides.com/ultiproject/frup5/scroll"
+      }
+    ]
+  },
+  "seats": [
+    {
+      "key": "MT",
+      "role": "Tank",
+      "party": 1
+    },
+    {
+      "key": "OT",
+      "role": "Tank",
+      "party": 2
+    },
+    {
+      "key": "H1",
+      "role": "Healer",
+      "party": 1
+    },
+    {
+      "key": "H2",
+      "role": "Healer",
+      "party": 2
+    },
+    {
+      "key": "M1",
+      "role": "Melee",
+      "party": 1
+    },
+    {
+      "key": "M2",
+      "role": "Melee",
+      "party": 2
+    },
+    {
+      "key": "R1",
+      "role": "Ranged",
+      "party": 1
+    },
+    {
+      "key": "R2",
+      "role": "Ranged",
+      "party": 2
+    }
+  ],
+  "fixedOptions": [
+    {
+      "key": "p4-am",
+      "label": "P4 Akh Morn",
+      "value": "71",
+      "valueLabel": "7-1 (Default)",
+      "dropped": [
+        "6-2"
+      ]
+    }
+  ],
+  "tabs": {
+    "P1: Fatebreaker": [
+      "p1"
+    ],
+    "P2: Usurper of Frost": [
+      "p2"
+    ],
+    "P3: Oracle of Darkness": [
+      "p3"
+    ],
+    "P4: Roommates": [
+      "p4-am",
+      "p4"
+    ],
+    "P5: Pandora": [
+      "p5"
+    ]
+  },
+  "phases": [
+    {
+      "name": "Setup",
+      "tag": "p1",
+      "description": {
+        "text": "G1 = Red/Purple, G2 = Yellow/Blue\nUtopian Sky: Role + Fixed Tether (default)\nFall of Faith: Light Party Conga"
+      }
+    },
+    {
+      "name": "Cyclonic Break",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Cyclonic Break (Lightning)",
+          "description": {
+            "text": "Lightning = Spreads\nSupports CCW, DPS CW\nCones repeat - dodge Back after 2nd"
+          },
+          "image": "./fru/naur-cyclonic-lightning.webp"
+        },
+        {
+          "name": "Cyclonic Break (Fire)",
+          "description": {
+            "text": "Fire = Partners\nSupports CCW, DPS CW\nCones repeat - dodge Back after 2nd"
+          },
+          "image": "./fru/naur-cyclonic-fire.webp"
+        }
+      ]
+    },
+    {
+      "name": "Utopian Sky",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Utopian Sky (Tank Buster)",
+          "description": {
+            "text": "MT/OT debuff - AoE on expire hits closest player\nTanks stack 1 wall-notch toward each other"
+          },
+          "image": "./fru/naur-utopia-tb.webp"
+        },
+        {
+          "name": "Clones + Element",
+          "description": {
+            "text": "Fire = Light Parties, Lightning = Spreads\nClone Hand Up = move In toward boss\nDPS spread 4 wall-notches from shurikens"
+          },
+          "image": "./fru/naur-utopia-clones.webp"
+        },
+        {
+          "name": "Burnt Strike + Tethers",
+          "description": {
+            "text": "Burnt Strike KB through Middle\n2 players tethered w/ 4-player Fire stacks\nShort Tether = South, Long Tether = North"
+          },
+          "seats": {
+            "MT": {
+              "text": "If 2 DPS tethered: MT flex South"
+            },
+            "M1": {
+              "text": "If 2 Supports tethered: M1 flex North"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fall of Faith",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Fall of Faith",
+          "description": {
+            "text": "G1 West, G2 East\nTether order: R1, H1, M1, MT, OT, M2, H2, R2\n1, 3 West / 2, 4 East\nLightning = 3 Cones, Fire = 1 Stack Cone\nOnly Melee/Tanks flex sides"
+          },
+          "image": "./fru/naur-fof.webp"
+        },
+        {
+          "name": "Bait Positions",
+          "description": {
+            "text": "Tether positions: 1st = Boss, 2nd = NW, 3rd = N, 4th = NE\nOther Tether = Middle Bait\nFiller closest to E/W = North Bait\nFiller furthest from E/W = South Bait"
+          },
+          "image": "./fru/naur-fof-baits.webp"
+        }
+      ]
+    },
+    {
+      "name": "Final Towers",
+      "tag": "p1",
+      "mechanics": [
+        {
+          "name": "Towers",
+          "description": {
+            "text": "Lightning = Stay Out, Fire = KB into tower\nFixed north to south: H1, Caster, H2\nFills north to south: M1, M2, Phys Ranged"
+          },
+          "image": "./fru/naur-final-towers.webp"
+        }
+      ]
+    },
+    {
+      "name": "Diamond Dust",
+      "tag": "p2",
+      "mechanics": [
+        {
+          "name": "Partner Swap",
+          "description": {
+            "text": "Color pairs\nIf 1st circles are on Letters, Unmarked close on Letters, Marked on Numbers\nIf 1st circles on Numbers, Unmarked close on Numbers, Marked on Letters"
+          },
+          "image": "./fru/naur-dd-partner-swap.webp"
+        },
+        {
+          "name": "Scythe Kick",
+          "description": {
+            "text": "Reap = Scythe Kick = Close Safe\nProteans bait super close\nMarked: Drop starburst on inner ring after Scythe, dodge back Center"
+          },
+          "image": "./fru/naur-dd-scythe.webp"
+        },
+        {
+          "name": "Axe Kick",
+          "description": {
+            "text": "Cleave = Axe Kick = Far Safe\nProteans bait just beyond outer ring\nProteans can move in as soon as Axe Kick castbar finishes\nMarked: Drop starburst on edge, then move in"
+          },
+          "image": "./fru/naur-dd-axe.webp"
+        },
+        {
+          "name": "Knockback",
+          "description": {
+            "text": "Get KBed to 1st circles\nG1 = Red/Purple, G2 = Yellow/Blue"
+          },
+          "image": "./fru/naur-dd-stacks.webp"
+        },
+        {
+          "name": "After Knockback",
+          "description": {
+            "text": "4-stacks with group\nRotate AWAY from the Shiva inside the arena unless cursed\nLook away from Shiva clone outside the arena"
+          },
+          "image": "./fru/naur-dd-rotate.webp"
+        },
+        {
+          "name": "Cursed Pattern",
+          "description": {
+            "text": "Shiva sits on top of one group at KB\nBoth groups rotate CW after Star AoEs\nGroup rotating TOWARD Shiva slides across before Silence/Stillness"
+          },
+          "image": "./fru/naur-dd-cursed.webp"
+        },
+        {
+          "name": "Silence / Stillness",
+          "description": {
+            "text": "Silence - slide TOWARD after cast bar finishes\nStillness - slide TOWARD as soon as you recognize, then slide AWAY after cast\nFollowed by Hallowed Ray line-stack"
+          },
+          "image": "./fru/naur-dd-silence.webp"
+        }
+      ]
+    },
+    {
+      "name": "Mirror Mirror",
+      "tag": "p2",
+      "mechanics": [
+        {
+          "name": "Mirror Mirror",
+          "description": {
+            "text": "Move to nearest Red Mirror - repeats Scythe donut + Proteans\nIf 2 Red Mirrors equidistant: rotate CW to Red\nH1/T1 careful not to cleave each other\nR1/M1 point Proteans Middle"
+          },
+          "image": "./fru/naur-mirror.webp"
+        },
+        {
+          "name": "Banish III",
+          "description": {
+            "text": "1 Orb = Partner Stacks\n4 Orbs = Spreads\nHealers spread toward Middle for post-Protean healing"
+          },
+          "image": "./fru/naur-banish.webp"
+        }
+      ]
+    },
+    {
+      "name": "Light Rampant",
+      "tag": "p2",
+      "mechanics": [
+        {
+          "name": "Setup",
+          "description": {
+            "text": "Supports North, DPS South (arc around inner circle)\nH/R West, T/M East\nAOEs use eyes or rotate CW for E/W puddles\nRemaining 6 players adjust to solve tethers"
+          },
+          "image": "./fru/naur-lr-setup.webp"
+        },
+        {
+          "name": "3 Support/3 DPS Tethers",
+          "description": {
+            "text": "3 Supports/3 DPS = No rotate, adjust so each side has a clear West/Middle/East"
+          },
+          "image": "./fru/naur-lr-3-3.webp"
+        },
+        {
+          "name": "2 Support/4 DPS Tethers",
+          "description": {
+            "text": "2 Supports/4 DPS = R1 rotate CW to North side\nTethered supports rotate CW to make room"
+          },
+          "image": "./fru/naur-lr-2-4.webp"
+        },
+        {
+          "name": "4 Support/2 DPS Tethers",
+          "description": {
+            "text": "4 Supports/2 DPS = T2 rotate CW to South side\nTethered DPS rotate CW to make room"
+          },
+          "image": "./fru/naur-lr-4-2.webp"
+        },
+        {
+          "name": "Tether Adjusts",
+          "description": {
+            "text": "N/S Tethers swap\nNW/NE Tethers swap"
+          },
+          "image": "./fru/naur-lr-swap.webp"
+        },
+        {
+          "name": "Towers + Puddles",
+          "description": {
+            "text": "Tethers go out to towers\nPuddles go towards Middle, then turn Left after 3rd drop\nMeet up N/S in 4-stacks"
+          },
+          "image": "./fru/naur-lr-towers.webp"
+        },
+        {
+          "name": "Orb Explosions + Final Tower",
+          "description": {
+            "text": "Dodge into first orb explosions\nGo into tower if you have 2 stacks"
+          },
+          "image": "./fru/naur-lr-explosions.webp"
+        },
+        {
+          "name": "Banish III + Proteans",
+          "description": {
+            "text": "Banish III (Partners/Spread), then clocks for Proteans after"
+          },
+          "image": "./fru/naur-lr-banish.webp"
+        }
+      ]
+    },
+    {
+      "name": "Intermission",
+      "tag": "p2",
+      "mechanics": [
+        {
+          "name": "Setup",
+          "description": {
+            "text": "T/M out on Cards\nH/R in on Intercards\nDark = small cone, Light = circle AoE (both target closest)"
+          },
+          "image": "./fru/naur-iv-setup.webp"
+        },
+        {
+          "name": "Bait + Tether",
+          "description": {
+            "text": "Bait AoE, then dodge\nT/M tethered to crystal - leaves puddle\nDon't cone Light with Dark"
+          },
+          "image": "./fru/naur-iv-bait.webp"
+        },
+        {
+          "name": "Kill Order",
+          "description": {
+            "text": "Only kill Light Crystals\nRanged rotate CW\nH help Melee, R help Tanks\nIce Veil < 50% (Melee LB if needed)"
+          },
+          "image": "./fru/naur-iv-kill.webp"
+        }
+      ]
+    },
+    {
+      "name": "UR Cheatsheet",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Cheatsheet",
+          "seats": {}
+        }
+      ]
+    },
+    {
+      "name": "Ultimate Relativity",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Setup",
+          "description": {
+            "text": "Healers NW, Tanks NE\nRanged SW, Melees SE\nG1 adjusts for G2 if roles doubled\nYellow Tether Y = North"
+          },
+          "image": "./fru/naur-ur-setup.webp"
+        },
+        {
+          "name": "1st Fire / Stack",
+          "description": {
+            "text": "10s Fire spread to spots\nOthers stack Mid"
+          },
+          "image": "./fru/naur-ur-fire1.webp"
+        },
+        {
+          "name": "1st Bait / Rewind",
+          "description": {
+            "text": "30s bait rotation beams\nOthers place rewind OUT\nWater = tight to beam\nEruption = past traffic light\n20s Supp place rewind inside traffic"
+          },
+          "image": "./fru/naur-ur-bait1.webp"
+        },
+        {
+          "name": "2nd Fire / Stack",
+          "description": {
+            "text": "20s Fire spread to spots (move at 4s)\nOthers stack Mid\nIce resolves"
+          },
+          "image": "./fru/naur-ur-fire2.webp"
+        },
+        {
+          "name": "2nd Bait / Rewind",
+          "description": {
+            "text": "10s bait beams\n30s place rewind\nEyes face IN (2nd rewinds = all eyes)"
+          },
+          "image": "./fru/naur-ur-bait2.webp"
+        },
+        {
+          "name": "3rd Fire / Stack",
+          "description": {
+            "text": "30s Fire spread to spots\nOthers stack Mid"
+          },
+          "image": "./fru/naur-ur-fire3.webp"
+        },
+        {
+          "name": "3rd Bait",
+          "description": {
+            "text": "20s bait beams\nEveryone else stay Mid, face Out toward traffic light"
+          },
+          "image": "./fru/naur-ur-bait3.webp"
+        },
+        {
+          "name": "Rewind Time",
+          "description": {
+            "text": "Eruptions explode Out\nWater stack + Gazes resolve Mid"
+          },
+          "image": "./fru/naur-ur-rewind.webp"
+        },
+        {
+          "name": "Shell Crusher, Pulsar, Dark Halo",
+          "description": {
+            "text": "Stack Mid for Shell Crusher\nShockwave Pulsar (raidwide)\nDark Halo = shared TB cone"
+          },
+          "image": "./fru/naur-ur-shell.webp"
+        }
+      ]
+    },
+    {
+      "name": "Sextuple Apoc",
+      "tag": "p3",
+      "mechanics": [
+        {
+          "name": "Setup + Swaps",
+          "description": {
+            "text": "Start in boxes - G1 Left, G2 Right (facing Middle)\n6 players get timers: 10s, 29s, 38s\nNeed 1 of each per group\nSwap prio: T1 > T2 > H1 > H2 | M1 > M2 > R1 > R2"
+          },
+          "image": "./fru/naur-apoc-1.webp"
+        },
+        {
+          "name": "Apoc Lights",
+          "description": {
+            "text": "2 lights rotate CW or CCW from opposite Cards/Intercards\n2 more lights spawn Mid following same rotation\nMarkers opposite rotation = safe\nT/H = Red/Purple, DPS = Yellow/Blue"
+          },
+          "image": "./fru/naur-apoc-5.webp"
+        },
+        {
+          "name": "Spirit Taker",
+          "description": {
+            "text": "Spread to your starting box\nMove to your color marker without a light on it"
+          },
+          "image": "./fru/naur-apoc-7.webp"
+        },
+        {
+          "name": "1st Explosions",
+          "description": {
+            "text": "Move to safe markers\nFront-spread: line up on safe marker + opposite-of-origin marker"
+          },
+          "image": "./fru/naur-apoc-8.webp"
+        },
+        {
+          "name": "2nd Explosions (Dark Eruption)",
+          "description": {
+            "text": "Spread near your marker\nIn front = within pizza-slice lines\nBehind = 2.5 wall-notches out\nG1 Left, G2 Right"
+          },
+          "image": "./fru/naur-apoc-9.webp"
+        },
+        {
+          "name": "3rd Explosions",
+          "description": {
+            "text": "Move In to Center\nUse pizza-slice line to avoid 3rd Apocs"
+          },
+          "image": "./fru/naur-apoc-10.webp"
+        },
+        {
+          "name": "4th Explosions",
+          "description": {
+            "text": "Stack in groups of 4\nRe-swap earlier swappers"
+          },
+          "image": "./fru/naur-apoc-11.webp"
+        },
+        {
+          "name": "5th Explosions",
+          "description": {
+            "text": "29s 4-stacks resolve\nDarkest Dance - T2 baits TB out"
+          },
+          "image": "./fru/naur-apoc-12.webp"
+        },
+        {
+          "name": "6th Explosions (Far Bait)",
+          "description": {
+            "text": "Lights started on Letters, so other Letters safe\nCloser Letter is the bait"
+          },
+          "image": "./fru/naur-apoc-13.webp"
+        },
+        {
+          "name": "Knockback",
+          "description": {
+            "text": "G1 Left, G2 Right facing Gaia\nDon't get knocked into the wall"
+          },
+          "image": "./fru/naur-apoc-15.webp"
+        },
+        {
+          "name": "Final Stacks",
+          "description": {
+            "text": "Melee/Tanks can gap close\nStep back to meet Ranged for the stack"
+          },
+          "image": "./fru/naur-apoc-16.webp"
+        }
+      ]
+    },
+    {
+      "name": "Darklit Dragonsong",
+      "tag": "p4-am",
+      "optionKey": "p4-am",
+      "optionValue": "71",
+      "mechanics": [
+        {
+          "name": "Setup",
+          "description": {
+            "text": "Memory Crystal spawns N\nTank pull Shiva to Mid"
+          },
+          "image": "./fru/naur-dl-setup.webp"
+        },
+        {
+          "name": "Akh Rhai",
+          "description": {
+            "text": "Stack Mid, dodge when wings sprout to Darklit spots\nHealers NW, Tanks NE\nRanged SW, Melees SE"
+          },
+          "image": "./fru/naur-dl-akh-rhai.webp"
+        },
+        {
+          "name": "Darklit Start",
+          "description": {
+            "text": "1 Healer, 1 Tank, 2 DPS get tethered\nNeed to form Bowtie with tethers"
+          },
+          "image": "./fru/naur-dl-akh-rhai.webp"
+        },
+        {
+          "name": "Bowtie",
+          "description": {
+            "text": "Tethers start as Bowtie = no swaps"
+          },
+          "image": "./fru/naur-dl-bowtie.webp"
+        },
+        {
+          "name": "Hourglass",
+          "description": {
+            "text": "Tethers start as Hourglass = NE + SW swap\n(West DPS + Tank swap)"
+          },
+          "image": "./fru/naur-dl-hourglass.webp"
+        },
+        {
+          "name": "Box",
+          "description": {
+            "text": "Tethers start as Box = East-most swap\n(East DPS + Tank swap)"
+          },
+          "image": "./fru/naur-dl-box.webp"
+        },
+        {
+          "name": "Protean Adjusts",
+          "description": {
+            "text": "Untethered Tank = always East\nUntethered Healer = always West\nIf 2 DPS untethered: G1 DPS adjust other side"
+          },
+          "image": "./fru/naur-dl-same-role.webp"
+        },
+        {
+          "name": "Water Swap",
+          "description": {
+            "text": "If both Waters are on the same side North/South, non-tethers swap vertically\nSwap during Path of Light cast"
+          },
+          "image": "./fru/naur-dl-towers.webp"
+        },
+        {
+          "name": "Towers + Proteans",
+          "description": {
+            "text": "Tethers soak Towers N/S\nNon-Tethers close-bait Proteans from Shiva"
+          },
+          "image": "./fru/naur-dl-towers.webp"
+        },
+        {
+          "name": "Spirit Taker",
+          "description": {
+            "text": "Spread for random Spirit Taker - avoid Crystal N\nTethered go intercards\nUntethered DPS In, Untethered Supp Out\nEast DPS can hide under boss"
+          },
+          "image": "./fru/naur-dl-spirit-taker.webp"
+        },
+        {
+          "name": "Water Stacks",
+          "description": {
+            "text": "Watch Shiva for half room\nWater stacks on safe side number markers\nNorth stack avoid Crystal"
+          },
+          "image": "./fru/naur-dl-somber.webp"
+        },
+        {
+          "name": "Somber Dance",
+          "description": {
+            "text": "TB hits Furthest, then Closest\nT1 Far bait (W or E from Gaia), T2 Close follow\nParty move with Gaia - don't break tether"
+          },
+          "image": "./fru/naur-dl-somber.webp"
+        },
+        {
+          "name": "Akh Morn",
+          "description": {
+            "text": "Party Center, Tank Out\n7 + 1 stacks - discuss which tank baits first\nMT = Shiva aggro, OT = Gaia aggro"
+          },
+          "image": "./fru/naur-dl-akh-morn.webp"
+        },
+        {
+          "name": "Morn Afah",
+          "description": {
+            "text": "Full party stack\nRyne/Gaia HP within 5% or wipe\nTargets player with aggro from Ryne"
+          },
+          "image": "./fru/naur-dl-morn-afah.webp"
+        }
+      ]
+    },
+    {
+      "name": "Crystallize Time",
+      "tag": "p4-am",
+      "optionKey": "p4-am",
+      "optionValue": "71",
+      "mechanics": [
+        {
+          "name": "Debuffs",
+          "description": {
+            "text": "2x Aero/Red = South Intercards\n2x Ice/Red = East/West\n1x Eruption/Blue = North Intercard (Purple Tether), cleanse West (D)\n1x Ice/Blue = S Intercard (Purple Light), cleanse SW (4)\n1x Unholy/Blue = South Intercard (Purple Light), cleanse East (B)\n1x Water/Blue = South Intercard (Purple Light), cleanse SE (3)\n3x Quietus (raid damage), Everyone gets Rewind"
+          },
+          "image": "./fru/naur-ct-debuffs.webp"
+        },
+        {
+          "name": "Setup",
+          "description": {
+            "text": "Support West, DPS East\nAdjust prios (same as Apoc):\nT1 > T2 > H1 > H2\nM1 > M2 > R1 > R2"
+          },
+          "image": "./fru/naur-ct-setup.webp"
+        },
+        {
+          "name": "Initial Positions",
+          "description": {
+            "text": "Ice/Red = E/W (Supp W, DPS E)\nAero/Red = SE/SW\nBlue cleanse on static intercards\nIf 2 DPS / 2 Supp same Red combo, G1 adjusts (Apoc prio)"
+          },
+          "image": "./fru/naur-ct-positions.webp"
+        },
+        {
+          "name": "Tether Intercept",
+          "description": {
+            "text": "Yellow Speed Tethers always N/S\nPurple Tethers diagonal intercards (NE+SW default, can be NW+SE)\nIntercept dragon heads E/W\nGo S intercards\nN Purple intercard = Eruption, S Purple = Ice/Unholy/Water\nDodge N/S Traffic Light Explosions"
+          },
+          "image": "./fru/naur-ct-tether.webp"
+        },
+        {
+          "name": "Water Stack",
+          "description": {
+            "text": "Water stack on group\nS groups shimmy into \"Petal\" shape for KB\nIce/Aero/Eruption resolve\nS Purple Aero knocks group across"
+          },
+          "image": "./fru/naur-ct-water.webp"
+        },
+        {
+          "name": "2nd Traffic Explosion",
+          "description": {
+            "text": "Unholy stack on group, stack intercard, then move N\nAvoid hitting Crystal with Unholy stack\nAeros wait inside S circle for late pops\nIce that dodged S moves N for 2nd traffic dodge"
+          },
+          "image": "./fru/naur-ct-traffic.webp"
+        },
+        {
+          "name": "Exa-Wave",
+          "description": {
+            "text": "Shiva teleports E or W, telegraphs Exa-Wave (4 hits)\nGroup position Middle North\nAeros move to pop dragon heads near 3/4 markers"
+          },
+          "image": "./fru/naur-ct-exa.webp"
+        },
+        {
+          "name": "Cleanse Positions",
+          "description": {
+            "text": "Dodge into 2nd E/W Exa wave\nBlue debuffs to cleanse:\nWest (D), East (B), Southwest (4), Southeast (3)\nCleanse puddles dropped by intercepted dragon heads - pick up near your waymark"
+          },
+          "image": "./fru/naur-ct-cleanse.webp"
+        },
+        {
+          "name": "Place Rewinds",
+          "description": {
+            "text": "Groups use corners of marker\nTanks use edges, several steps out\nG1 Left facing wall, G2 Right facing wall\nTanks closest to wall + closest to other party"
+          },
+          "image": "./fru/naur-ct-rewinds.webp"
+        },
+        {
+          "name": "Spirit Taker",
+          "description": {
+            "text": "Spread for random Spirit Taker after Rewind placement\nOrient using rewind marker:\nTanks close wall, Healers close mid\nRanged far walls, Melee far mid\nG1 Left, G2 Right"
+          },
+          "image": "./fru/naur-ct-spirit.webp"
+        },
+        {
+          "name": "Knockback",
+          "description": {
+            "text": "Get knocked into rewind spot\nIf late: KBI before debuff expires to maybe avoid dying\n2nd KB follows same spots"
+          },
+          "image": "./fru/naur-ct-kb.webp"
+        },
+        {
+          "name": "Akh Morn",
+          "description": {
+            "text": "Party Center, Tank Out\n7 + 1 stacks - whoever did not bait solo before CT"
+          },
+          "image": "./fru/naur-ct-akh-morn.webp"
+        }
+      ]
+    },
+    {
+      "name": "CT Debuff Sequences",
+      "tag": "p4",
+      "mechanics": [
+        {
+          "name": "Aero/Red",
+          "description": {
+            "text": "Start: S Intercards (SE or SW, DPS prio E)\nIntercept dragon head\nWait in S circle for late Traffic Light pop\nMove to pop dragon head near 3/4 marker during Exa-Wave\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        },
+        {
+          "name": "Ice/Red",
+          "description": {
+            "text": "Start: E or W (Supp W, DPS E)\nDrop ice puddle dodging N or staying S based on traffic light\nMove N to group up after 2nd traffic\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        },
+        {
+          "name": "Eruption/Blue",
+          "description": {
+            "text": "Start: N Intercard (Purple Tether)\nTuck IN to avoid Aero pop AoE\nCleanse West (D) - drop cleanse puddle\nMove with group through Exa-Wave\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        },
+        {
+          "name": "Ice/Blue",
+          "description": {
+            "text": "Start: S Intercard (Purple Tether Light)\nStack with group for Water Stack\nDodge slightly S to avoid 2nd Traffic Light Explosion\nCleanse Southwest (4)\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        },
+        {
+          "name": "Unholy/Blue",
+          "description": {
+            "text": "Start: S Intercard (Purple Tether Light)\nStack on group for Water Stack\nStack on intercard for Unholy, then move N\nAvoid Crystal with Unholy stack\nCleanse East (B)\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        },
+        {
+          "name": "Water/Blue",
+          "description": {
+            "text": "Start: S Intercard (Purple Tether Light)\nBe the Water Stack target - group stacks on you\nMove S into \"Petal\" shape for KB\nCleanse Southeast (3)\nRewind, Spirit Taker spread, KB, Akh Morn"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fulgent Blade",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Intersection Order",
+          "description": {
+            "text": "Intersections fire CW (left first) or CCW (right first)"
+          },
+          "image": "./fru/naur-p5-fulgent-1.webp"
+        },
+        {
+          "name": "Step In",
+          "description": {
+            "text": "Wait 1 wave, then step into Left or Right corner of overlap"
+          },
+          "image": "./fru/naur-p5-fulgent-2.webp"
+        },
+        {
+          "name": "Safe Spot",
+          "description": {
+            "text": "Safe spot is slightly smaller than half the overlap"
+          },
+          "image": "./fru/naur-p5-fulgent-3.webp"
+        },
+        {
+          "name": "Next Wave",
+          "description": {
+            "text": "Wait 1 wave, look at next intersection, step in"
+          },
+          "image": "./fru/naur-p5-fulgent-4.webp"
+        }
+      ]
+    },
+    {
+      "name": "Akh Morn",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Light/Dark Stacks",
+          "description": {
+            "text": "G1 LEFT (Light), G2 RIGHT (Dark)\nRandom target each side\nMake sure you are on the correct side of the hitbox"
+          },
+          "image": "./fru/naur-p5-akh-morn.webp"
+        }
+      ]
+    },
+    {
+      "name": "Paradise Regained",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Tower Soaks",
+          "description": {
+            "text": "Healers 1st tower = South\nDPS hug S tower sides\nG1 DPS Left tower, G2 DPS Right tower"
+          },
+          "image": "./fru/naur-p5-wings-towers.webp"
+        },
+        {
+          "name": "Dark Wing First (First hit)",
+          "description": {
+            "text": "Tanks Left, MT in NW tower, OT IN\nParty OUT\nOT provoke during castbar"
+          },
+          "image": "./fru/naur-p5-wings-dark-1.webp"
+        },
+        {
+          "name": "Dark Wing First (Second hit)",
+          "description": {
+            "text": "G1 DPS Left, G2 DPS Right\nParty IN\nMT OUT, OT opposite NE Tower"
+          },
+          "image": "./fru/naur-p5-wings-dark-2.webp"
+        },
+        {
+          "name": "Light Wing First (First hit)",
+          "description": {
+            "text": "Tanks Right, MT in NE tower, OT OUT\nParty IN\nOT provoke during castbar"
+          },
+          "image": "./fru/naur-p5-wings-light-1.webp"
+        },
+        {
+          "name": "Light Wing First (Second hit)",
+          "description": {
+            "text": "G1 DPS Left, G2 DPS Right\nParty OUT\nMT IN, OT opposite NW Tower"
+          },
+          "image": "./fru/naur-p5-wings-light-2.webp"
+        }
+      ]
+    },
+    {
+      "name": "Polarizing Strikes",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Lines",
+          "description": {
+            "text": "G1 Left flank, G2 Right flank\nLines hit twice, move out of second hit\nFront gets debuff, swap sides after your turn\nT > M > R > H order"
+          },
+          "image": "./fru/naur-p5-polarizing-tanks.webp"
+        }
+      ]
+    },
+    {
+      "name": "Pandora's Box",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Tank LB3",
+          "description": {
+            "text": "Tank LB3 on \"Transcend your Limits\" (\"d\" in Pandora's Box)"
+          },
+          "image": "./fru/naur-p5-pandoras-box.webp"
+        }
+      ]
+    },
+    {
+      "name": "Loop + Enrage",
+      "tag": "p5",
+      "mechanics": [
+        {
+          "name": "Loop",
+          "description": {
+            "text": "Fulgent, Wings, Polarizing"
+          },
+          "image": "./fru/naur-p5-order.webp"
+        },
+        {
+          "name": "Paradise Lost (Enrage)",
+          "description": {
+            "text": "Ryne grants ~1.5 LB bars mid-cast\nMelee LB3 on \"r\" in Paradise Lost"
+          },
+          "image": "./fru/naur-p5-enrage.webp"
+        }
+      ]
+    }
+  ]
+}
