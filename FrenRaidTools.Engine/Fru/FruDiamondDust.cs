@@ -20,6 +20,12 @@ public sealed class FruDiamondDust
 
     public const uint FrigidNeedle = 0x9D08;
 
+    public const string GazeSequenceName = Group + ".gaze";
+
+    public const uint SinboundHoly = 0x9D10;
+
+    public const double GazeMs = 10250;
+
     public const int Markers = 4;
 
     public const double TimeoutSeconds = 30;
@@ -64,6 +70,32 @@ public sealed class FruDiamondDust
         Notes = "The knockback is safe into the first ice circles, which are named here "
                 + "not left as red or purple.",
     };
+
+    public static readonly Callout diamondGaze = new()
+    {
+        Description = "Diamond Dust",
+        Mechanic = MechanicName,
+        Phase = 2,
+        Key = "diamondGaze",
+        FromPlan = true,
+        Speech = "Look away",
+        Text = "Look away",
+        Notes = "The eye lands with nothing casting it, so the moment is measured from "
+                + "Sinbound Holy, which it follows by 14.25 seconds on both clears.\n"
+                + "No side is named: the Usurper's position is not reported until "
+                + "half a second before the eye, so any side said in time to act on "
+                + "would be read off a stale spot.",
+    };
+
+    public static Sequence Gaze(IWorld world) =>
+        Sequence.Repeat(GazeSequenceName, TimeoutSeconds,
+            e => e.Is(EventKind.CastStart, SinboundHoly),
+            async (start, run) =>
+            {
+                await run.WaitMs(GazeMs);
+
+                run.Call(diamondGaze, start);
+            });
 
     public static List<ArenaSector> FirstIces(IWorld world) =>
         world.ActiveCasts()
@@ -184,6 +216,6 @@ public sealed class FruDiamondDust
             "fru", Group, MechanicName, 2, new FruDiamondDust(), null)
         {
             PhaseNames = FruArena.PhaseNames,
-            Extra = world => [Build(world)],
+            Extra = world => [Build(world), Gaze(world)],
         });
 }

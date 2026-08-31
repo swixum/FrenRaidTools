@@ -28,6 +28,43 @@ public sealed class FruRelativity
 
     public const double DurationSlack = 2.0;
 
+    public const string GazeSequenceName = Group + ".gaze";
+
+    public const uint Shadoweye = 0x0998;
+
+    public const double GazeLead = 4.0;
+
+    public const double GazeFindSeconds = 20.0;
+
+    public static readonly Callout relativityGaze = new()
+    {
+        Description = "Ultimate Relativity",
+        Mechanic = MechanicName,
+        Phase = 4,
+        Key = "relativityGaze",
+        FromPlan = true,
+        Speech = "Look outside",
+        Text = "Look outside" + Callout.CountdownToken,
+        FromDuration = true,
+        LingerSeconds = Callout.DurationLinger,
+        Notes = "The eye at the end of the phase goes off on its own timer with nothing "
+                + "casting it, so it is read off the Spell-in-Waiting itself.\n"
+                + "Facing away from the middle answers it for all eight.",
+    };
+
+    public static Sequence Gaze(IWorld world) =>
+        Sequence.Repeat(GazeSequenceName, TimeoutSeconds,
+            e => e.Is(EventKind.CastStart, UltimateRelativity),
+            async (start, run) =>
+            {
+                var eye = await run.FindOrWaitForStatusWithin(
+                    world, e => e.Id == Shadoweye && e.Target is not null, GazeFindSeconds);
+                if (eye is null) return;
+
+                await run.WaitSeconds(run.Remaining(eye) - GazeLead);
+                run.Call(relativityGaze, eye);
+            });
+
     public const int Rounds = 3;
 
     public const double ApartSeconds = 5.0;
@@ -247,6 +284,6 @@ public sealed class FruRelativity
             "fru", Group, MechanicName, 4, new FruRelativity(), null)
         {
             PhaseNames = FruArena.PhaseNames,
-            Extra = world => [Build(world)],
+            Extra = world => [Build(world), Gaze(world)],
         });
 }

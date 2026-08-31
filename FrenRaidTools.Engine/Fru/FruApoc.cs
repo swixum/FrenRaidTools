@@ -18,6 +18,8 @@ public sealed class FruApoc
 
     public const uint DarkestDance = 0x9CF5;
 
+    public const uint DarkWater = 0x099D;
+
     public const uint SpinControl = 413;
 
     public const uint SpinKind = 4;
@@ -53,6 +55,23 @@ public sealed class FruApoc
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text,
         Notes = "The same turn, applied to the stack positions.",
+    };
+
+    public static readonly Callout apocKnockback = new()
+    {
+        Description = "Sextuple Apoc",
+        Mechanic = MechanicName,
+        Phase = 4,
+        Key = "apocKnockback",
+        FromPlan = true,
+        Speech = "Knockback into stacks",
+        Text = "Knockback into stacks" + Callout.CountdownToken,
+        FromDuration = true,
+        LingerSeconds = Callout.DurationLinger,
+        Notes = "The last water resolves through the knockback, so the stack and the push "
+                + "are one moment rather than two.\n"
+                + "Group one goes left of the Oracle and group two right, and the wall is "
+                + "what the push has to miss.",
     };
 
     public sealed record Spot(ArenaSector At, int Lean, bool Far)
@@ -164,6 +183,13 @@ public sealed class FruApoc
                 var stacks = Lines(AfterEruption, turn, "stack", "stack");
                 SeatCalls.Say(run, apocStacks, landed ?? eruption, world,
                     stacks.Text, stacks.Speech);
+
+                var dance = await run.FindOrWaitForCast(world, e => e.Id == DarkestDance);
+                if (dance is null) return;
+
+                var water = run.LongestHeld(world, DarkWater);
+                if (water is null) return;
+                run.Call(apocKnockback, water);
             });
 
     [ModuleInitializer]

@@ -108,6 +108,12 @@ public sealed class SequenceRun
     public double Remaining(GameEvent? status) =>
         status is null ? 0 : status.At + status.Duration - _clock.Now;
 
+    public GameEvent? LongestHeld(IWorld world, uint statusId) =>
+        world.ActiveStatuses()
+            .Where(s => s.Id == statusId && s.Target is not null)
+            .OrderByDescending(Remaining)
+            .FirstOrDefault();
+
     public GameEvent? DurationBelow(double seconds, params GameEvent?[] statuses)
     {
         foreach (var status in statuses)

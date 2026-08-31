@@ -751,27 +751,14 @@ public sealed class FruFight
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
-        Notes = "MT: Start A\nOT: Start 2\nH1: Start 1\nH2: Start A\nM1: Start C\nM2: Start 3\nR1: Start 4\nR2: Start C",
-    };
-    public static readonly Callout lightRampantB1 = new()
-    {
-        Description = "Light Rampant",
-        Mechanic = "Light Rampant",
-        Phase = 2,
-        Key = "lightRampantB1",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        FromPlan = true,
         Notes = "Chained: Out to tower\nNo chain: Drop to mid, left on 3rd",
     };
-    public static readonly Callout lightRampantB2X9D1C = new()
+    public static readonly Callout lightRampantB1X9D1C = new()
     {
         Description = "Light Rampant",
         Mechanic = "Light Rampant",
         Phase = 2,
-        Key = "lightRampantB2X9D1C",
+        Key = "lightRampantB1X9D1C",
         Speech = "{seatSpeech}",
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
@@ -779,12 +766,12 @@ public sealed class FruFight
         FromPlan = true,
         Notes = "MT: Partners 1, then clocks\nOT: Partners 2, then clocks\nH1: Partners 4, then clocks\nH2: Partners 3, then clocks\nM1: Partners 4, then clocks\nM2: Partners 3, then clocks\nR1: Partners 1, then clocks\nR2: Partners 2, then clocks",
     };
-    public static readonly Callout lightRampantB2X9D1D = new()
+    public static readonly Callout lightRampantB1X9D1D = new()
     {
         Description = "Light Rampant",
         Mechanic = "Light Rampant",
         Phase = 2,
-        Key = "lightRampantB2X9D1D",
+        Key = "lightRampantB1X9D1D",
         Speech = "{seatSpeech}",
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
@@ -1305,20 +1292,16 @@ public sealed class FruFight
             e => e.Is(EventKind.CastStart, 0x9D14),
             async (start, run) =>
             {
-                await run.WaitMs(1200);
-                SeatCalls.Say(run, lightRampantB0, start, world,
-                    ["Start A", "Start 2", "Start 1", "Start A", "Start C", "Start 3", "Start 4", "Start C"],
-                    ["Start north at A", "Start northeast at two", "Start northwest at one", "Start north at A", "Start south at C", "Start southeast at three", "Start southwest at four", "Start south at C"]);
-                var e1 = await run.FindOrWaitForCast(world, e => e.Id is 0x9D1B);
-                if (e1 is null) return;
-                DebuffCalls.Say(run, lightRampantB1, e1, world,
+                var e0 = await run.FindOrWaitForCast(world, e => e.Id is 0x9D1B);
+                if (e0 is null) return;
+                DebuffCalls.Say(run, lightRampantB0, e0, world,
                     [new DebuffCalls.Rule(0x103E, 0, "Out to tower", "Out to tower"),
                      new DebuffCalls.Rule(0x103E, 0, "Drop to mid, left on 3rd", "Drop to the middle, left on the third") { Absent = true }]);
-                var e2 = await run.FindOrWaitForCast(world, e => e.Id is 0x9D1C or 0x9D1D);
-                if (e2 is null) return;
-                SeatCalls.Say(run, e2.Id == 0x9D1C ? lightRampantB2X9D1C : lightRampantB2X9D1D, e2, world,
-                e2.Id == 0x9D1C ? new[] {"Partners 1, then clocks", "Partners 2, then clocks", "Partners 4, then clocks", "Partners 3, then clocks", "Partners 4, then clocks", "Partners 3, then clocks", "Partners 1, then clocks", "Partners 2, then clocks"} : new[] {"Spread A, clocks for proteans", "Spread B, clocks for proteans", "Spread D, clocks for proteans", "Spread C, clocks for proteans", "Spread 4, clocks for proteans", "Spread 3, clocks for proteans", "Spread 1, clocks for proteans", "Spread 2, clocks for proteans"},
-                e2.Id == 0x9D1C ? new[] {"Partners northwest at one, then clocks", "Partners northeast at two, then clocks", "Partners southwest at four, then clocks", "Partners southeast at three, then clocks", "Partners southwest at four, then clocks", "Partners southeast at three, then clocks", "Partners northwest at one, then clocks", "Partners northeast at two, then clocks"} : new[] {"Spread north at A, then clocks", "Spread east at B, then clocks", "Spread west at D, then clocks", "Spread south at C, then clocks", "Spread southwest at four, then clocks", "Spread southeast at three, then clocks", "Spread northwest at one, then clocks", "Spread northeast at two, then clocks"});
+                var e1 = await run.FindOrWaitForCast(world, e => e.Id is 0x9D1C or 0x9D1D);
+                if (e1 is null) return;
+                SeatCalls.Say(run, e1.Id == 0x9D1C ? lightRampantB1X9D1C : lightRampantB1X9D1D, e1, world,
+                e1.Id == 0x9D1C ? new[] {"Partners 1, then clocks", "Partners 2, then clocks", "Partners 4, then clocks", "Partners 3, then clocks", "Partners 4, then clocks", "Partners 3, then clocks", "Partners 1, then clocks", "Partners 2, then clocks"} : new[] {"Spread A, clocks for proteans", "Spread B, clocks for proteans", "Spread D, clocks for proteans", "Spread C, clocks for proteans", "Spread 4, clocks for proteans", "Spread 3, clocks for proteans", "Spread 1, clocks for proteans", "Spread 2, clocks for proteans"},
+                e1.Id == 0x9D1C ? new[] {"Partners northwest at one, then clocks", "Partners northeast at two, then clocks", "Partners southwest at four, then clocks", "Partners southeast at three, then clocks", "Partners southwest at four, then clocks", "Partners southeast at three, then clocks", "Partners northwest at one, then clocks", "Partners northeast at two, then clocks"} : new[] {"Spread north at A, then clocks", "Spread east at B, then clocks", "Spread west at D, then clocks", "Spread south at C, then clocks", "Spread southwest at four, then clocks", "Spread southeast at three, then clocks", "Spread northwest at one, then clocks", "Spread northeast at two, then clocks"});
             });
     public static Sequence TwinStillnessBeats(IWorld world) =>
         Sequence.Repeat(Group + ".twinStillness", 6,
