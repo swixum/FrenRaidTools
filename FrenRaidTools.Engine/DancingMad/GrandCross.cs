@@ -20,14 +20,17 @@ public sealed class GrandCross
     public const uint RealChaos = 1120;
     public const uint FakeChaos = 1119;
 
+    public const double CrossSpeechDelaySeconds = 2.0;
+    public const double LastCrossSpeechDelaySeconds = 4.0;
+
     public readonly Callout grandCross1 =
-        Callout.Duration("Grand Cross 1", "{real ? 'Real' : 'Fake'} Cross").Note("These callouts use an experimental new feature to delay the TTS without delaying the visual text, so that it doesn't talk over other calls happening at the same time. In the future, it will be possible to customize the delay.");
+        Callout.Duration("Grand Cross 1", "{real ? 'Real' : 'Fake'} Cross").SpeakAfter(CrossSpeechDelaySeconds).Note("The spoken line is held back a couple of seconds so it does not talk over the other calls landing at the same moment. The text on screen still shows straight away.");
 
     public readonly Callout grandCross2 =
-        Callout.Duration("Grand Cross 2", "{real ? 'Real' : 'Fake'} Cross");
+        Callout.Duration("Grand Cross 2", "{real ? 'Real' : 'Fake'} Cross").SpeakAfter(CrossSpeechDelaySeconds);
 
     public readonly Callout grandCross3 =
-        Callout.Duration("Grand Cross 3", "{real ? 'Real' : 'Fake'} Cross");
+        Callout.Duration("Grand Cross 3", "{real ? 'Real' : 'Fake'} Cross").SpeakAfter(LastCrossSpeechDelaySeconds);
 
     public readonly Callout inferno1 =
         Callout.Duration("Inferno 1", "{real ? 'Real' : 'Fake'} Inferno");

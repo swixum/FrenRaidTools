@@ -149,13 +149,18 @@ public sealed class Diag : IDisposable
             $"{e.Kind} id={e.Id:X}{duration}{first}{behind}{args} src={source} tgt={target}");
     }
 
-    public void Call(string key, string description, string text, string speech)
+    public void Call(string key, string description, string text, string speech,
+        double countdownEnds, double expires)
     {
         if (!On) return;
 
         var spoken = speech == text ? "" : $" | says '{speech}'";
-        Note("CALL", $"{key} ({description}) '{text}'{spoken}");
+        var clock = countdownEnds > _now ? $" ends={countdownEnds - _now:0.0}" : "";
+        Note("CALL", $"{key} ({description}) '{text}'{spoken}{clock} holds={expires - _now:0.0}");
     }
+
+    public void Dropped(string why, string key, double left) =>
+        Note("dropped", $"{key} {why}, {left:0.0}s of its hold left");
 
     public void Plan(string what) => Note("plan", what);
 

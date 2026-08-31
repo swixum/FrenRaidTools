@@ -75,13 +75,6 @@ public partial class MainWindow
             Touch();
         }
 
-        var lines = C.OverlayMaxLines;
-        if (Widgets.RowDragInt("Calls on screen", "", ref lines, 1, 8))
-        {
-            C.OverlayMaxLines = lines;
-            Touch();
-        }
-
         var linger = C.OverlayLingerScale;
         if (Widgets.RowDrag("Hold time", "Multiplier on the built-in time", ref linger, 0.4f, 3f, "%.2fx"))
         {

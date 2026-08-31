@@ -29,6 +29,7 @@ public sealed class Configuration : IPluginConfiguration
     public bool OnlyInFight { get; set; } = true;
     public HashSet<string> MutedCalls { get; set; } = new(StringComparer.Ordinal);
     public HashSet<string> SeededQuiet { get; set; } = new(StringComparer.Ordinal);
+    public int QuietRound { get; set; }
     public Dictionary<string, CallEdit> CallEdits { get; set; } = new(StringComparer.Ordinal);
 
     public CallEdit? EditFor(string key) =>
@@ -70,7 +71,6 @@ public sealed class Configuration : IPluginConfiguration
     public Vector2 OverlayPosition { get; set; } = new(0.5f, 0.24f);
     public float OverlayTextScale { get; set; } = 1.7f;
     public int OverlayFontPx { get; set; }
-    public int OverlayMaxLines { get; set; } = 3;
     public bool OverlayOutline { get; set; } = true;
     public bool OverlayCountdown { get; set; } = true;
     public bool OverlayIcons { get; set; } = true;
@@ -137,6 +137,12 @@ public sealed class Configuration : IPluginConfiguration
         MutedCalls ??= new HashSet<string>(StringComparer.Ordinal);
         SeededQuiet ??= new HashSet<string>(StringComparer.Ordinal);
         CallEdits ??= new Dictionary<string, CallEdit>(StringComparer.Ordinal);
+        if (QuietRound < QuietSeed.Round)
+        {
+            QuietSeed.Forget(SeededQuiet);
+            QuietRound = QuietSeed.Round;
+            _dirty = true;
+        }
         CarryRenamedCalls();
         foreach (var edit in CallEdits.Values) edit.Normalize();
         ParserAddress = string.IsNullOrWhiteSpace(ParserAddress) ? "ws://127.0.0.1:10501/ws" : ParserAddress;
@@ -172,7 +178,6 @@ public sealed class Configuration : IPluginConfiguration
         OverlayTextScale = Math.Clamp(OverlayTextScale, 0.8f, 4f);
         if (OverlayFontPx <= 0) OverlayFontPx = Ui.Fonts.Snap(OverlayTextScale * BaseTextPx);
         OverlayFontPx = Ui.Fonts.Snap(OverlayFontPx);
-        OverlayMaxLines = Math.Clamp(OverlayMaxLines, 1, 8);
         OverlayLingerScale = Math.Clamp(OverlayLingerScale, 0.4f, 3f);
         OverlayAlign = Math.Clamp(OverlayAlign, 0, 2);
         OverlayPadding = Math.Clamp(OverlayPadding, 0f, 40f);

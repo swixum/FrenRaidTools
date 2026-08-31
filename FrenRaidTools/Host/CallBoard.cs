@@ -45,6 +45,8 @@ public sealed class CallBoard
 {
     private const int HistoryCap = 120;
 
+    public const int LiveCap = 16;
+
     private readonly object _gate = new();
     private readonly List<LiveCall> _live = [];
     private readonly List<CallLog> _history = [];
@@ -227,7 +229,7 @@ public sealed class CallBoard
         }
 
         Fired++;
-        if (!test) _diag.Call(callout.Key, callout.Description, text, speech);
+        if (!test) _diag.Call(callout.Key, callout.Description, text, speech, ends, call.Expires);
         Record(callout.Description, text, now, muted: false, test);
         Queue(speech, now + callout.SpeechDelaySeconds, callout.Rank, test);
     }
@@ -279,13 +281,22 @@ public sealed class CallBoard
     private void Reached(int phase)
     {
         if (!_phases.Enter(phase)) return;
+
+        foreach (var call in _live.Where(c => _phases.LeftBehind(c.Phase)))
+            _diag.Dropped($"left behind in phase {call.Phase}", call.Key, call.Expires - _now);
+
         _phases.Dropping(_live.RemoveAll(c => _phases.LeftBehind(c.Phase)));
     }
 
     private void Trim()
     {
-        var cap = Math.Max(1, _config.OverlayMaxLines) + 4;
-        if (_live.Count > cap) _live.RemoveRange(0, _live.Count - cap);
+        if (_live.Count <= LiveCap) return;
+
+        var over = _live.Count - LiveCap;
+        foreach (var call in _live.Take(over))
+            _diag.Dropped($"over the {LiveCap} call cap", call.Key, call.Expires - _now);
+
+        _live.RemoveRange(0, over);
     }
 
     public void Tick(double now)
@@ -329,12 +340,7 @@ public sealed class CallBoard
 
     public List<LiveCall> Visible()
     {
-        lock (_gate)
-        {
-            var take = Math.Max(1, _config.OverlayMaxLines);
-            var start = Math.Max(0, _live.Count - take);
-            return _live.GetRange(start, _live.Count - start);
-        }
+        lock (_gate) return [.. _live];
     }
 
     public int LiveCount

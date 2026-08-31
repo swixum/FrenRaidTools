@@ -29,8 +29,6 @@ public sealed class KefkaSays
     public const double BombSetSeconds = 20;
     public const double ShriekSeconds = 15;
     public const double FirstSetAfterBeamSeconds = 7.77;
-    public const double LbAfterStartSeconds = 25.42;
-    public const double LbNoticeSeconds = 10.0;
 
     public const uint BlackCastReal = 0xC395;
     public const uint BlackCastFake = 0xC394;
@@ -91,10 +89,6 @@ public sealed class KefkaSays
 
     public readonly Callout kefkaSays =
         Callout.Duration("Kefka Says", "Kefka Says");
-
-    public readonly Callout limitBreak =
-        Callout.Duration("Kefka Says: Limit Break", "Limit Break")
-            .Note("A dps-only reminder to use the melee limit break, timed off where it has actually been pressed across recorded pulls, about 25 seconds into the phase. The clock counts down to the press. Supports never see it.");
 
     public readonly Callout realIceRealThunder =
         Callout.Of("Kefka Says: Real Ice, Real Thunder (All Sets)", "Avoid Both");
@@ -711,26 +705,6 @@ public sealed class KefkaSays
             On(run, myAccel is not null ? accelNothing : nothing, Timed(stackBuff));
         return stackBuff;
     }
-
-    public static bool IsDps(IWorld world) =>
-        JobKinds.Kind(world.You?.Job ?? "") is JobKind.Melee or JobKind.PhysRanged or JobKind.Caster;
-
-    public Sequence BuildLimitBreak(IWorld world) =>
-        Sequence.Repeat(Group + "LimitBreak", 180, e => e.Is(EventKind.CastStart, KefkaSaysCast),
-            async (start, run) =>
-            {
-                if (!IsDps(world)) return;
-
-                await run.WaitSeconds(LbAfterStartSeconds - LbNoticeSeconds - run.Since(start));
-
-                run.Call(limitBreak, new GameEvent
-                {
-                    Kind = EventKind.CastStart,
-                    Id = KefkaSaysCast,
-                    At = run.Now,
-                    Duration = LbNoticeSeconds,
-                });
-            });
 
     public Sequence BuildChaos(IWorld world) =>
         Sequence.Repeat(Group + "Chaos", 180, e => e.Is(EventKind.CastStart, KefkaSaysCast),

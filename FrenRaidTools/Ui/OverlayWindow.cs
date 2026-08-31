@@ -165,8 +165,7 @@ public class OverlayWindow : Window
         {
             if (!Preview) return lines;
 
-            var take = Math.Clamp(C.OverlayMaxLines, 1, SampleLines.Length);
-            for (var i = 0; i < take; i++) lines.Add(new Row(SampleLines[i], color, []));
+            foreach (var sample in SampleLines) lines.Add(new Row(sample, color, []));
             return lines;
         }
 
