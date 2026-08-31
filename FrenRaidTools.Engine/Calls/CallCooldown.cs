@@ -20,13 +20,14 @@ public sealed class CallCooldown(double seconds)
     public bool Ready(Callout call, double now)
     {
         var key = KeyOf(call);
+        var quiet = call.RepeatAfterSeconds > 0 ? call.RepeatAfterSeconds : seconds;
 
         lock (_lastSaid)
         {
             if (_lastSaid.TryGetValue(key, out var said))
             {
                 var since = now - said;
-                if (since >= 0 && since < seconds) return false;
+                if (since >= 0 && since < quiet) return false;
             }
 
             _lastSaid[key] = now;

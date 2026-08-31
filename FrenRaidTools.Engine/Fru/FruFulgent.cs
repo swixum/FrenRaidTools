@@ -55,6 +55,7 @@ public sealed class FruFulgent
         Key = "fulgentMove",
         Speech = "Move",
         Text = "Move",
+        RepeatsAloud = true,
     };
 
     public static bool? Clockwise(

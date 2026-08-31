@@ -149,9 +149,9 @@ public sealed class FruDiamondDust
     public static (string Text, string Speech) KickWords(bool axe, bool marked) =>
         (axe, marked) switch
         {
-            (true, false) => ("Out, far safe", "Out, far is safe"),
+            (true, false) => ("Out, far safe", "Out, far safe"),
             (true, true) => ("Out, drop puddle", "Out, drop puddle"),
-            (false, false) => ("In, close safe", "In, close is safe"),
+            (false, false) => ("In, close safe", "In, close safe"),
             _ => ("In, drop puddle", "In, drop puddle"),
         };
 

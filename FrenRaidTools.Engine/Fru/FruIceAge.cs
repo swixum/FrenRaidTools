@@ -16,6 +16,8 @@ public sealed class FruIceAge
 
     public const uint VulnerabilityDown = 0x0896;
 
+    public const double CastSeconds = 39.7;
+
     public const double VulnSeconds = 35.0;
 
     public const double TimeoutSeconds = 45.0;
@@ -40,8 +42,15 @@ public sealed class FruIceAge
         Key = "iceAgeMainCrystal",
         FromPlan = true,
         Speech = "Kill main crystal",
-        Text = "Kill main crystal",
-        Notes = "Read off the vulnerability landing on the crystal, which nothing casts.",
+        Text = "Kill main crystal" + Callout.CountdownToken,
+        FromDuration = true,
+        HoldsToCountdown = true,
+        LingerSeconds = Callout.DurationLinger,
+        Notes = "Which crystal is read off the vulnerability landing on it, which nothing "
+                + "casts.\n"
+                + "The number is the Ice Veil's own Endless Ice Age cast bar, which wipes "
+                + "the party if it finishes, so it counts down to the wipe and not to the "
+                + "moment the crystal was named.",
     };
 
     public static Sequence Build(IWorld world) =>
@@ -68,7 +77,7 @@ public sealed class FruIceAge
                         continue;
                     }
 
-                    run.Call(iceAgeMainCrystal, got);
+                    run.Call(iceAgeMainCrystal, start);
                     return;
                 }
             });

@@ -27,8 +27,8 @@ public sealed class FruPowderMark
         Phase = 1,
         Key = "powderMarkSoon",
         FromPlan = true,
-        Speech = "Powder mark lands, tanks together",
-        Text = "Mark lands, tanks together" + Callout.CountdownToken,
+        Speech = "Tanks together",
+        Text = "Tanks together" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         Notes = "The mark sits on both tanks and bursts when it runs out, hitting whoever "

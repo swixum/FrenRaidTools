@@ -91,8 +91,8 @@ public sealed class FruFight
         Mechanic = "Apocalypse",
         Phase = 4,
         Key = "apocalypse",
-        Speech = "Apocalypse lights",
-        Text = "Apoc lights" + Callout.CountdownToken,
+        Speech = "Apoc",
+        Text = "Apoc" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
     };
@@ -210,8 +210,8 @@ public sealed class FruFight
         Mechanic = "Fall of Faith",
         Phase = 1,
         Key = "fallOfFaith",
-        Speech = "Cone tethers",
-        Text = "Cone tethers" + Callout.CountdownToken,
+        Speech = "Lineup for tethers",
+        Text = "Lineup for tethers" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
@@ -442,6 +442,7 @@ public sealed class FruFight
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
+        RepeatAfterSeconds = FruIceAge.CastSeconds,
         Notes = "This one varies, so the call names every branch.\nIf Ice Veil above 50 percent: Ice Veil 50, melee LB\nIntermission Intermission, Kill Order",
     };
     public static readonly Callout sinboundHoly = new()

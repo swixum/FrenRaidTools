@@ -209,7 +209,7 @@ public sealed class CallBoard
             Text = text,
             Speech = speech,
             Raised = now,
-            Expires = Callout.Expiry(now, linger, ends, ticking),
+            Expires = Callout.Expiry(now, linger, ends, ticking, callout.HoldsToCountdown),
             CountdownEnds = ends,
             LingerUntil = now + linger,
             Countdown = ticking,
@@ -231,7 +231,7 @@ public sealed class CallBoard
         Fired++;
         if (!test) _diag.Call(callout.Key, callout.Description, text, speech, ends, call.Expires);
         Record(callout.Description, text, now, muted: false, test);
-        Queue(speech, now + callout.SpeechDelaySeconds, callout.Rank, test);
+        Queue(speech, now + callout.SpeechDelaySeconds, callout.Rank, callout.RepeatsAloud, test);
     }
 
     private string Fill(string template, IReadOnlyDictionary<string, object?> args, bool test)
@@ -247,12 +247,12 @@ public sealed class CallBoard
         return Placeholders.Bare(result.Text);
     }
 
-    private void Queue(string speech, double at, CallRank rank, bool test)
+    private void Queue(string speech, double at, CallRank rank, bool repeatsAloud, bool test)
     {
         if (!_config.TtsOn || string.IsNullOrWhiteSpace(speech)) return;
         if (!test && !Game.Fighting) return;
 
-        lock (_gate) _lines.Add(speech, at, rank);
+        lock (_gate) _lines.Add(speech, at, rank, repeatsAloud);
     }
 
     private void Record(string description, string text, double at, bool muted, bool test)

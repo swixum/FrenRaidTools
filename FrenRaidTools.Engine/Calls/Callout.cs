@@ -39,6 +39,12 @@ public sealed record Callout
 
     public bool OnByDefault { get; init; } = true;
 
+    public bool RepeatsAloud { get; init; }
+
+    public bool HoldsToCountdown { get; init; }
+
+    public double RepeatAfterSeconds { get; init; }
+
     private readonly CallRank? _rank;
 
     public CallRank Rank
@@ -65,10 +71,11 @@ public sealed record Callout
 
     public static bool ShowsNumber(double left) => left <= MaxCountdownHold;
 
-    public static double Expiry(double now, double linger, double countdownEnds, bool ticking)
+    public static double Expiry(double now, double linger, double countdownEnds, bool ticking,
+        bool holdsToCountdown = false)
     {
         if (!ticking) return now + linger;
-        if (countdownEnds - now > MaxCountdownHold) return now + linger;
+        if (!holdsToCountdown && countdownEnds - now > MaxCountdownHold) return now + linger;
 
         return Math.Max(now + linger, countdownEnds);
     }

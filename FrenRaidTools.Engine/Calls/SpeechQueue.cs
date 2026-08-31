@@ -5,7 +5,7 @@ public sealed class SpeechQueue
     public const int MaxPending = 32;
     public const double DefaultMaxAgeSeconds = 8.0;
 
-    private readonly record struct Pending(string Text, double Due, CallRank Rank);
+    private readonly record struct Pending(string Text, double Due, CallRank Rank, object? Tag);
 
     private readonly List<Pending> _waiting = [];
 
@@ -30,11 +30,12 @@ public sealed class SpeechQueue
 
     public int Waiting => _waiting.Count;
 
-    public void Add(string text, double due, CallRank rank = CallRank.Normal)
+    public void Add(string text, double due, CallRank rank = CallRank.Normal,
+        bool repeatsAloud = false, object? tag = null)
     {
         if (string.IsNullOrWhiteSpace(text)) return;
 
-        if (Stutter(text, due))
+        if (!repeatsAloud && Stutter(text, due))
         {
             Stuttered++;
             return;
@@ -46,7 +47,7 @@ public sealed class SpeechQueue
             Dropped++;
         }
 
-        _waiting.Add(new Pending(text, due, rank));
+        _waiting.Add(new Pending(text, due, rank, tag));
     }
 
     private int Crowded()
@@ -83,7 +84,10 @@ public sealed class SpeechQueue
         return false;
     }
 
-    public int Pump(double now, Func<string, bool> speak)
+    public int Pump(double now, Func<string, bool> speak) =>
+        Pump(now, (line, _) => speak(line));
+
+    public int Pump(double now, Func<string, object?, bool> speak)
     {
         DropStale(now);
 
@@ -97,7 +101,7 @@ public sealed class SpeechQueue
             if (MinGapSeconds > 0 && now - _spokeAt < MinGapSeconds
                 && _waiting[next].Rank != CallRank.Critical) break;
 
-            if (!speak(_waiting[next].Text)) break;
+            if (!speak(_waiting[next].Text, _waiting[next].Tag)) break;
 
             _spoke = _waiting[next].Text;
             _waiting.RemoveAt(next);
