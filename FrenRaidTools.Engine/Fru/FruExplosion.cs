@@ -27,6 +27,7 @@ public sealed class FruExplosion
         Mechanic = MechanicName,
         Phase = 1,
         Key = "explosionTower",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text + Callout.CountdownToken,
         FromDuration = true,

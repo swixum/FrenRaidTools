@@ -28,6 +28,7 @@ public sealed class FruDiamondDust
         Mechanic = MechanicName,
         Phase = 2,
         Key = "diamondSwap",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text + Callout.CountdownToken,
         FromDuration = true,

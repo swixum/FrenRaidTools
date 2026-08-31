@@ -22,6 +22,7 @@ public sealed class FruLightRampant
         Mechanic = MechanicName,
         Phase = 2,
         Key = "lightRampantLineUp",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text,
         Notes = "Answered from who takes the two puddles.\n"
@@ -35,6 +36,7 @@ public sealed class FruLightRampant
         Mechanic = MechanicName,
         Phase = 2,
         Key = "lightRampantTower",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text,
         Notes = "Answered from who takes the two puddles.\n"

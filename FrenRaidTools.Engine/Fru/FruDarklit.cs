@@ -45,6 +45,7 @@ public sealed class FruDarklit
         Mechanic = MechanicName,
         Phase = 5,
         Key = "darklitTower",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text + Callout.CountdownToken,
         FromDuration = true,

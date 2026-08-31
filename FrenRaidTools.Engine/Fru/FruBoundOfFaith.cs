@@ -24,6 +24,7 @@ public sealed class FruBoundOfFaith
         Mechanic = MechanicName,
         Phase = 1,
         Key = "boundSide",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text + Callout.CountdownToken,
         FromDuration = true,

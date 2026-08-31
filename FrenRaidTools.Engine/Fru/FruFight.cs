@@ -15,6 +15,7 @@ public sealed class FruFight
     public const uint BlackHaloTank = 0x9D62;
     public const uint Brightfire = 0x9CD8;
     public const uint BurnishedGlory = 0x9CEA;
+    public const uint CrystallizeTime = 0x9D30;
     public const uint DarkestDance = 0x9CF5;
     public const uint DarkestDanceTank = 0x9CF5;
     public const uint DiamondDust = 0x9D05;
@@ -23,11 +24,9 @@ public sealed class FruFight
     public const uint FrigidNeedle = 0x9D08;
     public const uint FulgentBlade = 0x9D72;
     public const uint HallowedRay = 0x9D12;
-    public const uint HallowedWings = 0x9D8C;
     public const uint HellSJudgment = 0x9D49;
     public const uint HiemalStorm = 0x9D40;
     public const uint LightRampant = 0x9D14;
-    public const uint Maelstrom = 0x9D6B;
     public const uint Materialization = 0x9D36;
     public const uint MemorySEnd = 0x9D6C;
     public const uint MirrorMirror = 0x9CF3;
@@ -44,11 +43,8 @@ public sealed class FruFight
     public const uint SinboundHoly = 0x9D10;
     public const uint SomberDance = 0x9D5B;
     public const uint SomberDanceTank = 0x9D5B;
-    public const uint Speed = 0x9D65;
     public const uint SpellInWaitingRefrain = 0x9D4D;
     public const uint SpiritTaker = 0x9D60;
-    public const uint TidalLight = 0x9D3B;
-    public const uint TidalLightX = 0x9D3D;
     public const uint TheHouseOfLight = 0x9CFD;
     public const uint ThePathOfDarkness = 0x9CB6;
     public const uint ExplosionTank = 0x9CBA;
@@ -81,6 +77,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P5 Akh Morn, Light/Dark Stacks\nBefore the reference wording: Left, light stack\nMT: Left, light stack\nOT: Right, dark stack\nH1: Left, light stack\nH2: Right, dark stack\nM1: Left, light stack\nM2: Right, dark stack\nR1: Left, light stack\nR2: Right, dark stack",
     };
     public static readonly Callout akhRhai = new()
@@ -93,6 +90,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P4 Darklit Dragonsong, Akh Rhai\nBefore the reference wording: Stack mid, Wings, dodge SE\nMT: Wings, dodge NE\nOT: Wings, dodge NE\nH1: Wings, dodge NW\nH2: Wings, dodge NW\nM1: Wings, dodge SE\nM2: Wings, dodge SE\nR1: Wings, dodge SW\nR2: Wings, dodge SW",
     };
     public static readonly Callout apocalypse = new()
@@ -155,6 +153,17 @@ public sealed class FruFight
         LingerSeconds = Callout.DurationLinger,
         Notes = "Before the reference wording: Raidwide, bleed",
     };
+    public static readonly Callout crystallizeTime = new()
+    {
+        Description = "Crystallize Time",
+        Mechanic = "Crystallize Time",
+        Phase = 5,
+        Key = "crystallizeTime",
+        Speech = "Raidwide",
+        Text = "Raidwide" + Callout.CountdownToken,
+        FromDuration = true,
+        LingerSeconds = Callout.DurationLinger,
+    };
     public static readonly Callout darkestDance = new()
     {
         Description = "Darkest Dance",
@@ -165,6 +174,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P3 Sextuple Apoc, Final Stacks\nP3 Sextuple Apoc, 5th Explosions\nP3 Sextuple Apoc, 6th Explosions (Far Bait)\nMT: Back in, supports\nOT: Back in, supports\nH1: Back out, supports\nH2: Back out, supports\nM1: Back in, DPS\nM2: Back in, DPS\nR1: Back out, DPS\nR2: Back out, DPS",
     };
     public static readonly Callout darkestDanceTank = new()
@@ -212,6 +222,7 @@ public sealed class FruFight
         Text = "Cone tethers" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Lightning: 3 cones\nIf Fire: 1 stack cone\nP1 Fall of Faith, Fall of Faith",
     };
     public static readonly Callout frigidNeedle = new()
@@ -224,6 +235,7 @@ public sealed class FruFight
         Text = "Rotate CW" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Rotating toward Shiva: Slide across\nP2 Diamond Dust, Cursed Pattern",
     };
     public static readonly Callout fulgentBlade = new()
@@ -249,18 +261,6 @@ public sealed class FruFight
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
     };
-    public static readonly Callout hallowedWings = new()
-    {
-        Description = "Hallowed Wings",
-        Mechanic = "Hallowed Wings",
-        Phase = 5,
-        Key = "hallowedWings",
-        Speech = "Water stacks on the safe numbers",
-        Text = "Water on safe numbers" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        Notes = "P4 Darklit Dragonsong, Water Stacks\nP4 Crystallize Time, Place Rewinds\nP4 Crystallize Time, Knockback",
-    };
     public static readonly Callout hellSJudgment = new()
     {
         Description = "Hell's Judgment",
@@ -283,6 +283,7 @@ public sealed class FruFight
         Text = "Bait" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "Intermission Intermission, Bait + Tether",
     };
     public static readonly Callout lightRampant = new()
@@ -297,19 +298,6 @@ public sealed class FruFight
         LingerSeconds = Callout.DurationLinger,
         CountdownFromStartSeconds = 12.9,
         Notes = "Fires on Light Rampant, 12.9s before it lands, in 100% of pulls.\nThis one varies, so the call names every branch.\nIf Three supports tethered: 3 and 3, no rotate\nP2 Light Rampant, 3 Support/3 DPS Tethers\nIf Two supports tethered: 2 and 4, R1 north\nP2 Light Rampant, 2 Support/4 DPS Tethers\nIf Four supports tethered: 4 and 2, T2 south\nP2 Light Rampant, 4 Support/2 DPS Tethers\nIf Tethers north and south: Swap N and S\nIf Tethers northwest and northeast: Swap NW and NE\nP2 Light Rampant, Tether Adjusts\nBefore the reference wording: Tethers, count supports",
-    };
-    public static readonly Callout maelstrom = new()
-    {
-        Description = "Maelstrom",
-        Mechanic = "Maelstrom",
-        Phase = 5,
-        Key = "maelstrom",
-        Speech = "Middle north",
-        Text = "Middle north" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        CountdownFromStartSeconds = 4.4,
-        Notes = "Fires on Maelstrom, 4.4s before it lands, in 100% of pulls.\nThis one varies, so the call names every branch.\nP4 Crystallize Time, Exa-Wave\nP4 Crystallize Time, Cleanse Positions\nIf Claw: West and east heads\nP4 Crystallize Time, Tether Intercept",
     };
     public static readonly Callout materialization = new()
     {
@@ -343,6 +331,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Two red mirrors equally close: CW to red\nP2 Mirror Mirror, Mirror Mirror\nMT: Nearest red mirror, protean off H1\nOT: Nearest red mirror\nH1: Nearest red mirror, protean off MT\nH2: Nearest red mirror\nM1: Nearest red mirror, protean mid\nM2: Nearest red mirror\nR1: Nearest red mirror, protean mid\nR2: Nearest red mirror",
     };
     public static readonly Callout pandoraSBox = new()
@@ -367,6 +356,7 @@ public sealed class FruFight
         Text = "Melee LB3 at the R" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P5 Loop + Enrage, Paradise Lost (Enrage)",
     };
     public static readonly Callout powderMarkTrail = new()
@@ -459,6 +449,7 @@ public sealed class FruFight
         Text = "Light crystals only" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Ice Veil above 50 percent: Ice Veil 50, melee LB\nIntermission Intermission, Kill Order",
     };
     public static readonly Callout sinboundHoly = new()
@@ -471,6 +462,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P2 Diamond Dust, After Knockback\nMT: Stack G1, rotate away\nOT: Stack G2, rotate away\nH1: Stack G1, rotate away\nH2: Stack G2, rotate away\nM1: Stack G1, rotate away\nM2: Stack G2, rotate away\nR1: Stack G1, rotate away\nR2: Stack G2, rotate away",
     };
     public static readonly Callout somberDance = new()
@@ -483,6 +475,7 @@ public sealed class FruFight
         Text = "Move with Gaia" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P4 Darklit Dragonsong, Somber Dance",
     };
     public static readonly Callout somberDanceTank = new()
@@ -497,19 +490,6 @@ public sealed class FruFight
         LingerSeconds = Callout.DurationLinger,
         Notes = "Tanks only.",
     };
-    public static readonly Callout speed = new()
-    {
-        Description = "Speed",
-        Mechanic = "Speed",
-        Phase = 4,
-        Key = "speed",
-        Speech = "Spread",
-        Text = "Spread" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        CountdownFromStartSeconds = 7.8,
-        Notes = "Fires on Speed, 7.8s before it lands, in 100% of pulls.",
-    };
     public static readonly Callout spellInWaitingRefrain = new()
     {
         Description = "Spell-in-Waiting Refrain",
@@ -520,6 +500,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Sharing a duration with another DPS: M1 adjusts\nP3 Sextuple Apoc, Setup + Swaps\nMT: NW box, near left\nOT: SW box, near right\nH1: W box, far left\nH2: W box, far right\nM1: SE box, near left\nM2: NE box, near right\nR1: E box, far left\nR2: E box, far right",
     };
     public static readonly Callout spiritTaker = new()
@@ -532,32 +513,8 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
-        Notes = "This one varies, so the call names every branch.\nP3 Sextuple Apoc, Spirit Taker\nIf Two DPS untethered: G1 DPS, other side\nP4 Darklit Dragonsong, Protean Adjusts\nIf Both waters on the same side: Swap vertical\nP4 Darklit Dragonsong, Water Swap\nP4 Crystallize Time, Spirit Taker\nMT: Back to NW box, near left\nOT: Back to SW box, near right\nH1: Back to W box, far left\nH2: Back to W box, far right\nM1: Back to SE box, near left\nM2: Back to NE box, near right\nR1: Back to E box, far left\nR2: Back to E box, far right",
-    };
-    public static readonly Callout tidalLight = new()
-    {
-        Description = "Tidal Light",
-        Mechanic = "Tidal Light",
-        Phase = 5,
-        Key = "tidalLight",
-        Speech = "Water stack",
-        Text = "Water stack" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        Notes = "P4 Crystallize Time, Water Stack",
-    };
-    public static readonly Callout tidalLightX = new()
-    {
-        Description = "Tidal Light",
-        Mechanic = "Tidal Light",
-        Phase = 5,
-        Key = "tidalLightX",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        CountdownFromStartSeconds = 2.0,
-        Notes = "Answered from the debuff you are holding.\nFires on Tidal Light, 2.0s before it lands, in 100% of pulls.\nThis one varies, so the call names every branch.\nP4 Crystallize Time, 2nd Traffic Explosion",
+        FromPlan = true,
+        Notes = "This one varies, so the call names every branch.\nP3 Sextuple Apoc, Spirit Taker\nIf Two DPS untethered: G1 DPS, other side\nP4 Darklit Dragonsong, Protean Adjusts\nIf Both waters on the same side: Swap vertical\nP4 Darklit Dragonsong, Water Swap\nMT: Back to NW box, near left\nOT: Back to SW box, near right\nH1: Back to W box, far left\nH2: Back to W box, far right\nM1: Back to SE box, near left\nM2: Back to NE box, near right\nR1: Back to E box, far left\nR2: Back to E box, far right",
     };
     public static readonly Callout theHouseOfLight = new()
     {
@@ -580,6 +537,7 @@ public sealed class FruFight
         Text = "Wait 1, step in" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "P5 Fulgent Blade, Step In\nNext Wave: Next crossing\nP5 Fulgent Blade, Next Wave",
     };
     public static readonly Callout explosionTank = new()
@@ -605,6 +563,7 @@ public sealed class FruFight
         Text = "Partners" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout cyclonicBreakB1 = new()
     {
@@ -627,6 +586,7 @@ public sealed class FruFight
         Text = "Move" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout cyclonicBreakB4 = new()
     {
@@ -638,6 +598,7 @@ public sealed class FruFight
         Text = "Dodge" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout cyclonicBreakB6 = new()
     {
@@ -649,6 +610,7 @@ public sealed class FruFight
         Text = "Move" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout turnOfTheHeavensB0 = new()
     {
@@ -660,6 +622,7 @@ public sealed class FruFight
         Text = "Blue safe" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout turnOfTheHeavensB1 = new()
     {
@@ -671,6 +634,7 @@ public sealed class FruFight
         Text = "Red safe" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout turnOfTheHeavensB3 = new()
     {
@@ -682,6 +646,7 @@ public sealed class FruFight
         Text = "Out, north or south" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout turnOfTheHeavensB4 = new()
     {
@@ -693,6 +658,7 @@ public sealed class FruFight
         Text = "KB through mid" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Tethers split: Supports north, DPS south\nIf Both tethers on one side: Two move sides",
     };
     public static readonly Callout turnOfTheHeavensB5 = new()
@@ -705,6 +671,7 @@ public sealed class FruFight
         Text = "Move in" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout utopianSkyB0 = new()
     {
@@ -716,6 +683,7 @@ public sealed class FruFight
         Text = "Stack later" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout utopianSkyB1 = new()
     {
@@ -727,6 +695,7 @@ public sealed class FruFight
         Text = "Spread later" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout utopianSkyB3 = new()
     {
@@ -738,6 +707,7 @@ public sealed class FruFight
         Text = "Light parties" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout utopianSkyB4 = new()
     {
@@ -749,6 +719,7 @@ public sealed class FruFight
         Text = "Spread, 4 notches" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout mirrorMirrorB0X9D1C = new()
     {
@@ -760,6 +731,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Partners 1\nOT: Partners 2\nH1: Partners 4\nH2: Partners 3\nM1: Partners 4\nM2: Partners 3\nR1: Partners 1\nR2: Partners 2",
     };
     public static readonly Callout mirrorMirrorB0X9D1D = new()
@@ -772,6 +744,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Spread A\nOT: Spread B\nH1: Spread D\nH2: Spread C\nM1: Spread 4\nM2: Spread 3\nR1: Spread 1\nR2: Spread 2",
     };
     public static readonly Callout lightRampantB0 = new()
@@ -784,6 +757,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Start A\nOT: Start 2\nH1: Start 1\nH2: Start A\nM1: Start C\nM2: Start 3\nR1: Start 4\nR2: Start C",
     };
     public static readonly Callout lightRampantB1 = new()
@@ -796,6 +770,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "Chained: Out to tower\nNo chain: Drop to mid, left on 3rd",
     };
     public static readonly Callout lightRampantB2X9D1C = new()
@@ -808,6 +783,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Partners 1, then clocks\nOT: Partners 2, then clocks\nH1: Partners 4, then clocks\nH2: Partners 3, then clocks\nM1: Partners 4, then clocks\nM2: Partners 3, then clocks\nR1: Partners 1, then clocks\nR2: Partners 2, then clocks",
     };
     public static readonly Callout lightRampantB2X9D1D = new()
@@ -820,6 +796,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Spread A, clocks for proteans\nOT: Spread B, clocks for proteans\nH1: Spread D, clocks for proteans\nH2: Spread C, clocks for proteans\nM1: Spread 4, clocks for proteans\nM2: Spread 3, clocks for proteans\nR1: Spread 1, clocks for proteans\nR2: Spread 2, clocks for proteans",
     };
     public static readonly Callout twinStillnessB0 = new()
@@ -832,6 +809,7 @@ public sealed class FruFight
         Text = "Back to front" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout twinStillnessB1 = new()
     {
@@ -843,6 +821,7 @@ public sealed class FruFight
         Text = "Front" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout twinSilenceB0 = new()
     {
@@ -854,6 +833,7 @@ public sealed class FruFight
         Text = "Front to back" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout twinSilenceB1 = new()
     {
@@ -865,6 +845,7 @@ public sealed class FruFight
         Text = "Back" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout endlessIceAgeB0 = new()
     {
@@ -876,6 +857,7 @@ public sealed class FruFight
         Text = "Kill crystals, bait cardinal" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout endlessIceAgeB1 = new()
     {
@@ -909,6 +891,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "Eruption: Explode out\nWater: Water stack mid",
     };
     public static readonly Callout akhMornB0 = new()
@@ -921,6 +904,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: West if tanking\nOT: West if tanking\nH1: Stack middle, seven\nH2: Stack middle, seven\nM1: Stack middle, seven\nM2: Stack middle, seven\nR1: Stack middle, seven\nR2: Stack middle, seven",
     };
     public static readonly Callout akhMornB1 = new()
@@ -933,6 +917,7 @@ public sealed class FruFight
         Text = "Full stack" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout darklitDragonsongB0 = new()
     {
@@ -944,6 +929,7 @@ public sealed class FruFight
         Text = "Raidwide, bowtie" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout darklitDragonsongB1 = new()
     {
@@ -955,6 +941,7 @@ public sealed class FruFight
         Text = "Spread into stacks" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "This one varies, so the call names every branch.\nIf Tethered: Intercard\nIf Untethered: In, off the crystal",
     };
     public static readonly Callout darklitDragonsongB2X9D23 = new()
@@ -967,6 +954,7 @@ public sealed class FruFight
         Text = "Stacks, west safe" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout darklitDragonsongB2X9D24 = new()
     {
@@ -978,6 +966,7 @@ public sealed class FruFight
         Text = "Stacks, east safe" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout darklitDragonsongB3 = new()
     {
@@ -989,6 +978,7 @@ public sealed class FruFight
         Text = "Tank baits" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout darklitDragonsongB4 = new()
     {
@@ -1011,6 +1001,7 @@ public sealed class FruFight
         Text = "Opposite the rotation" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout sextupleApocB1 = new()
     {
@@ -1022,6 +1013,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: West, supports\nOT: West, supports\nH1: West, supports\nH2: West, supports\nM1: East, DPS\nM2: East, DPS\nR1: East, DPS\nR2: East, DPS",
     };
     public static readonly Callout sextupleApocB2 = new()
@@ -1034,30 +1026,8 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "Short stack: Short stack with partner\nMedium stack: Medium stack with partner\nLong stack: Long stack with partner\nNo water: No stack, bait",
-    };
-    public static readonly Callout crystallizeTimeB0 = new()
-    {
-        Description = "Crystallize Time",
-        Mechanic = "Crystallize Time",
-        Phase = 5,
-        Key = "crystallizeTimeB0",
-        Speech = "Raidwide",
-        Text = "Raidwide" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-    };
-    public static readonly Callout crystallizeTimeB1 = new()
-    {
-        Description = "Crystallize Time",
-        Mechanic = "Crystallize Time",
-        Phase = 5,
-        Key = "crystallizeTimeB1",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        Notes = "Aero red: Aero, S intercard\nIce red: Ice, east\nEruption blue: Eruption, N intercard, cleanse D\nIce blue: Ice, S intercard, cleanse 4\nUnholy blue: Unholy, S intercard, cleanse B\nWater blue: Water, S intercard, cleanse 3",
     };
     public static readonly Callout paradiseRegainedB0 = new()
     {
@@ -1069,6 +1039,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: First tower, hold\nOT: First tower, hold\nH1: First tower\nH2: First tower\nM1: Left tower, far side\nM2: Right tower, far side\nR1: Left tower, far side\nR2: Right tower, far side",
     };
     public static readonly Callout paradiseRegainedB1X9D29 = new()
@@ -1081,6 +1052,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Left tower\nOT: Middle, in\nH1: First tower, out\nH2: First tower, out\nM1: First tower, out\nM2: First tower, out\nR1: First tower, out\nR2: First tower, out",
     };
     public static readonly Callout paradiseRegainedB1X9D79 = new()
@@ -1093,6 +1065,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Right tower\nOT: Out, off the tower\nH1: First tower, in\nH2: First tower, in\nM1: First tower, in\nM2: First tower, in\nR1: First tower, in\nR2: First tower, in",
     };
     public static readonly Callout paradiseRegainedB2X9D29 = new()
@@ -1105,6 +1078,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Out, past the boss\nOT: In, off the left tower\nH1: Between the towers\nH2: Between the towers\nM1: Left tower, in\nM2: Right tower, in\nR1: Left tower, in\nR2: Right tower, in",
     };
     public static readonly Callout paradiseRegainedB2X9D79 = new()
@@ -1117,6 +1091,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Middle, out\nOT: In, off the right tower\nH1: Between the towers\nH2: Between the towers\nM1: Left tower, out\nM2: Right tower, out\nR1: Left tower, out\nR2: Right tower, out",
     };
     public static readonly Callout paradiseRegainedB3 = new()
@@ -1129,6 +1104,7 @@ public sealed class FruFight
         Text = "Third tower" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
     public static readonly Callout polarizingStrikesB0 = new()
     {
@@ -1140,6 +1116,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Front\nOT: Front\nH1: Stack behind\nH2: Stack behind\nM1: Stack behind\nM2: Stack behind\nR1: Stack behind\nR2: Stack behind",
     };
     public static readonly Callout polarizingStrikesB1 = new()
@@ -1152,6 +1129,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Middle, swap sides\nOT: Middle, swap sides\nH1: Middle\nH2: Middle\nM1: Middle\nM2: Middle\nR1: Middle\nR2: Middle",
     };
     public static readonly Callout polarizingStrikesB2 = new()
@@ -1164,6 +1142,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Stack behind\nOT: Stack behind\nH1: Stack behind\nH2: Stack behind\nM1: Front\nM2: Front\nR1: Stack behind\nR2: Stack behind",
     };
     public static readonly Callout polarizingStrikesB3 = new()
@@ -1176,6 +1155,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Middle\nOT: Middle\nH1: Middle\nH2: Middle\nM1: Middle, swap sides\nM2: Middle, swap sides\nR1: Middle\nR2: Middle",
     };
     public static readonly Callout polarizingStrikesB4 = new()
@@ -1188,6 +1168,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Stack behind\nOT: Stack behind\nH1: Stack behind\nH2: Stack behind\nM1: Stack behind\nM2: Stack behind\nR1: Front\nR2: Front",
     };
     public static readonly Callout polarizingStrikesB5 = new()
@@ -1200,6 +1181,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Middle\nOT: Middle\nH1: Middle\nH2: Middle\nM1: Middle\nM2: Middle\nR1: Middle, swap sides\nR2: Middle, swap sides",
     };
     public static readonly Callout polarizingStrikesB6 = new()
@@ -1212,6 +1194,7 @@ public sealed class FruFight
         Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
         Notes = "MT: Stack behind\nOT: Stack behind\nH1: Front\nH2: Front\nM1: Stack behind\nM2: Stack behind\nR1: Stack behind\nR2: Stack behind",
     };
     public static readonly Callout polarizingStrikesB7 = new()
@@ -1224,6 +1207,7 @@ public sealed class FruFight
         Text = "Middle" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
+        FromPlan = true,
     };
 
     public static readonly Callout provoked = TankActions.Provoked;
@@ -1238,17 +1222,16 @@ public sealed class FruFight
             (Apocalypse, apocalypse),
             (Brightfire, brightfire),
             (BurnishedGlory, burnishedGlory),
+            (CrystallizeTime, crystallizeTime),
             (DiamondDust, diamondDust),
             (Explosion, explosion),
             (FallOfFaith, fallOfFaith),
             (FrigidNeedle, frigidNeedle),
             (FulgentBlade, fulgentBlade),
             (HallowedRay, hallowedRay),
-            (HallowedWings, hallowedWings),
             (HellSJudgment, hellSJudgment),
             (HiemalStorm, hiemalStorm),
             (LightRampant, lightRampant),
-            (Maelstrom, maelstrom),
             (Materialization, materialization),
             (MemorySEnd, memorySEnd),
             (PandoraSBox, pandoraSBox),
@@ -1258,8 +1241,6 @@ public sealed class FruFight
             (ShellCrusher, shellCrusher),
             (ShockwavePulsar, shockwavePulsar),
             (SinboundBlizzardIii, sinboundBlizzardIii),
-            (Speed, speed),
-            (TidalLight, tidalLight),
             (TheHouseOfLight, theHouseOfLight),
             (ThePathOfDarkness, thePathOfDarkness));
 
@@ -1435,21 +1416,6 @@ public sealed class FruFight
                      new DebuffCalls.Rule(0x099D, 38, "Long stack with partner", "Long stack with partner"),
                      new DebuffCalls.Rule(0x099D, 0, "No stack, bait", "No stack, bait the puddles") { Absent = true }]);
             });
-    public static Sequence CrystallizeTimeBeats(IWorld world) =>
-        Sequence.Repeat(Group + ".crystallizeTime", 20,
-            e => e.Is(EventKind.CastStart, 0x9D30),
-            async (start, run) =>
-            {
-                run.Call(crystallizeTimeB0, start);
-                await run.WaitMs(12000);
-                DebuffCalls.Say(run, crystallizeTimeB1, start, world,
-                    [new DebuffCalls.Rule(0x099F, 14, "Aero, S intercard", "Aero, south intercardinal") { With = 0x0CBF, WithSeconds = 40 },
-                     new DebuffCalls.Rule(0x099E, 14, "Ice, east", "Ice, east") { With = 0x0CBF, WithSeconds = 17 },
-                     new DebuffCalls.Rule(0x099C, 14, "Eruption, N intercard, cleanse D", "Eruption, north intercardinal, cleanse west at D") { With = 0x0CC0, WithSeconds = 40 },
-                     new DebuffCalls.Rule(0x099E, 14, "Ice, S intercard, cleanse 4", "Ice, south intercardinal, cleanse southwest at four") { With = 0x0CC0, WithSeconds = 40 },
-                     new DebuffCalls.Rule(0x0996, 17, "Unholy, S intercard, cleanse B", "Unholy, south intercardinal, cleanse east at B") { With = 0x0CC0, WithSeconds = 40 },
-                     new DebuffCalls.Rule(0x099D, 12, "Water, S intercard, cleanse 3", "Water, south intercardinal, cleanse southeast at three") { With = 0x0CC0, WithSeconds = 40 }]);
-            });
     public static Sequence ParadiseRegainedBeats(IWorld world) =>
         Sequence.Repeat(Group + ".paradiseRegained", 25,
             e => e.Is(EventKind.CastStart, 0x9D7F),
@@ -1528,14 +1494,15 @@ public sealed class FruFight
                 ["Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away"]),
             new SeatCalls.Seated([SpellInWaitingRefrain], spellInWaitingRefrain,
                 ["NW box, near left", "SW box, near right", "W box, far left", "W box, far right", "SE box, near left", "NE box, near right", "E box, far left", "E box, far right"],
-                ["Northwest box, near left", "Southwest box, near right", "West box, far left", "West box, far right", "Southeast box, near left", "Northeast box, near right", "East box, far left", "East box, far right"]),
+                ["Northwest box, near left", "Southwest box, near right", "West box, far left", "West box, far right", "Southeast box, near left", "Northeast box, near right", "East box, far left", "East box, far right"]));
+
+        yield return SeatCalls.CooledUnless(Group + "SeatFruCrystallize", Cooldown, world,
+            FruCrystallize.Window,
             new SeatCalls.Seated([SpiritTaker], spiritTaker,
                 ["Back to NW box, near left", "Back to SW box, near right", "Back to W box, far left", "Back to W box, far right", "Back to SE box, near left", "Back to NE box, near right", "Back to E box, far left", "Back to E box, far right"],
                 ["Back to the northwest box", "Back to the southwest box", "Back to the west box", "Back to the west box", "Back to the southeast box", "Back to the northeast box", "Back to the east box", "Back to the east box"]));
 
-        yield return DebuffCalls.Cooled(Group + "Held", Cooldown, world,
-            new DebuffCalls.Held(TidalLightX, tidalLightX,
-                [new DebuffCalls.Rule(0x0996, 17, "Unholy intercard, then N", "Unholy stack intercardinal, then north") { With = 0x0CC0, WithSeconds = 40 }]));
+
 
         yield return CyclonicBreakBeats(world);
         yield return TurnOfTheHeavensBeats(world);
@@ -1549,7 +1516,6 @@ public sealed class FruFight
         yield return AkhMornBeats(world);
         yield return DarklitDragonsongBeats(world);
         yield return SextupleApocBeats(world);
-        yield return CrystallizeTimeBeats(world);
         yield return ParadiseRegainedBeats(world);
         yield return PolarizingStrikesBeats(world);
 

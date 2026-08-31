@@ -91,6 +91,7 @@ public sealed class FruRelativity
         Mechanic = MechanicName,
         Phase = 4,
         Key = "relativitySpot",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text + Callout.CountdownToken,
         FromDuration = true,

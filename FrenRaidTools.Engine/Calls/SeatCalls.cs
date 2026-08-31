@@ -24,7 +24,12 @@ public static class SeatCalls
     }
 
     public static Sequence Cooled(
-        string name, double cooldown, IWorld world, params Seated[] seated)
+        string name, double cooldown, IWorld world, params Seated[] seated) =>
+        CooledUnless(name, cooldown, world, null, seated);
+
+    public static Sequence CooledUnless(
+        string name, double cooldown, IWorld world, CallWindow? quiet,
+        params Seated[] seated)
     {
         var byId = new Dictionary<uint, Seated>();
         foreach (var one in seated)
@@ -37,6 +42,8 @@ public static class SeatCalls
             e => e.Kind == EventKind.CastStart && byId.ContainsKey(e.Id),
             (start, run, invocation) =>
             {
+                if (quiet is not null && quiet.Covers(start.At)) return Task.CompletedTask;
+
                 var one = byId[start.Id];
                 var seat = MySeat(world);
                 var text = Line(one.Text, seat);

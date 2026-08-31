@@ -30,6 +30,7 @@ public sealed class FruFallOfFaith
         Mechanic = MechanicName,
         Phase = 1,
         Key = "faithTether",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text,
         Notes = "Your place in the order and which element you drew, both read off the "
@@ -43,6 +44,7 @@ public sealed class FruFallOfFaith
         Mechanic = MechanicName,
         Phase = 1,
         Key = "faithBait",
+        FromPlan = true,
         Speech = SeatCalls.Speech,
         Text = SeatCalls.Text,
         Notes = "Untethered players bait, so this says which you are.",
