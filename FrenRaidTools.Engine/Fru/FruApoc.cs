@@ -52,9 +52,12 @@ public sealed class FruApoc
         Phase = 4,
         Key = "apocStacks",
         FromPlan = true,
-        Speech = SeatCalls.Speech,
-        Text = SeatCalls.Text,
-        Notes = "The same turn, applied to the stack positions.",
+        Speech = "Run to stack",
+        Text = "Run to stack" + Callout.CountdownToken,
+        FromDuration = true,
+        LingerSeconds = Callout.DurationLinger,
+        Notes = "Every seat runs to the same stack, so the call names no spot.\n"
+                + "The countdown is the water that pops next.",
     };
 
     public static readonly Callout apocKnockback = new()
@@ -73,6 +76,114 @@ public sealed class FruApoc
                 + "Group one goes left of the Oracle and group two right, and the wall is "
                 + "what the push has to miss.",
     };
+
+    public const double WaterSlack = 2.0;
+
+    public static readonly IReadOnlyList<double> WaterTimers = [10, 29, 38];
+
+    public const double SwapDelaySeconds = 1.0;
+
+    public const double SwapBackDelaySeconds = 1.2;
+
+    public static readonly Callout apocSwap = new()
+    {
+        Description = "Sextuple Apoc",
+        Mechanic = MechanicName,
+        Phase = 4,
+        Key = "apocSwap",
+        FromPlan = true,
+        Speech = SeatCalls.Speech,
+        Text = SeatCalls.Text,
+        SpeechDelaySeconds = SwapDelaySeconds,
+        Notes = "The Apocalypse call rides the same cast and speaks first, so the voice waits "
+                + "a second while the line is on screen straight away.\n"
+                + "Six players draw a water timer, two of each length, and each group of four "
+                + "needs one of each.\n"
+                + "When a group draws the same length twice the seat higher up the order "
+                + "moves, MT then OT then H1 then H2, and M1 then M2 then R1 then R2, so a "
+                + "support and a DPS always trade sides together.\n"
+                + "Said only to the two who move; the other six already have their side.",
+    };
+
+    public static readonly Callout apocSwapBack = new()
+    {
+        Description = "Sextuple Apoc",
+        Mechanic = MechanicName,
+        Phase = 4,
+        Key = "apocSwapBack",
+        FromPlan = true,
+        Speech = SeatCalls.Speech,
+        Text = SeatCalls.Text,
+        SpeechDelaySeconds = SwapBackDelaySeconds,
+        Notes = "The spreads are taken from your own side, so a swapper goes home for them "
+                + "and has to cross back before the knockback flank.\n"
+                + "Same two seats and the same partner as the first call.\n"
+                + "It rides the Darkest Dance cast so the cross back is asked for right "
+                + "before the knockback, and the delay keeps the voice clear of the "
+                + "knockback line on the same cast.",
+    };
+
+    private static bool Matches(double got, double want) =>
+        Math.Abs(got - want) <= WaterSlack;
+
+    public static IReadOnlyList<(int Support, int Dps)> Swaps(IWorld world)
+    {
+        var held = new double[8];
+        foreach (var status in world.ActiveStatuses())
+        {
+            if (status.Id != DarkWater || status.Target is null) continue;
+            var seat = world.SeatOf(status.Target);
+            if (seat >= 0) held[seat] = status.Duration;
+        }
+
+        var supports = new List<int>();
+        var dps = new List<int>();
+
+        foreach (var timer in WaterTimers)
+        {
+            var drew = Enumerable.Range(0, 8).Where(seat => Matches(held[seat], timer)).ToList();
+            var mine = drew.Where(Slots.IsSupport).ToList();
+            var theirs = drew.Where(seat => !Slots.IsSupport(seat)).ToList();
+            if (mine.Count == 2) supports.Add(mine.Min());
+            if (theirs.Count == 2) dps.Add(theirs.Min());
+        }
+
+        if (supports.Count != dps.Count) return [];
+
+        return supports.Zip(dps).ToList();
+    }
+
+    public static Func<int, string> Called(IWorld world)
+    {
+        var bySeat = new Dictionary<int, string>();
+        foreach (var one in world.Party)
+        {
+            var seat = world.SeatOf(one);
+            if (seat >= 0 && one.Called.Length > 0) bySeat[seat] = one.Called;
+        }
+
+        return seat => bySeat.TryGetValue(seat, out var name) ? name : Slots.Names[seat];
+    }
+
+    public static (string[] Text, string[] Speech) SwapLines(
+        IReadOnlyList<(int Support, int Dps)> swaps, string lead, Func<int, string> called)
+    {
+        var text = new string[8];
+        var speech = new string[8];
+        for (var seat = 0; seat < 8; seat++)
+        {
+            text[seat] = string.Empty;
+            speech[seat] = string.Empty;
+        }
+
+        foreach (var (support, dps) in swaps)
+        {
+            text[support] = speech[support] = $"{lead} with {called(dps)}";
+            text[dps] = speech[dps] = $"{lead} with {called(support)}";
+        }
+
+        return (text, speech);
+    }
 
     public sealed record Spot(ArenaSector At, int Lean, bool Far)
     {
@@ -99,13 +210,11 @@ public sealed class FruApoc
         Wall(ArenaSector.South, 1), Wall(ArenaSector.South, -1),
     ];
 
-    public static readonly IReadOnlyList<Spot> AfterEruption =
-    [
-        Near(ArenaSector.North), Near(ArenaSector.North),
-        Wall(ArenaSector.North, 0), Wall(ArenaSector.North, 0),
-        Near(ArenaSector.South), Near(ArenaSector.South),
-        Wall(ArenaSector.South, 0), Wall(ArenaSector.South, 0),
-    ];
+    public static GameEvent? SoonestHeld(SequenceRun run, IWorld world, uint statusId) =>
+        world.ActiveStatuses()
+            .Where(s => s.Id == statusId && s.Target is not null && run.Remaining(s) > 0)
+            .OrderBy(run.Remaining)
+            .FirstOrDefault();
 
     public static readonly IReadOnlyList<int> TurnClockwise = [-1, 0, -3, -2];
 
@@ -161,6 +270,13 @@ public sealed class FruApoc
             e => e.Is(EventKind.CastStart, Apocalypse),
             async (start, run) =>
             {
+                var swaps = Swaps(world);
+                if (swaps.Count > 0)
+                {
+                    var moving = SwapLines(swaps, "Swap", Called(world));
+                    SeatCalls.Say(run, apocSwap, start, world, moving.Text, moving.Speech);
+                }
+
                 var marks = await run.WaitEvents(2, EventKind.ActorControl,
                     e => e.Id == SpinControl && e.Arg1 == SpinKind
                          && e.Arg2 is Clockwise or CounterClockwise);
@@ -179,13 +295,18 @@ public sealed class FruApoc
                 var spread = Lines(table, turn, "spread", "spread");
                 SeatCalls.Say(run, apocSpread, eruption, world, spread.Text, spread.Speech);
 
-                var landed = await run.WaitEvent(EventKind.AbilityHit, EruptionLands);
-                var stacks = Lines(AfterEruption, turn, "stack", "stack");
-                SeatCalls.Say(run, apocStacks, landed ?? eruption, world,
-                    stacks.Text, stacks.Speech);
+                await run.WaitEvent(EventKind.AbilityHit, EruptionLands);
+                var next = SoonestHeld(run, world, DarkWater);
+                if (next is not null) run.Call(apocStacks, next);
 
                 var dance = await run.FindOrWaitForCast(world, e => e.Id == DarkestDance);
                 if (dance is null) return;
+
+                if (swaps.Count > 0)
+                {
+                    var back = SwapLines(swaps, "Swap again", Called(world));
+                    SeatCalls.Say(run, apocSwapBack, dance, world, back.Text, back.Speech);
+                }
 
                 var water = run.LongestHeld(world, DarkWater);
                 if (water is null) return;

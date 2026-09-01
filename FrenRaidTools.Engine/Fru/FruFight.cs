@@ -10,13 +10,11 @@ public sealed class FruFight
     public const uint AbsoluteZero = 0x9D20;
     public const uint AkhMorn = 0x9D76;
     public const uint AkhRhai = 0x9D2D;
-    public const uint Apocalypse = 0x9D68;
     public const uint BlackHalo = 0x9D62;
     public const uint BlackHaloTank = 0x9D62;
     public const uint Brightfire = 0x9CD8;
     public const uint BurnishedGlory = 0x9CEA;
     public const uint CrystallizeTime = 0x9D30;
-    public const uint DarkestDance = 0x9CF5;
     public const uint DarkestDanceTank = 0x9CF5;
     public const uint DiamondDust = 0x9D05;
     public const uint Explosion = 0x9CC3;
@@ -43,7 +41,6 @@ public sealed class FruFight
     public const uint SinboundHoly = 0x9D10;
     public const uint SomberDance = 0x9D5B;
     public const uint SomberDanceTank = 0x9D5B;
-    public const uint SpellInWaitingRefrain = 0x9D4D;
     public const uint SpiritTaker = 0x9D60;
     public const uint TheHouseOfLight = 0x9CFD;
     public const uint ThePathOfDarkness = 0x9CB6;
@@ -85,28 +82,16 @@ public sealed class FruFight
         FromPlan = true,
         Notes = "P4 Darklit Dragonsong, Akh Rhai\nBefore the reference wording: Stack mid, Wings, dodge SE\nMT: Wings, dodge NE\nOT: Wings, dodge NE\nH1: Wings, dodge NW\nH2: Wings, dodge NW\nM1: Wings, dodge SE\nM2: Wings, dodge SE\nR1: Wings, dodge SW\nR2: Wings, dodge SW",
     };
-    public static readonly Callout apocalypse = new()
-    {
-        Description = "Apocalypse",
-        Mechanic = "Apocalypse",
-        Phase = 4,
-        Key = "apocalypse",
-        Speech = "Apoc",
-        Text = "Apoc" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-    };
     public static readonly Callout blackHalo = new()
     {
         Description = "Black Halo",
         Mechanic = "Black Halo",
         Phase = 4,
         Key = "blackHalo",
-        Speech = "Tankbuster on {event.target}",
-        Text = "Tankbuster on {event.target}" + Callout.CountdownToken,
+        Speech = "Tank out",
+        Text = "Tank out" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
-        Notes = "Before the reference wording: Buster on {event.target}",
     };
     public static readonly Callout blackHaloTank = new()
     {
@@ -155,19 +140,6 @@ public sealed class FruFight
         Text = "Raidwide" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
-    };
-    public static readonly Callout darkestDance = new()
-    {
-        Description = "Darkest Dance",
-        Mechanic = "Darkest Dance",
-        Phase = 4,
-        Key = "darkestDance",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        FromPlan = true,
-        Notes = "P3 Sextuple Apoc, Final Stacks\nP3 Sextuple Apoc, 5th Explosions\nP3 Sextuple Apoc, 6th Explosions (Far Bait)\nMT: Back in, supports\nOT: Back in, supports\nH1: Back out, supports\nH2: Back out, supports\nM1: Back in, DPS\nM2: Back in, DPS\nR1: Back out, DPS\nR2: Back out, DPS",
     };
     public static readonly Callout darkestDanceTank = new()
     {
@@ -483,31 +455,18 @@ public sealed class FruFight
         LingerSeconds = Callout.DurationLinger,
         Notes = "Tanks only.",
     };
-    public static readonly Callout spellInWaitingRefrain = new()
-    {
-        Description = "Spell-in-Waiting Refrain",
-        Mechanic = "Spell-in-Waiting Refrain",
-        Phase = 4,
-        Key = "spellInWaitingRefrain",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        FromPlan = true,
-        Notes = "This one varies, so the call names every branch.\nIf Sharing a duration with another DPS: M1 adjusts\nP3 Sextuple Apoc, Setup + Swaps\nMT: NW box, near left\nOT: SW box, near right\nH1: W box, far left\nH2: W box, far right\nM1: SE box, near left\nM2: NE box, near right\nR1: E box, far left\nR2: E box, far right",
-    };
     public static readonly Callout spiritTaker = new()
     {
         Description = "Spirit Taker",
         Mechanic = "Spirit Taker",
         Phase = 4,
         Key = "spiritTaker",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
+        Speech = "Spread from box",
+        Text = "Spread from box" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
-        Notes = "This one varies, so the call names every branch.\nP3 Sextuple Apoc, Spirit Taker\nIf Two DPS untethered: G1 DPS, other side\nP4 Darklit Dragonsong, Protean Adjusts\nIf Both waters on the same side: Swap vertical\nP4 Darklit Dragonsong, Water Swap\nMT: Back to NW box, near left\nOT: Back to SW box, near right\nH1: Back to W box, far left\nH2: Back to W box, far right\nM1: Back to SE box, near left\nM2: Back to NE box, near right\nR1: Back to E box, far left\nR2: Back to E box, far right",
+        Notes = "This one varies, so the call names every branch.\nP3 Sextuple Apoc, Spirit Taker\nIf Two DPS untethered: G1 DPS, other side\nP4 Darklit Dragonsong, Protean Adjusts\nIf Both waters on the same side: Swap vertical\nP4 Darklit Dragonsong, Water Swap",
     };
     public static readonly Callout theHouseOfLight = new()
     {
@@ -978,11 +937,12 @@ public sealed class FruFight
         Mechanic = "Sextuple Apoc",
         Phase = 4,
         Key = "sextupleApocB0",
-        Speech = "Opposite the rotation",
-        Text = "Opposite the rotation" + Callout.CountdownToken,
+        Speech = "{seatSpeech}",
+        Text = "{seat}" + Callout.CountdownToken,
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
+        Notes = "MT: West, box formation\nOT: West, box formation\nH1: West, box formation\nH2: West, box formation\nM1: East, box formation\nM2: East, box formation\nR1: East, box formation\nR2: East, box formation",
     };
     public static readonly Callout sextupleApocB1 = new()
     {
@@ -995,20 +955,7 @@ public sealed class FruFight
         FromDuration = true,
         LingerSeconds = Callout.DurationLinger,
         FromPlan = true,
-        Notes = "MT: West, supports\nOT: West, supports\nH1: West, supports\nH2: West, supports\nM1: East, DPS\nM2: East, DPS\nR1: East, DPS\nR2: East, DPS",
-    };
-    public static readonly Callout sextupleApocB2 = new()
-    {
-        Description = "Sextuple Apoc",
-        Mechanic = "Sextuple Apoc",
-        Phase = 4,
-        Key = "sextupleApocB2",
-        Speech = "{seatSpeech}",
-        Text = "{seat}" + Callout.CountdownToken,
-        FromDuration = true,
-        LingerSeconds = Callout.DurationLinger,
-        FromPlan = true,
-        Notes = "Short stack: Short stack with partner\nMedium stack: Medium stack with partner\nLong stack: Long stack with partner\nNo water: No stack, bait",
+        Notes = "Short stack: Short\nMedium stack: Medium\nLong stack: Long\nNo water: No water",
     };
     public static readonly Callout paradiseRegainedB0 = new()
     {
@@ -1200,7 +1147,6 @@ public sealed class FruFight
     public static Sequence Build() =>
         CastCalls.Cooled(Group, Cooldown,
             (AbsoluteZero, absoluteZero),
-            (Apocalypse, apocalypse),
             (Brightfire, brightfire),
             (BurnishedGlory, burnishedGlory),
             (CrystallizeTime, crystallizeTime),
@@ -1222,6 +1168,7 @@ public sealed class FruFight
             (ShellCrusher, shellCrusher),
             (ShockwavePulsar, shockwavePulsar),
             (SinboundBlizzardIii, sinboundBlizzardIii),
+            (SpiritTaker, spiritTaker),
             (TheHouseOfLight, theHouseOfLight),
             (ThePathOfDarkness, thePathOfDarkness));
 
@@ -1382,17 +1329,16 @@ public sealed class FruFight
             e => e.Is(EventKind.CastStart, 0x9D4E),
             async (start, run) =>
             {
-                run.Call(sextupleApocB0, start);
                 await run.WaitMs(5000);
-                SeatCalls.Say(run, sextupleApocB1, start, world,
-                    ["West, supports", "West, supports", "West, supports", "West, supports", "East, DPS", "East, DPS", "East, DPS", "East, DPS"],
-                    ["West with the supports", "West with the supports", "West with the supports", "West with the supports", "East with the DPS", "East with the DPS", "East with the DPS", "East with the DPS"]);
+                SeatCalls.Say(run, sextupleApocB0, start, world,
+                    ["West, box formation", "West, box formation", "West, box formation", "West, box formation", "East, box formation", "East, box formation", "East, box formation", "East, box formation"],
+                    ["West, box formation", "West, box formation", "West, box formation", "West, box formation", "East, box formation", "East, box formation", "East, box formation", "East, box formation"]);
                 await run.WaitMs(2000);
-                DebuffCalls.Say(run, sextupleApocB2, start, world,
-                    [new DebuffCalls.Rule(0x099D, 10, "Short stack with partner", "Short stack with partner"),
-                     new DebuffCalls.Rule(0x099D, 29, "Medium stack with partner", "Medium stack with partner"),
-                     new DebuffCalls.Rule(0x099D, 38, "Long stack with partner", "Long stack with partner"),
-                     new DebuffCalls.Rule(0x099D, 0, "No stack, bait", "No stack, bait the puddles") { Absent = true }]);
+                DebuffCalls.Say(run, sextupleApocB1, start, world,
+                    [new DebuffCalls.Rule(0x099D, 10, "Short", "Short"),
+                     new DebuffCalls.Rule(0x099D, 29, "Medium", "Medium"),
+                     new DebuffCalls.Rule(0x099D, 38, "Long", "Long"),
+                     new DebuffCalls.Rule(0x099D, 0, "No water", "No water") { Absent = true }]);
             });
     public static Sequence ParadiseRegainedBeats(IWorld world) =>
         Sequence.Repeat(Group + ".paradiseRegained", 25,
@@ -1461,24 +1407,14 @@ public sealed class FruFight
             new SeatCalls.Seated([AkhRhai], akhRhai,
                 ["Wings, dodge NE", "Wings, dodge NE", "Wings, dodge NW", "Wings, dodge NW", "Wings, dodge SE", "Wings, dodge SE", "Wings, dodge SW", "Wings, dodge SW"],
                 ["Wings, dodge northeast", "Wings, dodge northeast", "Wings, dodge northwest", "Wings, dodge northwest", "Wings, dodge southeast", "Wings, dodge southeast", "Wings, dodge southwest", "Wings, dodge southwest"]),
-            new SeatCalls.Seated([DarkestDance], darkestDance,
-                ["Back in, supports", "Back in, supports", "Back out, supports", "Back out, supports", "Back in, DPS", "Back in, DPS", "Back out, DPS", "Back out, DPS"],
-                ["Back in with the supports", "Back in with the supports", "Back out with the supports", "Back out with the supports", "Back in with the DPS", "Back in with the DPS", "Back out with the DPS", "Back out with the DPS"]),
             new SeatCalls.Seated([MirrorMirror], mirrorMirror,
                 ["Nearest red mirror, protean off H1", "Nearest red mirror", "Nearest red mirror, protean off MT", "Nearest red mirror", "Nearest red mirror, protean mid", "Nearest red mirror", "Nearest red mirror, protean mid", "Nearest red mirror"],
                 ["Nearest red mirror", "Nearest red mirror", "Nearest red mirror", "Nearest red mirror", "Nearest red mirror", "Nearest red mirror", "Nearest red mirror", "Nearest red mirror"]),
             new SeatCalls.Seated([SinboundHoly], sinboundHoly,
                 ["Stack G1, rotate away", "Stack G2, rotate away", "Stack G1, rotate away", "Stack G2, rotate away", "Stack G1, rotate away", "Stack G2, rotate away", "Stack G1, rotate away", "Stack G2, rotate away"],
-                ["Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away"]),
-            new SeatCalls.Seated([SpellInWaitingRefrain], spellInWaitingRefrain,
-                ["NW box, near left", "SW box, near right", "W box, far left", "W box, far right", "SE box, near left", "NE box, near right", "E box, far left", "E box, far right"],
-                ["Northwest box, near left", "Southwest box, near right", "West box, far left", "West box, far right", "Southeast box, near left", "Northeast box, near right", "East box, far left", "East box, far right"]));
+                ["Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away", "Stack group one, rotate away", "Stack group two, rotate away"]));
 
-        yield return SeatCalls.CooledUnless(Group + "SeatFruCrystallize", Cooldown, world,
-            FruCrystallize.Window,
-            new SeatCalls.Seated([SpiritTaker], spiritTaker,
-                ["Back to NW box, near left", "Back to SW box, near right", "Back to W box, far left", "Back to W box, far right", "Back to SE box, near left", "Back to NE box, near right", "Back to E box, far left", "Back to E box, far right"],
-                ["Back to the northwest box", "Back to the southwest box", "Back to the west box", "Back to the west box", "Back to the southeast box", "Back to the northeast box", "Back to the east box", "Back to the east box"]));
+
 
 
 
