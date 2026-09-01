@@ -16,17 +16,19 @@ public sealed class Trines
     public const uint AeroIIIAssaultCast = 0xC3F7;
     public const uint WingsBusterCast = 0xC487;
 
+    public const double WingsEndAfterTrinesSeconds = 9.85;
+
     public readonly Callout trinesInitial = Callout.Duration("Trines (Initial)", "Trines");
     public readonly Callout wingsOfDestruction =
         Callout.Duration("Trines: Wings of Destruction 1", "{wingsSafe} Safe");
 
     public readonly Callout trinesTankSpot =
-        Callout.Of("Trines: Tank Spot", "Center to {tankSpot}")
-            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once.");
+        Callout.Duration("Trines: Tank Spot", "Center to {tankSpot}")
+            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once, and stays up until Wings of Destruction lands.");
 
     public readonly Callout trinesPartySpot =
-        Callout.Of("Trines: DPS and Healer Spot", "Center to {partySpot}")
-            .Note("DPS and healers. Counting clockwise from the A waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once.");
+        Callout.Duration("Trines: DPS and Healer Spot", "Center to {partySpot}")
+            .Note("DPS and healers. Counting clockwise from the A waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once, and stays up until Wings of Destruction lands.");
 
     public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");
@@ -58,7 +60,7 @@ public sealed class Trines
 
         var firstSet = await run.WaitEventsQuickSuccession(3, IsTrineDrop);
         await run.Settle();
-        Spots(run, world, firstSet);
+        Spots(run, world, firstSet, start);
 
         var wings = await run.FindOrWaitForCast(world, e => e.Id is WingsRight or WingsLeft);
         if (wings is not null)
@@ -70,7 +72,7 @@ public sealed class Trines
         }
     }
 
-    private void Spots(SequenceRun run, IWorld world, IReadOnlyList<GameEvent> wave)
+    private void Spots(SequenceRun run, IWorld world, IReadOnlyList<GameEvent> wave, GameEvent start)
     {
         if (world.You is not { } you) return;
 
@@ -87,7 +89,8 @@ public sealed class Trines
         if (tanking && tank is null) return;
         if (!tanking && party is null) return;
 
-        run.Call(tanking ? trinesTankSpot : trinesPartySpot);
+        run.Call(tanking ? trinesTankSpot : trinesPartySpot,
+            start with { Duration = WingsEndAfterTrinesSeconds });
     }
 
     public static bool Tanking(IWorld world, Actor you)

@@ -49,10 +49,27 @@ public sealed class KefkaSays
 
     public static readonly ArenaPos TightAp = new(100, 100, 5, 5);
 
-    public static ArenaSector Relative(ArenaSector spot, ArenaSector towardBoss) =>
-        !spot.IsPoint() || !towardBoss.IsPoint()
-            ? spot
-            : spot.PlusEighths(towardBoss.EighthsTo(ArenaSector.North));
+    public const string WestHalf = "West";
+    public const string EastHalf = "East";
+    public const double HalfMarginYalms = 2.0;
+
+    public static string? HalfOf(Position caster, double heading)
+    {
+        if (!caster.Known) return null;
+
+        var across = Math.Sin(heading) * (caster.Y - TightAp.CenterY)
+                     - Math.Cos(heading) * (caster.X - TightAp.CenterX);
+        if (Math.Abs(across) < HalfMarginYalms) return null;
+
+        return across > 0 ? WestHalf : EastHalf;
+    }
+
+    public static string? OtherHalf(string? half) => half switch
+    {
+        WestHalf => EastHalf,
+        EastHalf => WestHalf,
+        _ => null,
+    };
 
     public const uint ChaosEntropy = 0x15AB;
     public const uint ChaosDynamic = 0x15AC;
@@ -575,13 +592,10 @@ public sealed class KefkaSays
                 var cleaving = caster.Pos.Forward(caster.Heading, BlackCleaveDistance);
                 var blackPos = TightAp.For(cleaving);
                 var orbs = TightAp.For(caster.Pos);
+                var blackHalf = HalfOf(caster.Pos, caster.Heading);
 
-                var body = world.NpcsById(GrandCross.NpcNeoExdeath)
-                    .FirstOrDefault(n => n.Pos.Known);
-                var toNeo = body is null ? ArenaSector.Unknown : TightAp.For(body.Pos);
-
-                run.SetParam("blackCompass", Relative(blackPos, toNeo).Told());
-                run.SetParam("whiteCompass", Relative(blackPos.Opposite(), toNeo).Told());
+                run.SetParam("blackCompass", blackHalf);
+                run.SetParam("whiteCompass", OtherHalf(blackHalf));
                 run.SetParam("blackPos", OrbSide(orbs, blackPos) ?? blackPos.Told());
                 run.SetParam("whitePos", OrbSide(orbs, blackPos.Opposite()) ?? blackPos.Opposite().Told());
             }

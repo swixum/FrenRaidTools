@@ -26,8 +26,6 @@ public sealed class Celestriad
 
     public const int TowerSets = 3;
 
-    public bool DoubleTowerOnlyWithNoDebuff { get; set; }
-
     public readonly Callout celestriad =
         Callout.Duration("Celestriad");
 
@@ -78,15 +76,6 @@ public sealed class Celestriad
 
     public readonly Callout celestriadOut =
         Callout.Duration("Celestriad: Catastrophic Choice (Out)", "Out");
-
-    public readonly Callout doubleFire =
-        Callout.Of("Celestriad: Double Fire Tower", "Double Fire").Quiet().Note("You can use the setting 'Double Tower Call only when no debuff' to make this (and the ice/lightning equivalents) only call when you have no initial debuff (on the Settings tab above).");
-
-    public readonly Callout doubleIce =
-        Callout.Of("Celestriad: Double Ice Tower", "Double Ice").Quiet();
-
-    public readonly Callout doubleLightning =
-        Callout.Of("Celestriad: Double Lightning Tower", "Double Lightning").Quiet();
 
     public static uint TowerFor(uint statusId) => statusId switch
     {
@@ -270,8 +259,6 @@ public sealed class Celestriad
 
         run.SetParam("noDebuff", noDebuff);
 
-        var shouldCall = noDebuff || !DoubleTowerOnlyWithNoDebuff;
-
         string[]? order = null;
         Position? standing = null;
 
@@ -320,15 +307,6 @@ public sealed class Celestriad
                 run.SetParam(TakeParam, soak);
                 run.Call(celestriadNoResDownTower);
             }
-
-            if (colour == 0 || !shouldCall) continue;
-
-            run.Call(colour switch
-            {
-                FireTowerNpc => doubleFire,
-                IceTowerNpc => doubleIce,
-                _ => doubleLightning,
-            });
         }
     }
 

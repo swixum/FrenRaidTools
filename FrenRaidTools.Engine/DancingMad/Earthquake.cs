@@ -146,9 +146,6 @@ public sealed class Earthquake
     public readonly Callout earthquakeDespairOnly =
         Callout.Duration("Earthquake: Despair Only", "Out of middle");
 
-    public readonly Callout earthquakePersistentTracker =
-        Callout.Of("Earthquake: Persistent Text", "", "{onesRemaining} #1, {twosRemaining} #2, {threesRemaining} #3").Quiet().Note("This is a text-only callout that provides a persistent view of how many debuffs are still present in each role. You can use {onesRemaining}, {twosRemaining}, {threesRemaining} or {totalRemaining}.");
-
     public readonly Callout earthquakeCleansed =
         Callout.Of("Earthquake: Debuff Cleansed", "{event.target} Cleansed").Note("You can control when this callout fires on the settings tab above. By default, it works on a same-role, prior-set basis - i.e. #1 accretion cleansing will trigger this if you are #2 accretion. This does NOT call your own debuff being removed - use the self cleanse call below for that.");
 
@@ -412,7 +409,6 @@ public sealed class Earthquake
 
         var left = new HashSet<uint>(roles.Keys);
         Track(run, roles, left);
-        run.Call(earthquakePersistentTracker);
 
         var remaining = roles.Count;
         var lastNothingness = new Dictionary<uint, double>();
@@ -436,7 +432,6 @@ public sealed class Earthquake
             remaining--;
             left.Remove(target.ObjectId);
             Track(run, roles, left);
-            if (remaining > 0) run.Call(earthquakePersistentTracker);
 
             if (target.IsYou)
             {

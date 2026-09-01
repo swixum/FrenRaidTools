@@ -97,7 +97,6 @@ public sealed class Configuration : IPluginConfiguration
     public bool AskOnEntry { get; set; } = true;
 
     public CleanseCalls CleanseCallMode { get; set; } = CleanseCalls.PriorSet;
-    public bool DoubleTowerOnlyWithNoDebuff { get; set; }
 
     public Dictionary<string, StrategyPick> Plans { get; set; } = new(StringComparer.Ordinal);
     public string PlanFight { get; set; } = "";
@@ -159,7 +158,6 @@ public sealed class Configuration : IPluginConfiguration
         }
 
         CleanseCallMode = CleanseCalls.PriorSet;
-        DoubleTowerOnlyWithNoDebuff = false;
         if (FightPlans.ByKey(PlanFight) is null) PlanFight = FightPlans.First.Key;
         Setups ??= [];
         JobSpots ??= new JobSpots();

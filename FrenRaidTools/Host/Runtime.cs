@@ -330,7 +330,6 @@ public sealed class Runtime : IDisposable
     private void Choices()
     {
         _fight.DancingMad.Earthquake.CleanseCall = _config.CleanseCallMode;
-        _fight.DancingMad.Celestriad.DoubleTowerOnlyWithNoDebuff = _config.DoubleTowerOnlyWithNoDebuff;
     }
 
     private Actor? Buddy()
