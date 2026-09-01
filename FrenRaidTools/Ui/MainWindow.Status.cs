@@ -95,6 +95,8 @@ public partial class MainWindow
         if (Seatless() is { } seatless) found.Add(new Snag(seatless, Nav.Roles));
         if (Misspelled() is { } wrong) found.Add(new Snag(wrong, Nav.Roles));
         if (Board.Catalog.Count == 0) found.Add(new Snag("No calls loaded", Nav.Strats));
+        if (VoiceDown() is { } voice) found.Add(new Snag(voice, Nav.Voice));
+        if (C.ParserOn && _plugin.Parser.State == ParserState.Broken) found.Add(new Snag("Parser not connected", Nav.Parser));
         if (!C.OverlayOn && !C.TtsOn) found.Add(new Snag("Overlay and voice are both off", Nav.Overlay));
 
         foreach (var fault in _plugin.Runtime.Faults.Take(FaultsShown))
@@ -175,6 +177,17 @@ public partial class MainWindow
     }
 
     private const int FaultsShown = 5;
+
+    private string? VoiceDown()
+    {
+        if (!C.TtsOn) return null;
+
+        var status = _plugin.Speech.Status;
+        if (status.StartsWith("Ready", StringComparison.Ordinal)) return null;
+        if (status == "Starting.") return null;
+
+        return "Voice: " + status.TrimEnd('.');
+    }
 
     private string? Seatless()
     {

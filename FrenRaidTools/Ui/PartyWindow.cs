@@ -22,6 +22,8 @@ public sealed class PartyWindow : Window
         IsOpen = true;
     }
 
+    public override bool DrawConditions() => !Service.GameGui.GameUiHidden;
+
     public override void PreDraw()
     {
         Theme.Accent = C.AccentColor;

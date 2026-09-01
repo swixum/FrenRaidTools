@@ -14,6 +14,7 @@ public class Service
     [PluginService] public static IPartyList PartyList { get; private set; } = null!;
     [PluginService] public static ICondition Condition { get; private set; } = null!;
     [PluginService] public static IDutyState DutyState { get; private set; } = null!;
+    [PluginService] public static IGameGui GameGui { get; private set; } = null!;
     [PluginService] public static IFramework Framework { get; private set; } = null!;
     [PluginService] public static IDataManager DataManager { get; private set; } = null!;
     [PluginService] public static IGameInteropProvider GameInterop { get; private set; } = null!;

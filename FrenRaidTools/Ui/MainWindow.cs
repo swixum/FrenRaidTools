@@ -47,6 +47,8 @@ public partial class MainWindow : Window
 
     private void Touch() => C.Save(_now);
 
+    public override bool DrawConditions() => !Service.GameGui.GameUiHidden;
+
     public void Show(Nav page)
     {
         _nav = page;

@@ -71,6 +71,7 @@ jobs:
           }
 
           Copy-Item "FrenRaidTools\images\icon.png" "$stage\images\icon.png" -Force
+          Copy-Item "FrenRaidTools\THIRD-PARTY-NOTICES.md" "$stage\THIRD-PARTY-NOTICES.md" -Force
           Copy-Item "FrenRaidTools\images\icon.png" "site\icon.png" -Force
 
           Compress-Archive -Path "$stage\*" -DestinationPath "site\FrenRaidTools.zip" -Force

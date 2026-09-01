@@ -95,16 +95,7 @@ public sealed class CallBoard
     public void SetCatalog(IReadOnlyList<CatalogEntry> entries)
     {
         Catalog = entries;
-        SeedQuietCalls();
         PruneMutes();
-    }
-
-    private void SeedQuietCalls()
-    {
-        if (Catalog.Count == 0) return;
-        if (!QuietSeed.Apply(Catalog, _config.MutedCalls, _config.SeededQuiet)) return;
-
-        _config.Save(_now);
     }
 
     public void SetCatalog(CalloutCatalog catalog) => SetCatalog(catalog.Entries);

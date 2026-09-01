@@ -24,6 +24,7 @@ public sealed class EntryWindow : Window
 
     public override bool DrawConditions()
     {
+        if (Service.GameGui.GameUiHidden) return false;
         if (!Game.InTheFight)
         {
             IsOpen = false;

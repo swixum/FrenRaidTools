@@ -101,14 +101,20 @@ public sealed class LimitCut
     {
         var reads = new List<(int Index, ArenaSector Where)>();
         (ArenaSector Origin, bool Clockwise)? clones = null;
+        GameEvent? marked = null;
 
-        for (var read = 0; read < CloneReads && clones is null; read++)
+        for (var read = 0; read < CloneReads && clones is null && marked is null; read++)
         {
-            var hit = await run.WaitEvent(
-                EventKind.AbilityHit, e => e.Id == CloneHit && e.FirstTarget);
+            var next = await run.WaitEvent(e => IsCloneRead(e) || IsMyNumber(e));
+            if (IsMyNumber(next))
+            {
+                marked = next;
+                break;
+            }
+
             await run.Settle();
 
-            var where = Wide.For(Fresh(hit.Source, world));
+            var where = Wide.For(Fresh(next.Source, world));
             if (!where.IsPoint()) continue;
 
             reads.Add((read, where));
@@ -134,7 +140,7 @@ public sealed class LimitCut
 
         run.Call(limitCutInitial);
 
-        var myMarker = await run.WaitEvent(EventKind.HeadMarker, e => e.Target?.IsYou == true);
+        var myMarker = marked ?? await run.WaitEvent(IsMyNumber);
         var myNumber = NumberFor(myMarker.Id);
         run.SetParam("myNumber", myNumber);
 
@@ -163,6 +169,12 @@ public sealed class LimitCut
             _ => unknown,
         }, myMarker with { Duration = Countdown(myNumber) });
     }
+
+    private static bool IsCloneRead(GameEvent e) =>
+        e.Kind == EventKind.AbilityHit && e.Id == CloneHit && e.FirstTarget;
+
+    private static bool IsMyNumber(GameEvent e) =>
+        e.Kind == EventKind.HeadMarker && e.Target?.IsYou == true && NumberFor(e.Id) > 0;
 
     private static Actor? Fresh(Actor? actor, IWorld world) =>
         actor is null ? null : world.Latest(actor) ?? actor;

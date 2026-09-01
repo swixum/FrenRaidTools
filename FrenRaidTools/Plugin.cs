@@ -77,6 +77,8 @@ public sealed class Plugin : IDalamudPlugin
             HelpMessage = "Same thing, more fun to type.",
         });
 
+        Service.PluginInterface.UiBuilder.DisableUserUiHide = true;
+        Service.PluginInterface.UiBuilder.DisableCutsceneUiHide = true;
         Service.PluginInterface.UiBuilder.Draw += Windows.Draw;
         Service.PluginInterface.UiBuilder.OpenConfigUi += Open;
         Service.PluginInterface.UiBuilder.OpenMainUi += Open;

@@ -139,7 +139,7 @@ public sealed class Configuration : IPluginConfiguration
         CallEdits ??= new Dictionary<string, CallEdit>(StringComparer.Ordinal);
         if (QuietRound < QuietSeed.Round)
         {
-            QuietSeed.Forget(SeededQuiet);
+            QuietSeed.Wake(MutedCalls, SeededQuiet);
             QuietRound = QuietSeed.Round;
             _dirty = true;
         }
