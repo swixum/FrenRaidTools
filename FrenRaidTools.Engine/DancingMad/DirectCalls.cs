@@ -12,20 +12,24 @@ public sealed class DirectCalls
     public const uint P5EnrageCast = 0xBB3A;
 
     public readonly Callout revoltingRuinIII =
-        Callout.Duration("Revolting Ruin III", "Buster on {event.target}");
+        Callout.Duration("Revolting Ruin III", "Buster on {event.target}")
+            .OutOfPhase("Busters");
 
     public readonly Callout p5enrage =
-        Callout.Duration("P5 Enrage", "Enrage");
+        Callout.Duration("P5 Enrage", "Enrage")
+            .OutOfPhase("Enrages");
 
     public const uint ProvokeAction = 0x1D6D;
     public const uint ShirkAction = 0x1D71;
 
     public readonly Callout provoked =
         Callout.Of("Provoke", "{event.source} Taunted")
-            .Note("Tanks only. Confirms the swap the moment either tank presses Provoke.");
+            .Note("Tanks only. Confirms the swap the moment either tank presses Provoke.")
+            .OutOfPhase("Tank swaps");
 
     public readonly Callout shirked =
-        Callout.Of("Shirk", "{event.source} Shirked");
+        Callout.Of("Shirk", "{event.source} Shirked")
+            .OutOfPhase("Tank swaps");
 
     public Sequence Build(IWorld world) =>
         Sequence.Indexed(Group, 30,

@@ -43,22 +43,32 @@ internal static partial class Widgets
         dl.ChannelsMerge();
     }
 
-    public static bool FoldBegin(string id, string title, string badge, uint badgeColor, ref bool open)
+    public static bool FoldBegin(string id, string title, string badge, uint badgeColor, ref bool open,
+        float controlWidth = 0f, Action? controls = null)
     {
         ListBegin();
 
-        var height = ImGui.GetFrameHeight() + Theme.S(5f);
+        var height = ImGui.GetFrameHeight() + Theme.S(controls is null ? 5f : 12f);
         var width = ImGui.GetContentRegionAvail().X;
         var start = ImGui.GetCursorScreenPos();
+        var top = ImGui.GetCursorPos();
 
         var clicked = ImGui.InvisibleButton("##fold" + id, new Vector2(width, height));
         var hovered = ImGui.IsItemHovered();
         if (hovered) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
+        var below = ImGui.GetCursorPos();
+        if (controls is not null) ImGui.SetItemAllowOverlap();
+
         var dl = ImGui.GetWindowDrawList();
         dl.AddRectFilled(start, start + new Vector2(width, height),
-            hovered ? Theme.RowHover : Theme.SubBg, Theme.S(8f),
+            Theme.SubBg, Theme.S(8f),
             open ? ImDrawFlags.RoundCornersTop : ImDrawFlags.RoundCornersAll);
+
+        if (hovered)
+            dl.AddRectFilled(start, start + new Vector2(width, height),
+                Theme.AccentSoft, Theme.S(8f),
+                open ? ImDrawFlags.RoundCornersTop : ImDrawFlags.RoundCornersAll);
 
         Caret(dl, start, height, open);
 
@@ -66,17 +76,32 @@ internal static partial class Widgets
         dl.AddText(new Vector2(start.X + RowPad, start.Y + (height - line) * 0.5f),
             open ? Theme.TextBright : Theme.Heading, title.ToUpperInvariant());
 
+        var gap = controlWidth > 0f ? controlWidth + Theme.S(9f) : 0f;
+
         if (badge.Length > 0)
         {
             var size = ImGui.CalcTextSize(badge);
-            dl.AddText(new Vector2(start.X + width - RowPad - size.X, start.Y + (height - size.Y) * 0.5f),
+            dl.AddText(new Vector2(start.X + width - RowPad - gap - size.X,
+                    start.Y + (height - size.Y) * 0.5f),
                 badgeColor == 0 ? Theme.Muted : badgeColor, badge);
+        }
+
+        if (controls is not null)
+        {
+            ImGui.PushID("##foldbar" + id);
+            ImGui.SetCursorPos(new Vector2(top.X + width - RowPad - controlWidth,
+                top.Y + (height - ImGui.GetFrameHeight()) * 0.5f));
+            controls();
+            ImGui.PopID();
+            ImGui.SetCursorPos(below);
         }
 
         _rowIndex = 1;
         if (clicked) open = !open;
         return open;
     }
+
+    public static bool RowClicked => _rowClicked;
 
     private static void Caret(ImDrawListPtr dl, Vector2 start, float height, bool open)
     {
@@ -166,7 +191,8 @@ internal static partial class Widgets
         }
 
         if (sub) dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.SubBg);
-        if (hot) dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.RowHover);
+        if (hot) dl.AddRectFilled(screen, screen + new Vector2(width, rowH),
+            clickable ? Theme.AccentSoft : Theme.AccentFaint);
         if (_rowIndex > 0) dl.AddLine(screen, screen + new Vector2(width, 0), Theme.RowLine);
         if (edgeColor != 0)
             dl.AddRectFilled(screen + new Vector2(0, Theme.S(6f)),

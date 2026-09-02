@@ -32,7 +32,7 @@ public partial class MainWindow
         var height = ImGui.GetTextLineHeightWithSpacing() * 3f + Theme.S(9f) * 2f;
 
         var here = Game.InTheFight;
-        var loaded = Board.Catalog.Count;
+        var loaded = Board.Shown.Count;
 
         if (Tile("##zone", width, height, FontAwesomeIcon.MapMarkerAlt, Theme.Accent,
                 "This zone",
@@ -94,7 +94,7 @@ public partial class MainWindow
         if (_plugin.Runtime.Blind is { } blind) found.Add(new Snag(blind, Nav.Parser));
         if (Seatless() is { } seatless) found.Add(new Snag(seatless, Nav.Roles));
         if (Misspelled() is { } wrong) found.Add(new Snag(wrong, Nav.Roles));
-        if (Board.Catalog.Count == 0) found.Add(new Snag("No calls loaded", Nav.Strats));
+        if (Board.Shown.Count == 0) found.Add(new Snag("No calls loaded", Nav.Strats));
         if (VoiceDown() is { } voice) found.Add(new Snag(voice, Nav.Voice));
         if (C.ParserOn && _plugin.Parser.State == ParserState.Broken) found.Add(new Snag("Parser not connected", Nav.Parser));
         if (!C.OverlayOn && !C.TtsOn) found.Add(new Snag("Overlay and voice are both off", Nav.Overlay));
@@ -265,7 +265,8 @@ public partial class MainWindow
         Widgets.ListBegin();
         Widgets.RowValue("Where you are", "", Where(), Theme.Muted);
         Widgets.RowValue("Territory", "", Game.Zone.ToString(), Theme.Muted);
-        Widgets.RowValue("Calls loaded", "", Board.Catalog.Count.ToString(), Theme.Muted);
+        Widgets.RowValue("Calls loaded", "",
+            $"{Board.Shown.Count} shown, {Board.Catalog.Count - Board.Shown.Count} hidden", Theme.Muted);
         Widgets.RowValue("Fired this session", "", $"{Board.Fired} fired, {Board.Skipped} muted",
             Theme.Muted);
         Widgets.ListEnd();

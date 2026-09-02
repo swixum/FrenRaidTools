@@ -27,16 +27,24 @@ public sealed class Celestriad
     public const int TowerSets = 3;
 
     public readonly Callout celestriad =
-        Callout.Duration("Celestriad");
+        Callout.Duration("Celestriad")
+            .At("Cast");
 
     public readonly Callout celestriadFireResDown =
-        Callout.Duration("Celestriad: Fire Res Down", "Ice and Lightning, Fire Last").AutoIcon();
+        Callout.Duration("Celestriad: Fire Res Down", "Ice and Lightning, Fire Last").AutoIcon()
+            .At("Your resistance down");
 
     public readonly Callout celestriadLightningResDown =
-        Callout.Duration("Celestriad: Lightning Res Down", "Fire and Ice, Lightning Last").AutoIcon();
+        Callout.Duration("Celestriad: Lightning Res Down", "Fire and Ice, Lightning Last").AutoIcon()
+            .At("Your resistance down");
 
     public readonly Callout celestriadIceResDown =
-        Callout.Duration("Celestriad: Ice Res Down", "Fire and Lightning, Ice Last").AutoIcon();
+        Callout.Duration("Celestriad: Ice Res Down", "Fire and Lightning, Ice Last").AutoIcon()
+            .At("Your resistance down");
+
+    public readonly Callout celestriadNoResDown =
+        Callout.Of("Celestriad: No Res Down", "No Debuff")
+            .At("Your resistance down");
 
     public const string OrderParam = "elementOrder";
     public const string TakeParam = "takeElement";
@@ -54,28 +62,30 @@ public sealed class Celestriad
 
     public readonly Callout celestriadFirstTower =
         Callout.Of("Celestriad: First Tower", "{takeClock} o'clock {takeElement}, then {nextElement}")
-            .Note("Names the tower you take first, by the hour it sits on, then the one after it. Nine towers stand 40 degrees apart and an hour covers 30, so two towers can never share an hour, which is why this is an hour and not a compass point. Your resistance down is always last. Use {elementOrder} if you would rather hear all three at once.");
+            .Note("Names the tower you take first, by the hour it sits on, then the one after it. Nine towers stand 40 degrees apart and an hour covers 30, so two towers can never share an hour, which is why this is an hour and not a compass point. Your resistance down is always last. Use {elementOrder} if you would rather hear all three at once.")
+            .At("Towers");
 
     public readonly Callout celestriadNextTower =
         Callout.Of("Celestriad: Next Tower",
             "{takeNth} {takeTurnSpoken}, {takeElement}",
             "{takeNth} {takeTurn}, {takeElement}")
-            .Note("Counts towers of the element you are about to take, walking from the tower you stand on: 1st CW is the next one of that colour clockwise, 2nd CCW the one past the first going the other way. The direction is the shorter way round, measured from where the towers actually are. {takeSteps} still carries the raw tower-spot count if you would rather hear that.");
-
-    public readonly Callout celestriadNoResDown =
-        Callout.Of("Celestriad: No Res Down", "No Debuff");
+            .Note("Counts towers of the element you are about to take, walking from the tower you stand on: 1st CW is the next one of that colour clockwise, 2nd CCW the one past the first going the other way. The direction is the shorter way round, measured from where the towers actually are. {takeSteps} still carries the raw tower-spot count if you would rather hear that.")
+            .At("Towers");
 
     public readonly Callout celestriadNoResDownTower =
         Callout.Of("Celestriad: No Debuff Tower",
             "Soak {takeElement}, 1st Counterclockwise",
             "Soak {takeElement}, 1st CCW")
-            .Note("Only fires when you go in clean. Names the colour that has two towers up that set, which is where the pair without a resistance down goes every time, and the first of those two going counterclockwise.");
+            .Note("Only fires when you go in clean. Names the colour that has two towers up that set, which is where the pair without a resistance down goes every time, and the first of those two going counterclockwise.")
+            .At("Towers");
 
     public readonly Callout celestriadIn =
-        Callout.Duration("Celestriad: Catastrophic Choice (In)", "In");
+        Callout.Duration("Celestriad: Catastrophic Choice (In)", "In")
+            .At("Catastrophic Choice");
 
     public readonly Callout celestriadOut =
-        Callout.Duration("Celestriad: Catastrophic Choice (Out)", "Out");
+        Callout.Duration("Celestriad: Catastrophic Choice (Out)", "Out")
+            .At("Catastrophic Choice");
 
     public static uint TowerFor(uint statusId) => statusId switch
     {

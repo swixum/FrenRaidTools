@@ -42,17 +42,21 @@ public sealed class Earthquake
     public const uint LINE_3 = 0xBBE;
 
     public readonly Callout longitudinalCast =
-        Callout.Duration("Longitudinal Implosion: Cast", "Sides Then Front/Back");
+        Callout.Duration("Longitudinal Implosion: Cast", "Sides Then Front/Back")
+            .At("Implosion");
 
     public readonly Callout latitudinalCast =
-        Callout.Duration("Latitudinal Implosion: Cast", "Front/Back then Sides");
+        Callout.Duration("Latitudinal Implosion: Cast", "Front/Back then Sides")
+            .At("Implosion");
 
     public readonly Callout longitudinalMove =
         Callout.Of("Longitudinal Implosion: Move", "Front/Back").Quiet()
-            .Note("Off by default at swix's ask. It can only fire on the first shockwave, which leaves under two seconds to the second one and often lands in the same instant as another call. The cast call above already says both halves in order.");
+            .Note("Off by default at swix's ask. It can only fire on the first shockwave, which leaves under two seconds to the second one and often lands in the same instant as another call. The cast call above already says both halves in order.")
+            .At("Implosion");
 
     public readonly Callout latitudinalMove =
-        Callout.Of("Latitudinal Implosion: Move", "Sides");
+        Callout.Of("Latitudinal Implosion: Move", "Sides")
+            .At("Implosion");
 
     public const uint VacuumWaveCast = 0xBB13;
     public const uint ThunderIIICast = 0xBB12;
@@ -61,108 +65,142 @@ public sealed class Earthquake
 
     public readonly Callout vacuumWave =
         Callout.Duration("Vacuum Wave", "Knockback from {event.source}").Quiet()
-            .Note("Off by default: the Bowels knockback line carries the position and facing in one call.");
+            .Note("Off by default: the Bowels knockback line carries the position and facing in one call.")
+            .At("Vacuum Wave");
 
     public readonly Callout thunderIII =
-        Callout.Duration("Thunder III (Exdeath AoE)", "Away from {event.source}");
+        Callout.Duration("Thunder III (Exdeath AoE)", "Away from {event.source}")
+            .At("Thunder III");
 
     public readonly Callout thunderIIItb =
-        Callout.Duration("Thunder III (Exdeath Proximity)", "Proximity Buster");
+        Callout.Duration("Thunder III (Exdeath Proximity)", "Proximity Buster")
+            .OutOfPhase("Busters");
 
     public readonly Callout thunderSwapAway =
         Callout.Of("Thunder III: You Took the Buster", "Away from {event.source}, Swap")
-            .Note("Tanks only. Fires on the first proximity hit of each set: whoever ate it moves out so the other tank is nearest for the second hit.");
+            .Note("Tanks only. Fires on the first proximity hit of each set: whoever ate it moves out so the other tank is nearest for the second hit.")
+            .OutOfPhase("Tank swaps");
 
     public readonly Callout thunderSwapNear =
-        Callout.Of("Thunder III: Buster Swap", "Be Near {event.source}, Swap");
+        Callout.Of("Thunder III: Buster Swap", "Be Near {event.source}, Swap")
+            .OutOfPhase("Tank swaps");
 
     public readonly Callout earthquake =
-        Callout.Duration("Earthquake Initial", "Earthquake - 1 HP");
+        Callout.Duration("Earthquake Initial", "Earthquake - 1 HP")
+            .At("Raidwide");
 
     public readonly Callout earthquake1supp =
-        Callout.Duration("Earthquake: First in Line (Support, No Accretion)", "First").Icon(LINE_1).Note("The variable {accretions} will contain the players who have accretion. Consider adding that to your callout if you are a healer or have a single-target healing buff.");
+        Callout.Duration("Earthquake: First in Line (Support, No Accretion)", "First").Icon(LINE_1).Note("The variable {accretions} will contain the players who have accretion. Consider adding that to your callout if you are a healer or have a single-target healing buff.")
+            .At("Your place in line");
 
     public readonly Callout earthquake2supp =
-        Callout.Duration("Earthquake: Second in Line (Support, No Accretion)", "Second").Icon(LINE_2);
+        Callout.Duration("Earthquake: Second in Line (Support, No Accretion)", "Second").Icon(LINE_2)
+            .At("Your place in line");
 
     public readonly Callout earthquake3supp =
-        Callout.Duration("Earthquake: Third in Line (Support, No Accretion)", "Third").Icon(LINE_3);
+        Callout.Duration("Earthquake: Third in Line (Support, No Accretion)", "Third").Icon(LINE_3)
+            .At("Your place in line");
 
     public readonly Callout earthquake1dps =
-        Callout.Duration("Earthquake: First in Line (DPS, No Accretion)", "First").Icon(LINE_1);
+        Callout.Duration("Earthquake: First in Line (DPS, No Accretion)", "First").Icon(LINE_1)
+            .At("Your place in line");
 
     public readonly Callout earthquake2dps =
-        Callout.Duration("Earthquake: Second in Line (DPS, No Accretion)", "Second").Icon(LINE_2);
+        Callout.Duration("Earthquake: Second in Line (DPS, No Accretion)", "Second").Icon(LINE_2)
+            .At("Your place in line");
 
     public readonly Callout earthquake3dps =
-        Callout.Duration("Earthquake: Third in Line (DPS, No Accretion)", "Third").Icon(LINE_3);
+        Callout.Duration("Earthquake: Third in Line (DPS, No Accretion)", "Third").Icon(LINE_3)
+            .At("Your place in line");
 
     public readonly Callout earthquake1acc =
-        Callout.Duration("Earthquake: First in Line (Accretion)", "First + Accretion").Icon(LINE_1, ACCRETION);
+        Callout.Duration("Earthquake: First in Line (Accretion)", "First + Accretion").Icon(LINE_1, ACCRETION)
+            .At("Your place in line");
 
     public readonly Callout earthquake2acc =
-        Callout.Duration("Earthquake: Second in Line (Accretion)", "Second + Accretion").Icon(LINE_2, ACCRETION);
+        Callout.Duration("Earthquake: Second in Line (Accretion)", "Second + Accretion").Icon(LINE_2, ACCRETION)
+            .At("Your place in line");
 
     public readonly Callout earthquakeInvalid =
-        Callout.Of("Earthquake: Invalid", "Error");
+        Callout.Of("Earthquake: Invalid", "Error").WhenReadFails()
+            .At("Your place in line");
 
     public readonly Callout slapHappyRoles =
-        Callout.DurationPlus("Slap Happy: Roles", "Roles {safe}", 3.7);
+        Callout.DurationPlus("Slap Happy: Roles", "Roles {safe}", 3.7)
+            .At("Slap Happy");
 
     public readonly Callout slapHappyStack =
-        Callout.DurationPlus("Slap Happy: Stack", "Stack {safe}", 3.7);
+        Callout.DurationPlus("Slap Happy: Stack", "Stack {safe}", 3.7)
+            .At("Slap Happy");
 
     public readonly Callout damningEdict =
         Callout.Duration("Damning Edict", "{safe} Behind Chaos").Quiet()
-            .Note("Off by default at swix's ask. This was the call that read Chaos's facing; the slap call 1.5s later carries a fixed direction plus the reminder to watch his frontal yourself.");
+            .Note("Off by default at swix's ask. This was the call that read Chaos's facing; the slap call 1.5s later carries a fixed direction plus the reminder to watch his frontal yourself.")
+            .At("Damning Edict");
 
     public readonly Callout earthquakeBodySlamDamningEdict =
-        Callout.Duration("Earthquake: Body Slam + Damning Edict", "Out of middle, Watch Chaos Frontal");
+        Callout.Duration("Earthquake: Body Slam + Damning Edict", "Out of middle, Watch Chaos Frontal")
+            .At("Body Slam");
 
     public readonly Callout earthquakeSlapHappyRolesLat =
-        Callout.Duration("Earthquake: Slap Happy + Lat: Front/Back First then Roles", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Roles {finalSafe}").Note("Please note that Chaos is not necessarily going to perfectly face a cardinal or intercard for this, so these directions are best-effort. You may still need to use eyes. `{firstSafe}` is one or more directions that is/are safe for the initial hit of lat/long and are adjacent to the final safe spot. `{secondSafe}` is one or more directions that is/are safe for the second hit of lat/long and are adjacent to the final safe spot. `{finalSafe}` is the slap happy safe direction. Note that it is technically possible to use the {secondSafe} spot for a party stack, but this is not a standard strategy.");
+        Callout.Duration("Earthquake: Slap Happy + Lat: Front/Back First then Roles", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Roles {finalSafe}").Note("Please note that Chaos is not necessarily going to perfectly face a cardinal or intercard for this, so these directions are best-effort. You may still need to use eyes. `{firstSafe}` is one or more directions that is/are safe for the initial hit of lat/long and are adjacent to the final safe spot. `{secondSafe}` is one or more directions that is/are safe for the second hit of lat/long and are adjacent to the final safe spot. `{finalSafe}` is the slap happy safe direction. Note that it is technically possible to use the {secondSafe} spot for a party stack, but this is not a standard strategy.")
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyRolesLong =
-        Callout.Duration("Earthquake: Slap Happy + Long: Sides First then Roles", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Roles {finalSafe}");
+        Callout.Duration("Earthquake: Slap Happy + Long: Sides First then Roles", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Roles {finalSafe}")
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyStackLat =
-        Callout.Duration("Earthquake: Slap Happy + Lat: Front/Back First then Stack", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Stack {finalSafe}");
+        Callout.Duration("Earthquake: Slap Happy + Lat: Front/Back First then Stack", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Stack {finalSafe}")
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyStackLong =
-        Callout.Duration("Earthquake: Slap Happy + Long: Sides First then Stack", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Stack {finalSafe}");
+        Callout.Duration("Earthquake: Slap Happy + Long: Sides First then Stack", "{firstSafe} to {secondSafe}", "{firstSafe} to {secondSafe}, Stack {finalSafe}")
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyFinalRolesLat =
-        Callout.DurationPlus("Earthquake: Slap Happy + Lat: Sides + Stack", "Roles {finalSafe}", 3.7);
+        Callout.DurationPlus("Earthquake: Slap Happy + Lat: Sides + Stack", "Roles {finalSafe}", 3.7)
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyFinalRolesLong =
-        Callout.DurationPlus("Earthquake: Slap Happy + Long: Front/Back + Stack", "Roles {finalSafe}", 3.7);
+        Callout.DurationPlus("Earthquake: Slap Happy + Long: Front/Back + Stack", "Roles {finalSafe}", 3.7)
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyFinalStackLat =
-        Callout.DurationPlus("Earthquake: Slap Happy + Lat: Sides + Stack", "Stack {finalSafe}", 3.7);
+        Callout.DurationPlus("Earthquake: Slap Happy + Lat: Sides + Stack", "Stack {finalSafe}", 3.7)
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeSlapHappyFinalStackLong =
-        Callout.DurationPlus("Earthquake: Slap Happy + Long: Front/Back + Stack", "Stack {finalSafe}", 3.7);
+        Callout.DurationPlus("Earthquake: Slap Happy + Long: Front/Back + Stack", "Stack {finalSafe}", 3.7)
+            .At("Slap Happy with Implosion");
 
     public readonly Callout earthquakeDespairOnly =
-        Callout.Duration("Earthquake: Despair Only", "Out of middle");
+        Callout.Duration("Earthquake: Despair Only", "Out of middle")
+            .At("Despair");
 
     public readonly Callout earthquakeCleansed =
-        Callout.Of("Earthquake: Debuff Cleansed", "{event.target} Cleansed").Note("You can control when this callout fires on the settings tab above. By default, it works on a same-role, prior-set basis - i.e. #1 accretion cleansing will trigger this if you are #2 accretion. This does NOT call your own debuff being removed - use the self cleanse call below for that.");
+        Callout.Of("Earthquake: Debuff Cleansed", "{event.target} Cleansed").Note("You can control when this callout fires on the settings tab above. By default, it works on a same-role, prior-set basis - i.e. #1 accretion cleansing will trigger this if you are #2 accretion. This does NOT call your own debuff being removed - use the self cleanse call below for that.")
+            .At("Cleanses");
 
     public readonly Callout earthquakeSelfCleanse =
-        Callout.Of("Earthquake: Self Cleansed", "Cleansed");
+        Callout.Of("Earthquake: Self Cleansed", "Cleansed")
+            .At("Cleanses");
 
     public readonly Callout earthquakeTetherSet1 =
-        Callout.Of("Earthquake: Tether Set 1 (One then Two)", "{firstTethers} then {secondTethers}").Note("For tether sets that are 1 + 2 or 2 + 1 staggered spawns, {firstTethers} and {secondTethers} tell you the first vs second locations. You can use {allTethers} for all locations.");
+        Callout.Of("Earthquake: Tether Set 1 (One then Two)", "{firstTethers} then {secondTethers}").Note("For tether sets that are 1 + 2 or 2 + 1 staggered spawns, {firstTethers} and {secondTethers} tell you the first vs second locations. You can use {allTethers} for all locations.")
+            .At("Tethers");
 
     public readonly Callout earthquakeTetherSet2 =
-        Callout.Of("Earthquake: Tether Set 2 (Three Tethers)", "{allTethers}");
+        Callout.Of("Earthquake: Tether Set 2 (Three Tethers)", "{allTethers}")
+            .At("Tethers");
 
     public readonly Callout earthquakeTetherSet3 =
-        Callout.Of("Earthquake: Tether Set 3 (Three Tethers)", "{allTethers}");
+        Callout.Of("Earthquake: Tether Set 3 (Three Tethers)", "{allTethers}")
+            .At("Tethers");
 
     public readonly Callout earthquakeTetherSet4 =
-        Callout.Of("Earthquake: Tether Set 4 (Two then One)", "{firstTethers} then {secondTethers}");
+        Callout.Of("Earthquake: Tether Set 4 (Two then One)", "{firstTethers} then {secondTethers}")
+            .At("Tethers");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 240, e => e.Is(EventKind.CastStart, EarthquakeCastA, EarthquakeCastB),

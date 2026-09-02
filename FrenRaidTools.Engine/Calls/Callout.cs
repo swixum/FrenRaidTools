@@ -61,6 +61,12 @@ public sealed record Callout
 
     public bool FromPlan { get; init; }
 
+    public bool Fallback { get; init; }
+
+    public string Step { get; init; } = "";
+
+    public bool Fightwide { get; init; }
+
     public string? Notes { get; init; }
 
     public const double DefaultLinger = 5.0;
@@ -134,6 +140,12 @@ public sealed record Callout
     public Callout AutoIcon() => this with { IconFromEvent = true };
 
     public Callout Quiet() => this with { OnByDefault = false };
+
+    public Callout WhenReadFails() => this with { Fallback = true };
+
+    public Callout At(string step) => this with { Step = step };
+
+    public Callout OutOfPhase(string kind) => this with { Fightwide = true, Step = kind };
 
     public Callout Ranked(CallRank rank) => this with { Rank = rank };
 

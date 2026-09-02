@@ -39,7 +39,7 @@ public partial class MainWindow
     private void DrawFightRow(PlannedFight fight)
     {
         var here = Game.Zone == fight.Territory;
-        var loaded = fight.Key == C.PlanFight ? Board.Catalog.Count : 0;
+        var loaded = fight.Key == C.PlanFight ? Board.Shown.Count : 0;
 
         var hint = here ? "You are in this fight"
             : loaded > 0 ? $"{loaded} calls ready"

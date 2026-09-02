@@ -35,23 +35,27 @@ public sealed class StompAMole
         Callout.Of("Stomp-a-Mole: Take Tower (Marker on Other Role)", "Take Tower").Note("With a plan loaded this line is the plan's own tower side for your seat.");
 
     public readonly Callout stompAMoleStackMarker1 =
-        Callout.Of("Stomp-a-Mole: Stack Marker (Your Role Unknown)", "Stack on {stackOn.support ? 'Support' : 'DPS'}");
+        Callout.Of("Stomp-a-Mole: Stack Marker (Your Role Unknown)", "Stack on {stackOn.support ? 'Support' : 'DPS'}")
+            .WhenReadFails();
 
     public readonly Callout stompAMoleMove2 =
         Callout.Duration("Stomp-a-Mole: Move 2", "Move");
 
     public readonly Callout stompAMoleSwitch =
         Callout.Of("Stomp-a-Mole: Swap", "Swap")
-            .Note("Tanks only. Said once, the first time a stomp or knockdown lands on you. The marker calls name the new job after that.");
+            .Note("Tanks only. Said once, the first time a stomp or knockdown lands on you. The marker calls name the new job after that.")
+            .OutOfPhase("Tank swaps");
 
     public readonly Callout bigBangAndB3 =
         Callout.Duration("Stomp-a-Mole: Blizzard + Big Bang", "Out of middle, Keep Moving");
 
     public readonly Callout p3normalEnrage =
-        Callout.Duration("P3 Enrage (Normal)", "Enrage");
+        Callout.Duration("P3 Enrage (Normal)", "Enrage")
+            .OutOfPhase("Enrages");
 
     public readonly Callout p3bowelsEnrage =
-        Callout.Duration("P3 Enrage (Failed)", "Failed");
+        Callout.Duration("P3 Enrage (Failed)", "Failed")
+            .OutOfPhase("Enrages");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 90, e => e.Is(EventKind.CastStart, BlizzardThreeCast),

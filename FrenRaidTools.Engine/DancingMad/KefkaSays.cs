@@ -105,148 +105,196 @@ public sealed class KefkaSays
     public const uint ENTROPY = 0x640;
 
     public readonly Callout kefkaSays =
-        Callout.Duration("Kefka Says", "Kefka Says");
+        Callout.Duration("Kefka Says", "Kefka Says")
+            .At("Cast");
 
     public readonly Callout realIceRealThunder =
-        Callout.Of("Kefka Says: Real Ice, Real Thunder (All Sets)", "Avoid Both");
+        Callout.Of("Kefka Says: Real Ice, Real Thunder (All Sets)", "Avoid Both")
+            .At("Ice and thunder");
 
     public readonly Callout realIceFakeThunder =
-        Callout.Of("Kefka Says: Real Ice, Fake Thunder (All Sets)", "In Thunder, Avoid Ice");
+        Callout.Of("Kefka Says: Real Ice, Fake Thunder (All Sets)", "In Thunder, Avoid Ice")
+            .At("Ice and thunder");
 
     public readonly Callout fakeIceRealThunder =
-        Callout.Of("Kefka Says: Fake Ice, Real Thunder (All Sets)", "In Ice, Avoid Thunder");
+        Callout.Of("Kefka Says: Fake Ice, Real Thunder (All Sets)", "In Ice, Avoid Thunder")
+            .At("Ice and thunder");
 
     public readonly Callout fakeIceFakeThunder =
-        Callout.Of("Kefka Says: Fake Ice, Fake Thunder (All Sets)", "Stand in Both");
+        Callout.Of("Kefka Says: Fake Ice, Fake Thunder (All Sets)", "Stand in Both")
+            .At("Ice and thunder");
 
     public readonly Callout realAccelShort =
-        Callout.Duration("Kefka Says: Real Accel, Short (First Set Applied)", "Real Short Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Short (First Set Applied)", "Real Short Accel").Icon(ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout realAccelShortShriek =
-        Callout.Duration("Kefka Says: Real Accel, Short, with Shriek (First Set Applied)", "Real Short + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Short, with Shriek (First Set Applied)", "Real Short + Shriek").Icon(SHRIEK, ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout realAccelLong =
-        Callout.Duration("Kefka Says: Real Accel, Long (First Set Applied)", "Real Long Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Long (First Set Applied)", "Real Long Accel").Icon(ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout realAccelLongShriek =
-        Callout.Duration("Kefka Says: Real Accel, Long, with Shriek (First Set Applied)", "Real Long + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Long, with Shriek (First Set Applied)", "Real Long + Shriek").Icon(SHRIEK, ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout realWater =
-        Callout.Duration("Kefka Says: Real Water (First Set Applied)", "Real Water").Icon(WATER);
+        Callout.Duration("Kefka Says: Real Water (First Set Applied)", "Real Water").Icon(WATER)
+            .At("First debuff set applied");
 
     public readonly Callout realLightning =
-        Callout.Duration("Kefka Says: Real Lightning (First Set Applied)", "Real Lightning").Icon(FORK);
+        Callout.Duration("Kefka Says: Real Lightning (First Set Applied)", "Real Lightning").Icon(FORK)
+            .At("First debuff set applied");
 
     public readonly Callout fakeAccelShort =
-        Callout.Duration("Kefka Says: Fake Accel, Short (First Set Applied)", "Fake Short Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Short (First Set Applied)", "Fake Short Accel").Icon(ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout fakeAccelShortShriek =
-        Callout.Duration("Kefka Says: Fake Accel, Short, with Shriek (First Set Applied)", "Fake Short Accel").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Short, with Shriek (First Set Applied)", "Fake Short Accel").Icon(SHRIEK, ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout fakeAccelLong =
-        Callout.Duration("Kefka Says: Fake Accel, Long (First Set Applied)", "Fake Long Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Long (First Set Applied)", "Fake Long Accel").Icon(ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout fakeAccelLongShriek =
-        Callout.Duration("Kefka Says: Fake Accel, Long, with Shriek (First Set Applied)", "Fake Long + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Long, with Shriek (First Set Applied)", "Fake Long + Shriek").Icon(SHRIEK, ACCEL)
+            .At("First debuff set applied");
 
     public readonly Callout fakeWater =
-        Callout.Duration("Kefka Says: Fake Water (First Set Applied)", "Fake Water").Icon(WATER);
+        Callout.Duration("Kefka Says: Fake Water (First Set Applied)", "Fake Water").Icon(WATER)
+            .At("First debuff set applied");
 
     public readonly Callout fakeLightning =
-        Callout.Duration("Kefka Says: Fake Lightning (First Set Applied)", "Fake Lightning").Icon(FORK);
+        Callout.Duration("Kefka Says: Fake Lightning (First Set Applied)", "Fake Lightning").Icon(FORK)
+            .At("First debuff set applied");
 
     public readonly Callout realDynamicFluid =
-        Callout.Duration("Kefka Says: Real Dynamic Fluid (First Set Applied)", "Real Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds).Note("Note that the first/second set refer to the order in which they will RESOLVE, not apply. These calls are disabled by default. I would recommend keeping it this way as there is a lot going on at that point, and there is another call later to remind you of what to do with your debuff anyway.");
+        Callout.Duration("Kefka Says: Real Dynamic Fluid (First Set Applied)", "Real Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds).Note("Note that the first/second set refer to the order in which they will RESOLVE, not apply. These calls are disabled by default. I would recommend keeping it this way as there is a lot going on at that point, and there is another call later to remind you of what to do with your debuff anyway.")
+            .At("First debuff set applied");
 
     public readonly Callout realEntropy =
-        Callout.Duration("Kefka Says: Real Entropy (First Set Applied)", "Real Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Real Entropy (First Set Applied)", "Real Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("First debuff set applied");
 
     public readonly Callout fakeDynamicFluid =
-        Callout.Duration("Kefka Says: Fake Dynamic Fluid (First Set Applied)", "Fake Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Fake Dynamic Fluid (First Set Applied)", "Fake Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("First debuff set applied");
 
     public readonly Callout fakeEntropy =
-        Callout.Duration("Kefka Says: Fake Entropy (First Set Applied)", "Fake Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Fake Entropy (First Set Applied)", "Fake Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("First debuff set applied");
 
     public readonly Callout secondRealDynamicFluid =
-        Callout.Duration("Kefka Says: Real Dynamic Fluid (Second Set Applied)", "Real Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Real Dynamic Fluid (Second Set Applied)", "Real Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealEntropy =
-        Callout.Duration("Kefka Says: Real Entropy (Second Set Applied)", "Real Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Real Entropy (Second Set Applied)", "Real Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeDynamicFluid =
-        Callout.Duration("Kefka Says: Fake Dynamic Fluid (Second Set Applied)", "Fake Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Fake Dynamic Fluid (Second Set Applied)", "Fake Water").Icon(DYNAMIC).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeEntropy =
-        Callout.Duration("Kefka Says: Fake Entropy (Second Set Applied)", "Fake Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds);
+        Callout.Duration("Kefka Says: Fake Entropy (Second Set Applied)", "Fake Fire").Icon(ENTROPY).Quiet().SpeakAfter(DynEntSpeechDelaySeconds)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealAccelShort =
-        Callout.Duration("Kefka Says: Real Accel, Short (Second Set Applied)", "Real Short Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Short (Second Set Applied)", "Real Short Accel").Icon(ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealAccelShortShriek =
-        Callout.Duration("Kefka Says: Real Accel, Short, with Shriek (Second Set Applied)", "Real Short + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Short, with Shriek (Second Set Applied)", "Real Short + Shriek").Icon(SHRIEK, ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealAccelLong =
-        Callout.Duration("Kefka Says: Real Accel, Long (Second Set Applied)", "Real Long Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Long (Second Set Applied)", "Real Long Accel").Icon(ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealAccelLongShriek =
-        Callout.Duration("Kefka Says: Real Accel, Long, with Shriek (Second Set Applied)", "Real Long + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Real Accel, Long, with Shriek (Second Set Applied)", "Real Long + Shriek").Icon(SHRIEK, ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealWater =
-        Callout.Duration("Kefka Says: Real Water (Second Set Applied)", "Real Water").Icon(WATER);
+        Callout.Duration("Kefka Says: Real Water (Second Set Applied)", "Real Water").Icon(WATER)
+            .At("Second debuff set applied");
 
     public readonly Callout secondRealLightning =
-        Callout.Duration("Kefka Says: Real Lightning (Second Set Applied)", "Real Lightning").Icon(FORK);
+        Callout.Duration("Kefka Says: Real Lightning (Second Set Applied)", "Real Lightning").Icon(FORK)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeAccelShort =
-        Callout.Duration("Kefka Says: Fake Accel, Short (Second Set Applied)", "Fake Short Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Short (Second Set Applied)", "Fake Short Accel").Icon(ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeAccelShortShriek =
-        Callout.Duration("Kefka Says: Fake Accel, Short, with Shriek (Second Set Applied)", "Fake Short Accel").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Short, with Shriek (Second Set Applied)", "Fake Short Accel").Icon(SHRIEK, ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeAccelLong =
-        Callout.Duration("Kefka Says: Fake Accel, Long (Second Set Applied)", "Fake Long Accel").Icon(ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Long (Second Set Applied)", "Fake Long Accel").Icon(ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeAccelLongShriek =
-        Callout.Duration("Kefka Says: Fake Accel, Long, with Shriek (Second Set Applied)", "Fake Long + Shriek").Icon(SHRIEK, ACCEL);
+        Callout.Duration("Kefka Says: Fake Accel, Long, with Shriek (Second Set Applied)", "Fake Long + Shriek").Icon(SHRIEK, ACCEL)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeWater =
-        Callout.Duration("Kefka Says: Fake Water (Second Set Applied)", "Fake Water").Icon(WATER);
+        Callout.Duration("Kefka Says: Fake Water (Second Set Applied)", "Fake Water").Icon(WATER)
+            .At("Second debuff set applied");
 
     public readonly Callout secondFakeLightning =
-        Callout.Duration("Kefka Says: Fake Lightning (Second Set Applied)", "Fake Lightning").Icon(FORK);
+        Callout.Duration("Kefka Says: Fake Lightning (Second Set Applied)", "Fake Lightning").Icon(FORK)
+            .At("Second debuff set applied");
 
     public readonly Callout realWhiteDeath =
-        Callout.Duration("Kefka Says: Real WW + BD", "Real White + Death").Icon(WHITE_WOUND, BEYOND_DEATH);
+        Callout.Duration("Kefka Says: Real WW + BD", "Real White + Death").Icon(WHITE_WOUND, BEYOND_DEATH)
+            .At("Wound and wind");
 
     public readonly Callout fakeWhiteDeath =
-        Callout.Duration("Kefka Says: Fake WW + BD", "Fake White + Death").Icon(WHITE_WOUND, BEYOND_DEATH);
+        Callout.Duration("Kefka Says: Fake WW + BD", "Fake White + Death").Icon(WHITE_WOUND, BEYOND_DEATH)
+            .At("Wound and wind");
 
     public readonly Callout realBlackDeath =
-        Callout.Duration("Kefka Says: Real BW + BD", "Real Black + Death").Icon(BLACK_WOUND, BEYOND_DEATH);
+        Callout.Duration("Kefka Says: Real BW + BD", "Real Black + Death").Icon(BLACK_WOUND, BEYOND_DEATH)
+            .At("Wound and wind");
 
     public readonly Callout fakeBlackDeath =
-        Callout.Duration("Kefka Says: Fake BW + BD (Applied)", "Fake Black + Death").Icon(BLACK_WOUND, BEYOND_DEATH);
+        Callout.Duration("Kefka Says: Fake BW + BD (Applied)", "Fake Black + Death").Icon(BLACK_WOUND, BEYOND_DEATH)
+            .At("Wound and wind");
 
     public readonly Callout realWhiteAllag =
-        Callout.Duration("Kefka Says: Real WW + AF", "Real White + Allag").Icon(WHITE_WOUND, ALLAG_FIELD);
+        Callout.Duration("Kefka Says: Real WW + AF", "Real White + Allag").Icon(WHITE_WOUND, ALLAG_FIELD)
+            .At("Wound and wind");
 
     public readonly Callout fakeWhiteAllag =
-        Callout.Duration("Kefka Says: Fake WW + AF", "Fake White + Allag").Icon(WHITE_WOUND, ALLAG_FIELD);
+        Callout.Duration("Kefka Says: Fake WW + AF", "Fake White + Allag").Icon(WHITE_WOUND, ALLAG_FIELD)
+            .At("Wound and wind");
 
     public readonly Callout realBlackAllag =
-        Callout.Duration("Kefka Says: Real BW + AF", "Real Black + Allag").Icon(BLACK_WOUND, ALLAG_FIELD);
+        Callout.Duration("Kefka Says: Real BW + AF", "Real Black + Allag").Icon(BLACK_WOUND, ALLAG_FIELD)
+            .At("Wound and wind");
 
     public readonly Callout fakeBlackAllag =
-        Callout.Duration("Kefka Says: Fake BW + AF", "Fake Black + Allag").Icon(BLACK_WOUND, ALLAG_FIELD);
+        Callout.Duration("Kefka Says: Fake BW + AF", "Fake Black + Allag").Icon(BLACK_WOUND, ALLAG_FIELD)
+            .At("Wound and wind");
 
     public readonly Callout kefkaSaysError =
-        Callout.Of("Kefka Says: Missing/Invalid Debuffs", "Error");
+        Callout.Of("Kefka Says: Missing/Invalid Debuffs", "Error").WhenReadFails()
+            .At("Wound and wind");
 
     public readonly Callout standInWhite =
-        Callout.Duration("Kefka Says: Stand in White", "Stand in Purple ({whiteCompass})");
+        Callout.Duration("Kefka Says: Stand in White", "Stand in Purple ({whiteCompass})")
+            .At("Stand in the safe half");
 
     public readonly Callout standInBlack =
-        Callout.Duration("Kefka Says: Stand in Black", "Stand in Blue ({blackCompass})");
+        Callout.Duration("Kefka Says: Stand in Black", "Stand in Blue ({blackCompass})")
+            .At("Stand in the safe half");
 
     public const string MarkerParam = "myMarker";
     public const string NextSpotParam = "next";
@@ -278,99 +326,130 @@ public sealed class KefkaSays
             : null;
 
     public readonly Callout firstSetStack =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Stack", "Stack {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Stack", "Stack {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout firstSetSpread =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Spread", "Spread {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Spread", "Spread {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout firstSetNothing =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Nothing", "Stack {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Nothing", "Stack {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout firstSetAccelStack =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout firstSetAccelSpread =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout firstSetAccelNothing =
-        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon();
+        Callout.Duration("Kefka Says: First Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker}").AutoIcon()
+            .At("First set resolving");
 
     public readonly Callout thunderShriek =
-        Callout.Duration("Kefka Says: Thunder and First Shrieks Resolving", "{fakeThunder ? 'In' : 'Avoid'} Thunder, Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK);
+        Callout.Duration("Kefka Says: Thunder and First Shrieks Resolving", "{fakeThunder ? 'In' : 'Avoid'} Thunder, Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK)
+            .At("First shrieks");
 
     public readonly Callout thunderShriekOnYou =
-        Callout.Duration("Kefka Says: Thunder and First Shrieks Resolving (Shriek on You)", "{fakeThunder ? 'In' : 'Avoid'} Thunder, Look {fakeShriek ? 'In' : 'Away'}, on YOU").Icon(SHRIEK);
+        Callout.Duration("Kefka Says: Thunder and First Shrieks Resolving (Shriek on You)", "{fakeThunder ? 'In' : 'Avoid'} Thunder, Look {fakeShriek ? 'In' : 'Away'}, on YOU").Icon(SHRIEK)
+            .At("First shrieks");
 
     public readonly Callout firstEntropyDynamic =
-        Callout.Duration("Kefka Says: First Entropy/Dynamic Resolving", "{isDonut ? 'Stack for Donut' : 'Stack then Move'}").AutoIcon();
+        Callout.Duration("Kefka Says: First Entropy/Dynamic Resolving", "{isDonut ? 'Stack for Donut' : 'Stack then Move'}").AutoIcon()
+            .At("First entropy and dynamic");
 
     public readonly Callout firstEntropyDynamicMove =
         Callout.Duration("Kefka Says: First Entropy/Dynamic: Move (Circle Aoe)", "Move{next}").AutoIcon()
-            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Move and Spread B. Supports take D on a spread and A on a stack, dps take B and C. Holding neither a fork nor a water for that set leaves it as plain Move.");
+            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Move and Spread B. Supports take D on a spread and A on a stack, dps take B and C. Holding neither a fork nor a water for that set leaves it as plain Move.")
+            .At("First entropy and dynamic");
 
     public readonly Callout firstEntropyDynamicStay =
         Callout.Duration("Kefka Says: First Entropy/Dynamic: Stay (Donut AoE)", "Stay{next}").AutoIcon()
-            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Stay and Spread B. Holding neither a fork nor a water for that set leaves it as plain Stay.");
+            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Stay and Spread B. Holding neither a fork nor a water for that set leaves it as plain Stay.")
+            .At("First entropy and dynamic");
 
     public readonly Callout secondSetStack =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Stack", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Stack", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondSetSpread =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Spread", "Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Spread", "Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondSetNothing =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Nothing", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Nothing", "Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondSetAccelStack =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Stack", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondSetAccelSpread =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Spread", "{stillness ? 'Stillness' : 'Motion'} and Spread {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondSetAccelNothing =
-        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon();
+        Callout.Duration("Kefka Says: Second Debuff Set Resolving: Accel + Nothing", "{stillness ? 'Stillness' : 'Motion'} and Stack {myMarker} {fakeIce ? 'In Ice' : 'Out of Ice'}").AutoIcon()
+            .At("Second set resolving");
 
     public readonly Callout secondShriek =
-        Callout.Duration("Kefka Says: Second Shrieks Resolving", "Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK);
+        Callout.Duration("Kefka Says: Second Shrieks Resolving", "Look {fakeShriek ? 'In' : 'Away'}").Icon(SHRIEK)
+            .At("Second shrieks");
 
     public readonly Callout secondShriekOnYou =
-        Callout.Duration("Kefka Says: Second Shrieks Resolving (On You)", "Look {fakeShriek ? 'In' : 'Away'}, on YOU").Icon(SHRIEK);
+        Callout.Duration("Kefka Says: Second Shrieks Resolving (On You)", "Look {fakeShriek ? 'In' : 'Away'}, on YOU").Icon(SHRIEK)
+            .At("Second shrieks");
 
     public readonly Callout secondEntropyDynamicBothReal =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Both Thunder/Ice Real", "{isDonut ? 'Donut' : 'Stack'}, Avoid Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Both Thunder/Ice Real", "{isDonut ? 'Donut' : 'Stack'}, Avoid Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicMoveBothReal =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Both Thunder/Ice Real", "Move, Avoid Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Both Thunder/Ice Real", "Move, Avoid Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicStayBothReal =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Both Thunder/Ice Real", "Stay out of Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Both Thunder/Ice Real", "Stay out of Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicBothFake =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Both Thunder/Ice Fake", "{isDonut ? 'Donut' : 'Stack'} in Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Both Thunder/Ice Fake", "{isDonut ? 'Donut' : 'Stack'} in Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicMoveBothFake =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Both Thunder/Ice Fake", "Move, Into Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Both Thunder/Ice Fake", "Move, Into Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicStayBothFake =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Both Thunder/Ice Fake", "Stay in Both").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Both Thunder/Ice Fake", "Stay in Both").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicFakeIce =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Real Thunder, Fake Ice", "{isDonut ? 'Donut' : 'Stack'} in Ice").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Real Thunder, Fake Ice", "{isDonut ? 'Donut' : 'Stack'} in Ice").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicMoveFakeIce =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Real Thunder, Fake Ice", "Move Into Ice").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Real Thunder, Fake Ice", "Move Into Ice").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicStayFakeIce =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Real Thunder, Fake Ice", "Stay In Ice").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Real Thunder, Fake Ice", "Stay In Ice").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicFakeThunder =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Fake Thunder, Real Ice", "{isDonut ? 'Donut' : 'Stack'} in Thunder").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic Resolving, Fake Thunder, Real Ice", "{isDonut ? 'Donut' : 'Stack'} in Thunder").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicMoveFakeThunder =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Fake Thunder, Real Ice", "Move Into Thunder").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Move, Fake Thunder, Real Ice", "Move Into Thunder").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public readonly Callout secondEntropyDynamicStayFakeThunder =
-        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Fake Thunder, Real Ice", "Stay in Thunder").AutoIcon();
+        Callout.Duration("Kefka Says: Second Entropy/Dynamic: Stay, Fake Thunder, Real Ice", "Stay in Thunder").AutoIcon()
+            .At("Second entropy and dynamic");
 
     public sealed record ManaCharge(bool ThunderFake, bool IceFake);
 

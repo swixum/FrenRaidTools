@@ -13,7 +13,8 @@ public sealed class LimitCut
         Callout.Of("Limit Cut: Initial",
             "{startWaymark} - {resultingClockwise ? 'Clockwise' : 'Counterclockwise'}",
             "{startWaymark} - {resultingClockwise ? 'CW' : 'CCW'}")
-            .Note("The four variables you can use in this call are initialClone and initialClockwise which are the first clone and which direction the initial waves are going. resultingStart and resultingClockwise are where the limit cut hits will start from and which direction.");
+            .Note("The four variables you can use in this call are initialClone and initialClockwise which are the first clone and which direction the initial waves are going. resultingStart and resultingClockwise are where the limit cut hits will start from and which direction.")
+            .At("Start and rotation");
 
     public const string WaymarkParam = "myWaymark";
     public const string StartWaymarkParam = "startWaymark";
@@ -70,15 +71,24 @@ public sealed class LimitCut
 
     public readonly Callout limitCutNumber1 =
         Callout.Duration("Limit Cut: 1", "{myNumber} - {myWaymark}")
-            .Note("For the individual number calls, you can use {myNumber} which is your limit cut number, starting at 1, in case you want to do math in the expressions. You can also use {myPosition} for the arena position opposite your clone. For example, { myPosition } { resultingClockwise ? 'Left' : 'Right' } would call out something like North Right (left/right is looking inwards) for the typical LC strategy.");
-    public readonly Callout limitCutNumber2 = Callout.Duration("Limit Cut: 2", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber3 = Callout.Duration("Limit Cut: 3", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber4 = Callout.Duration("Limit Cut: 4", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber5 = Callout.Duration("Limit Cut: 5", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber6 = Callout.Duration("Limit Cut: 6", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber7 = Callout.Duration("Limit Cut: 7", "{myNumber} - {myWaymark}");
-    public readonly Callout limitCutNumber8 = Callout.Duration("Limit Cut: 8", "{myNumber} - {myWaymark}");
-    public readonly Callout unknown = Callout.Of("Limit Cut: Error", "Error");
+            .Note("For the individual number calls, you can use {myNumber} which is your limit cut number, starting at 1, in case you want to do math in the expressions. You can also use {myPosition} for the arena position opposite your clone. For example, { myPosition } { resultingClockwise ? 'Left' : 'Right' } would call out something like North Right (left/right is looking inwards) for the typical LC strategy.")
+            .At("Your number");
+    public readonly Callout limitCutNumber2 = Callout.Duration("Limit Cut: 2", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber3 = Callout.Duration("Limit Cut: 3", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber4 = Callout.Duration("Limit Cut: 4", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber5 = Callout.Duration("Limit Cut: 5", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber6 = Callout.Duration("Limit Cut: 6", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber7 = Callout.Duration("Limit Cut: 7", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout limitCutNumber8 = Callout.Duration("Limit Cut: 8", "{myNumber} - {myWaymark}")
+        .At("Your number");
+    public readonly Callout unknown = Callout.Of("Limit Cut: Error", "Error").WhenReadFails()
+        .At("Your number");
 
     public static int NumberFor(uint markerId) => markerId switch
     {

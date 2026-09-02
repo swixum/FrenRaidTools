@@ -17,10 +17,12 @@ public sealed class MaddeningOrchestra
         Callout.Duration("Maddening Orchestra", "Spread to spots");
 
     public readonly Callout maddeningOrchestraFlare =
-        Callout.Duration("Maddening Orchestra: Tank Flare", "Surprise Flare").AutoIcon();
+        Callout.Duration("Maddening Orchestra: Tank Flare", "Surprise Flare").AutoIcon()
+            .OutOfPhase("Maddening Orchestra flare and holy");
 
     public readonly Callout maddeningOrchestraHoly =
-        Callout.Duration("Maddening Orchestra: Tank Holy", "Surprise Holy").AutoIcon();
+        Callout.Duration("Maddening Orchestra: Tank Holy", "Surprise Holy").AutoIcon()
+            .OutOfPhase("Maddening Orchestra flare and holy");
 
     public readonly Callout maddeningHoly =
         Callout.Of("Maddening Orchestra: Hit by Holy", "Out");
@@ -29,10 +31,12 @@ public sealed class MaddeningOrchestra
         Callout.Of("Maddening Orchestra: Not Hit by Holy", "In");
 
     public readonly Callout maddeningFinalFlare =
-        Callout.Duration("Maddening Orchestra: Flare Tank Move Out", "Move Out").AutoIcon();
+        Callout.Duration("Maddening Orchestra: Flare Tank Move Out", "Move Out").AutoIcon()
+            .OutOfPhase("Maddening Orchestra flare and holy");
 
     public readonly Callout maddeningFinal =
-        Callout.Duration("Maddening Orchestra: Avoid Flare Tank", "Away from {flareTank}");
+        Callout.Duration("Maddening Orchestra: Avoid Flare Tank", "Away from {flareTank}")
+            .OutOfPhase("Maddening Orchestra flare and holy");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 180, e => e.Is(EventKind.CastStart, OrchestraCast),

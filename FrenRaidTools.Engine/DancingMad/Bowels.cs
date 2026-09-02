@@ -23,47 +23,64 @@ public sealed class Bowels
     public const string EntropyName = "Entropy";
     public const string DynamicName = "Dynamic";
 
-    public readonly Callout epicHero = Callout.Of("Epic Hero", "Attack Chaos").AutoIcon();
-    public readonly Callout fatedHero = Callout.Of("Fated Hero", "Attack Exdeath").AutoIcon();
+    public readonly Callout epicHero = Callout.Of("Epic Hero", "Attack Chaos").AutoIcon()
+        .At("Heroes");
+    public readonly Callout fatedHero = Callout.Of("Fated Hero", "Attack Exdeath").AutoIcon()
+        .At("Heroes");
 
     public readonly Callout decisiveBattle =
-        Callout.Duration("The Decisive Battle", "Get your Debuffs");
+        Callout.Duration("The Decisive Battle", "Get your Debuffs")
+            .At("The Decisive Battle");
 
-    public readonly Callout bowelsInitial = Callout.Duration("Bowels of Agony", "Raidwide");
+    public readonly Callout bowelsInitial = Callout.Duration("Bowels of Agony", "Raidwide")
+        .At("Raidwide");
 
     public readonly Callout bowelsHeadwind =
-        Callout.Duration("Bowels: Headwind Only", "Face away from Exdeath").Icon(Headwind);
+        Callout.Duration("Bowels: Headwind Only", "Face away from Exdeath").Icon(Headwind)
+            .At("Your wind and debuff");
     public readonly Callout bowelsTailwind =
-        Callout.Duration("Bowels: Tailwind Only", "Face Exdeath").Icon(Tailwind);
+        Callout.Duration("Bowels: Tailwind Only", "Face Exdeath").Icon(Tailwind)
+            .At("Your wind and debuff");
     public readonly Callout bowelsHeadwindEntropy =
-        Callout.Duration("Bowels: Headwind + Entropy", "Face away from Exdeath, Fire").Icon(Entropy, Headwind);
+        Callout.Duration("Bowels: Headwind + Entropy", "Face away from Exdeath, Fire").Icon(Entropy, Headwind)
+            .At("Your wind and debuff");
     public readonly Callout bowelsTailwindEntropy =
-        Callout.Duration("Bowels: Tailwind + Entropy", "Face Exdeath, Fire").Icon(Entropy, Tailwind);
+        Callout.Duration("Bowels: Tailwind + Entropy", "Face Exdeath, Fire").Icon(Entropy, Tailwind)
+            .At("Your wind and debuff");
     public readonly Callout bowelsHeadwindDynamic =
-        Callout.Duration("Bowels: Headwind + Dynamic Fluid", "Face away from Exdeath, Water").Icon(Dynamic, Headwind);
+        Callout.Duration("Bowels: Headwind + Dynamic Fluid", "Face away from Exdeath, Water").Icon(Dynamic, Headwind)
+            .At("Your wind and debuff");
     public readonly Callout bowelsTailwindDynamic =
-        Callout.Duration("Bowels: Tailwind + Dynamic Fluid", "Face Exdeath, Water").Icon(Dynamic, Tailwind);
+        Callout.Duration("Bowels: Tailwind + Dynamic Fluid", "Face Exdeath, Water").Icon(Dynamic, Tailwind)
+            .At("Your wind and debuff");
 
     public readonly Callout bowelsMyEntropySoon =
-        Callout.Duration("Bowels: My Entropy Soon", "Fire On You Soon").Icon(Entropy);
+        Callout.Duration("Bowels: My Entropy Soon", "Fire On You Soon").Icon(Entropy)
+            .At("Fire and water warnings");
     public readonly Callout bowelsOtherEntropySoon =
-        Callout.Duration("Bowels: Other Entropy Soon", "Fires Soon");
+        Callout.Duration("Bowels: Other Entropy Soon", "Fires Soon")
+            .At("Fire and water warnings");
     public readonly Callout bowelsMyDynamicSoon =
-        Callout.Duration("Bowels: My Dynamic Soon", "Water On You Soon").Icon(Dynamic);
+        Callout.Duration("Bowels: My Dynamic Soon", "Water On You Soon").Icon(Dynamic)
+            .At("Fire and water warnings");
     public readonly Callout bowelsOtherDynamicSoon =
-        Callout.Duration("Bowels: Other Dynamic Soon", "Waters Soon");
+        Callout.Duration("Bowels: Other Dynamic Soon", "Waters Soon")
+            .At("Fire and water warnings");
 
     public const string BowelsOption = "bowels";
     public const string LimitBreakChoice = "lb";
     public const double LimitBreakLeadSeconds = 3.0;
 
     public readonly Callout bowelsTankLimitBreak =
-        Callout.Duration("Bowels: Tank Limit Break", "Tank LB");
+        Callout.Duration("Bowels: Tank Limit Break", "Tank LB")
+            .OutOfPhase("Tank actions");
 
     public readonly Callout bowelsHeadwindAfter =
-        Callout.Duration("Bowels: Knockback, Headwind", "{spotSpeech}, Face Away", "{spot}, Face Away").Icon(Headwind);
+        Callout.Duration("Bowels: Knockback, Headwind", "{spotSpeech}, Face Away", "{spot}, Face Away").Icon(Headwind)
+            .At("Knockback");
     public readonly Callout bowelsTailwindAfter =
-        Callout.Duration("Bowels: Knockback, Tailwind", "{spotSpeech}, Face Exdeath", "{spot}, Face Exdeath").Icon(Tailwind);
+        Callout.Duration("Bowels: Knockback, Tailwind", "{spotSpeech}, Face Exdeath", "{spot}, Face Exdeath").Icon(Tailwind)
+            .At("Knockback");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 180, e => e.Is(EventKind.CastStart, BowelsCast),
@@ -215,7 +232,8 @@ public sealed class Bowels
 
     public readonly Callout baitJump =
         Callout.Duration(BaitJumpName, "Bait Jump").Linger(BaitJumpCountdownSeconds)
-            .Note("Phys ranged only. Fires when the second fire or water expires. The countdown is the measured gap to the casts, 10.35 to 10.54 seconds across the pulls it was taken from, so zero is your cue to move behind Exdeath. Umbra Smash lands about five seconds after that.");
+            .Note("Phys ranged only. Fires when the second fire or water expires. The countdown is the measured gap to the casts, 10.35 to 10.54 seconds across the pulls it was taken from, so zero is your cue to move behind Exdeath. Umbra Smash lands about five seconds after that.")
+            .At("Bait the jump");
 
     public static bool Baits(IWorld world)
     {

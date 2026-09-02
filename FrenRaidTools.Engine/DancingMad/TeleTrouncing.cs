@@ -34,60 +34,93 @@ public sealed class TeleTrouncing
 
     private enum Arrow { Up, Down, Right, Left }
 
-    public readonly Callout lightOfJudgment = Callout.Duration("Light of Judgment", "Raidwide");
+    public readonly Callout lightOfJudgment = Callout.Duration("Light of Judgment", "Raidwide")
+        .At("Light of Judgment");
 
     public readonly Callout hyperdrive =
         Callout.Of("Hyperdrive", "Buster 3 times", "Buster x3")
-            .Note("Tanks only. Lands shortly after Light of Judgment resolves and hits three times.");
+            .Note("Tanks only. Lands shortly after Light of Judgment resolves and hits three times.")
+            .OutOfPhase("Busters");
 
-    public readonly Callout arrowsInitial = Callout.Duration("Tele-trouncing", "Arrows");
+    public readonly Callout arrowsInitial = Callout.Duration("Tele-trouncing", "Arrows")
+        .At("Arrows appear");
 
-    public readonly Callout doubleNorth = Callout.Duration("TT: Double N", "Double North").Icon(ArrowUpA, ArrowUpA);
-    public readonly Callout doubleSouth = Callout.Duration("TT: Double S", "Double South").Icon(ArrowDownA, ArrowDownA);
-    public readonly Callout doubleEast = Callout.Duration("TT: Double E", "Double East").Icon(ArrowRightA, ArrowRightA);
-    public readonly Callout doubleWest = Callout.Duration("TT: Double W", "Double West").Icon(ArrowLeftA, ArrowLeftA);
+    public readonly Callout doubleNorth = Callout.Duration("TT: Double N", "Double North").Icon(ArrowUpA, ArrowUpA)
+        .At("Your two arrows");
+    public readonly Callout doubleSouth = Callout.Duration("TT: Double S", "Double South").Icon(ArrowDownA, ArrowDownA)
+        .At("Your two arrows");
+    public readonly Callout doubleEast = Callout.Duration("TT: Double E", "Double East").Icon(ArrowRightA, ArrowRightA)
+        .At("Your two arrows");
+    public readonly Callout doubleWest = Callout.Duration("TT: Double W", "Double West").Icon(ArrowLeftA, ArrowLeftA)
+        .At("Your two arrows");
 
     public readonly Callout northToWest = Callout.Duration("TT: N -> W", "North West", "North -> West")
         .Icon(ArrowUpA, ArrowLeftA)
-        .Note("With an arrow strat picked these read off the two spots you drop your arrows on. Only the big box has spots; on the other strats they call the arrows themselves, in the order they will expire, i.e. right-to-left on the HUD.");
-    public readonly Callout northToEast = Callout.Duration("TT: N -> E", "North East", "North -> East").Icon(ArrowUpA, ArrowRightA);
-    public readonly Callout southToWest = Callout.Duration("TT: S -> W", "South West", "South -> West").Icon(ArrowDownA, ArrowLeftA);
-    public readonly Callout southToEast = Callout.Duration("TT: S -> E", "South East", "South -> East").Icon(ArrowDownA, ArrowRightA);
-    public readonly Callout eastToNorth = Callout.Duration("TT: E -> N", "East North", "East -> North").Icon(ArrowRightA, ArrowUpA);
-    public readonly Callout eastToSouth = Callout.Duration("TT: E -> S", "East South", "East -> South").Icon(ArrowRightA, ArrowDownA);
-    public readonly Callout westToNorth = Callout.Duration("TT: W -> N", "West North", "West -> North").Icon(ArrowLeftA, ArrowUpA);
-    public readonly Callout westToSouth = Callout.Duration("TT: W -> S", "West South", "West -> South").Icon(ArrowLeftA, ArrowDownA);
-    public readonly Callout arrowError = Callout.Duration("TT: Error", "Error");
+        .Note("With an arrow strat picked these read off the two spots you drop your arrows on. Only the big box has spots; on the other strats they call the arrows themselves, in the order they will expire, i.e. right-to-left on the HUD.")
+            .At("Your two arrows");
+    public readonly Callout northToEast = Callout.Duration("TT: N -> E", "North East", "North -> East").Icon(ArrowUpA, ArrowRightA)
+        .At("Your two arrows");
+    public readonly Callout southToWest = Callout.Duration("TT: S -> W", "South West", "South -> West").Icon(ArrowDownA, ArrowLeftA)
+        .At("Your two arrows");
+    public readonly Callout southToEast = Callout.Duration("TT: S -> E", "South East", "South -> East").Icon(ArrowDownA, ArrowRightA)
+        .At("Your two arrows");
+    public readonly Callout eastToNorth = Callout.Duration("TT: E -> N", "East North", "East -> North").Icon(ArrowRightA, ArrowUpA)
+        .At("Your two arrows");
+    public readonly Callout eastToSouth = Callout.Duration("TT: E -> S", "East South", "East -> South").Icon(ArrowRightA, ArrowDownA)
+        .At("Your two arrows");
+    public readonly Callout westToNorth = Callout.Duration("TT: W -> N", "West North", "West -> North").Icon(ArrowLeftA, ArrowUpA)
+        .At("Your two arrows");
+    public readonly Callout westToSouth = Callout.Duration("TT: W -> S", "West South", "West -> South").Icon(ArrowLeftA, ArrowDownA)
+        .At("Your two arrows");
+    public readonly Callout arrowError = Callout.Duration("TT: Error", "Error").WhenReadFails()
+        .At("Your two arrows");
 
-    public readonly Callout onlyNorth = Callout.Duration("TT: One Arrow Read (N)", "North").Icon(ArrowUpA);
-    public readonly Callout onlySouth = Callout.Duration("TT: One Arrow Read (S)", "South").Icon(ArrowDownA);
-    public readonly Callout onlyEast = Callout.Duration("TT: One Arrow Read (E)", "East").Icon(ArrowRightA);
-    public readonly Callout onlyWest = Callout.Duration("TT: One Arrow Read (W)", "West").Icon(ArrowLeftA);
+    public readonly Callout onlyNorth = Callout.Duration("TT: One Arrow Read (N)", "North").Icon(ArrowUpA)
+        .At("Your two arrows")
+            .WhenReadFails();
+    public readonly Callout onlySouth = Callout.Duration("TT: One Arrow Read (S)", "South").Icon(ArrowDownA)
+        .At("Your two arrows")
+            .WhenReadFails();
+    public readonly Callout onlyEast = Callout.Duration("TT: One Arrow Read (E)", "East").Icon(ArrowRightA)
+        .At("Your two arrows")
+            .WhenReadFails();
+    public readonly Callout onlyWest = Callout.Duration("TT: One Arrow Read (W)", "West").Icon(ArrowLeftA)
+        .At("Your two arrows")
+            .WhenReadFails();
 
     public readonly Callout confettiOnYou =
-        Callout.Duration("TT: Knockback on You", "Knockback on YOU").AutoIcon();
+        Callout.Duration("TT: Knockback on You", "Knockback on YOU").AutoIcon()
+            .At("Knockback");
     public readonly Callout confettiNotOnYou =
-        Callout.Duration("TT: Knockback not on You", "Knockback on {confettiPlayers}").AutoIcon();
+        Callout.Duration("TT: Knockback not on You", "Knockback on {confettiPlayers}").AutoIcon()
+            .At("Knockback");
 
     public readonly Callout sleepTetherInitial =
         Callout.Of("TT: Sleep Tether (Initial)", "Sleep Tether").Icon(SleepIcon).Quiet()
-            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.")
+            .At("Tether appears");
     public readonly Callout confusionTetherInitial =
         Callout.Of("TT: Confusion Tether (Initial)", "Confusion Tether").Icon(ConfusionIcon).Quiet()
-            .Note("Off by default at swix's ask: the tether call after the knockback says what to do about it, so naming it twice adds nothing.");
+            .Note("Off by default at swix's ask: the tether call after the knockback says what to do about it, so naming it twice adds nothing.")
+            .At("Tether appears");
 
     public readonly Callout sleepTether =
         Callout.Of("TT: Sleep Tether (After Knockback)", "Spread for Sleep").Icon(SleepIcon).Quiet()
-            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.")
+            .At("Tether resolves");
     public readonly Callout confuseTether =
         Callout.Of("TT: Confusion Tether (After Knockback)", "Spread for Confusion").Icon(ConfusionIcon).Quiet()
-            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.");
+            .Note("Off by default at swix's ask: the sleep and confusion tethers are not worth a call.")
+            .At("Tether resolves");
 
-    public readonly Callout earlyFakeGaze = Callout.Of("TT: Fake Gaze (Early Call)", "Look Towards Statue");
-    public readonly Callout earlyRealGaze = Callout.Of("TT: Real Gaze (Early Call)", "Look Away");
+    public readonly Callout earlyFakeGaze = Callout.Of("TT: Fake Gaze (Early Call)", "Look Towards Statue")
+        .At("Gaze");
+    public readonly Callout earlyRealGaze = Callout.Of("TT: Real Gaze (Early Call)", "Look Away")
+        .At("Gaze");
 
     public readonly Callout elementMechanic = Callout.Of("TT: Element Mechanics",
-        "{actualSpread ? 'Spread' : 'Stack'} {fakeThunder ? 'In Thunder' : 'In Safe'}, Look {fakeGaze ? 'Towards' : 'Away'}");
+        "{actualSpread ? 'Spread' : 'Stack'} {fakeThunder ? 'In Thunder' : 'In Safe'}, Look {fakeGaze ? 'Towards' : 'Away'}")
+            .At("Elements");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 180, e => e.Is(EventKind.CastStart, TeleTrouncingCast),

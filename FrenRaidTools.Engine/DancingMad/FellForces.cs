@@ -48,7 +48,8 @@ public sealed class FellForces
 
     public readonly Callout tanksJoin =
         Callout.Duration(TanksJoinName, "Tanks Together")
-            .Note("The final set of role autos is the only one with a third hit, and the off tank moves in to share the tank spot for it. This goes up the moment the second auto lands, with the clock running to the third. Tanks only.");
+            .Note("The final set of role autos is the only one with a third hit, and the off tank moves in to share the tank spot for it. This goes up the moment the second auto lands, with the clock running to the third. Tanks only.")
+            .OutOfPhase("Tank actions");
 
     private const string Shared = "Fell Forces is a set of role-based autos, one per role, on a 2.91 second beat. Four sets land in the phase, each with its own fixed number of autos: three then two after the two Ultima Repeaters, two then three after the two Maddening Orchestras. The call waits for the raidwide or the flare ahead of it to land before it appears, so nobody moves early. The clock covers the whole set, running from the moment the call goes up to the last auto landing, so it clears as the hits stop. Use {hits} for how many are coming and {mySpot} for the spot your role takes, which is North for tanks, Southwest for healers and Southeast for dps.";
 

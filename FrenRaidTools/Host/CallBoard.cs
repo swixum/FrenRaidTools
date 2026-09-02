@@ -68,6 +68,8 @@ public sealed class CallBoard
 
     public IReadOnlyList<CatalogEntry> Catalog { get; private set; } = [];
 
+    public IReadOnlyList<CatalogEntry> Shown { get; private set; } = [];
+
     public int Fired { get; private set; }
 
     public int Skipped { get; private set; }
@@ -95,7 +97,9 @@ public sealed class CallBoard
     public void SetCatalog(IReadOnlyList<CatalogEntry> entries)
     {
         Catalog = entries;
+        Shown = entries.Where(e => !e.Call.Fallback).ToArray();
         PruneMutes();
+        WakeFallbacks();
     }
 
     public void SetCatalog(CalloutCatalog catalog) => SetCatalog(catalog.Entries);
@@ -109,6 +113,12 @@ public sealed class CallBoard
 
         foreach (var stale in _config.CallEdits.Keys.Where(key => !known.Contains(key)).ToList())
             _config.CallEdits.Remove(stale);
+    }
+
+    private void WakeFallbacks()
+    {
+        foreach (var entry in Catalog)
+            if (entry.Call.Fallback) _config.MutedCalls.Remove(entry.Key);
     }
 
     public bool Muted(string key) => key.Length > 0 && _config.MutedCalls.Contains(key);

@@ -24,72 +24,99 @@ public sealed class Forsaken
     public const int LastTowerSet = 8;
 
     public readonly Callout ultimateEmbrace =
-        Callout.Duration("Ultimate Embrace", "Buster on {event.target}");
+        Callout.Duration("Ultimate Embrace", "Buster on {event.target}")
+            .OutOfPhase("Busters");
 
-    public readonly Callout forsaken = Callout.Duration("Forsaken", "Raidwide");
+    public readonly Callout forsaken = Callout.Duration("Forsaken", "Raidwide")
+        .At("Raidwide");
 
     public readonly Callout forsakenDebuffReminder =
         Callout.Of("Forsaken: Debuff Tracker", "", "{event.stacks} Stacks").AutoIcon()
-            .Note("This callout shows only your debuff stacks. You should NOT add TTS to this, because the game continuously refreshes this debuff.");
+            .Note("This callout shows only your debuff stacks. You should NOT add TTS to this, because the game continuously refreshes this debuff.")
+            .At("Debuff tracker");
 
     public readonly Callout forsakenFirstCone =
-        Callout.Of("Forsaken: Initial Cone", "Cone, {supportsCone ? 'Supports' : 'DPS'} have cone");
+        Callout.Of("Forsaken: Initial Cone", "Cone, {supportsCone ? 'Supports' : 'DPS'} have cone")
+            .At("Your first debuff");
     public readonly Callout forsakenFirstCircle =
-        Callout.Of("Forsaken: Initial Circle", "Circle, {supportsCone ? 'Supports' : 'DPS'} have cone");
+        Callout.Of("Forsaken: Initial Circle", "Circle, {supportsCone ? 'Supports' : 'DPS'} have cone")
+            .At("Your first debuff");
     public readonly Callout forsakenFirstStack =
-        Callout.Of("Forsaken: Initial Stack", "Stack, {supportsCone ? 'Supports' : 'DPS'} have cone");
+        Callout.Of("Forsaken: Initial Stack", "Stack, {supportsCone ? 'Supports' : 'DPS'} have cone")
+            .At("Your first debuff");
     public readonly Callout forsakenFirstNothing =
-        Callout.Of("Forsaken: Initial Nothing", "Error, {supportsCone ? 'Supports' : 'DPS'} have cone");
+        Callout.Of("Forsaken: Initial Nothing", "Error, {supportsCone ? 'Supports' : 'DPS'} have cone")
+            .WhenReadFails()
+            .At("Your first debuff");
 
     public readonly Callout forsakenTowerCone =
         Callout.Of("Forsaken: Followup Cone + Past/Future (Tower Call)", "Cone with {buddy}, Baits")
-            .Note("The 'Tower Call' variants of these call remind you of which tower pattern you will need to do. These indicate that the tower set will be accompanied with Past/Future cast bar, while the other four indicate that it will be accompanied with All Things Ending resolving.\n\nIn addition, the towerSet variable will let you see which set of towers it is (starting at 1 then incrementing each time towers go off). You can use expressions like {towerSet % 2 == 0 ? 'even' : 'odd'} to have conditional logic based on whether it is even or odd towers, or for doing things like swap callouts.\n\nYou can also use the list myMechs (indexed from 0) to recall previous mechanics you had. The entries in the list are CONE, CIRCLE, STACK, or NONE. e.g. to see what you had on the third set, use myMechs[2].");
+            .Note("The 'Tower Call' variants of these call remind you of which tower pattern you will need to do. These indicate that the tower set will be accompanied with Past/Future cast bar, while the other four indicate that it will be accompanied with All Things Ending resolving.\n\nIn addition, the towerSet variable will let you see which set of towers it is (starting at 1 then incrementing each time towers go off). You can use expressions like {towerSet % 2 == 0 ? 'even' : 'odd'} to have conditional logic based on whether it is even or odd towers, or for doing things like swap callouts.\n\nYou can also use the list myMechs (indexed from 0) to recall previous mechanics you had. The entries in the list are CONE, CIRCLE, STACK, or NONE. e.g. to see what you had on the third set, use myMechs[2].")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerCircle =
-        Callout.Of("Forsaken: Followup Circle + Past/Future (Tower Call)", "Circle with {buddy}, Baits");
+        Callout.Of("Forsaken: Followup Circle + Past/Future (Tower Call)", "Circle with {buddy}, Baits")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerStack =
-        Callout.Of("Forsaken: Followup Stack + Past/Future (Tower Call)", "Stack, Baits");
+        Callout.Of("Forsaken: Followup Stack + Past/Future (Tower Call)", "Stack, Baits")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerNothing =
-        Callout.Of("Forsaken: Followup Nothing + Past/Future (Tower Call)", "Nothing, Baits");
+        Callout.Of("Forsaken: Followup Nothing + Past/Future (Tower Call)", "Nothing, Baits")
+            .At("Tower rounds");
 
     public readonly Callout forsakenTowerNoPfCone =
-        Callout.Of("Forsaken: Followup Cone + No Past/Future (Tower Call)", "Cone");
+        Callout.Of("Forsaken: Followup Cone + No Past/Future (Tower Call)", "Cone")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerNoPfCircle =
-        Callout.Of("Forsaken: Followup Circle + No Past/Future (Tower Call)", "Circle");
+        Callout.Of("Forsaken: Followup Circle + No Past/Future (Tower Call)", "Circle")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerNoPfStack =
-        Callout.Of("Forsaken: Followup Stack + No Past/Future (Tower Call)", "Stack with {buddy}");
+        Callout.Of("Forsaken: Followup Stack + No Past/Future (Tower Call)", "Stack with {buddy}")
+            .At("Tower rounds");
     public readonly Callout forsakenTowerNoPfNothing =
-        Callout.Of("Forsaken: Followup Nothing + No Past/Future (Tower Call)", "Nothing");
+        Callout.Of("Forsaken: Followup Nothing + No Past/Future (Tower Call)", "Nothing")
+            .At("Tower rounds");
 
     public readonly Callout forsakenFollowupPastCone =
         Callout.Of("Forsaken: Followup Cone + Past", "Cone, Bait Past")
-            .Note("This set of eight calls tells you that you need to bait for All Things Ending.");
+            .Note("This set of eight calls tells you that you need to bait for All Things Ending.")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupPastCircle =
-        Callout.Of("Forsaken: Followup Circle + Past", "Circle, Bait Past");
+        Callout.Of("Forsaken: Followup Circle + Past", "Circle, Bait Past")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupPastStack =
-        Callout.Of("Forsaken: Followup Stack + Past", "Stack with {buddy}, Bait Past");
+        Callout.Of("Forsaken: Followup Stack + Past", "Stack with {buddy}, Bait Past")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupPastNothing =
-        Callout.Of("Forsaken: Followup Nothing + Past", "Nothing, Bait Past");
+        Callout.Of("Forsaken: Followup Nothing + Past", "Nothing, Bait Past")
+            .At("Bait rounds");
 
     public readonly Callout forsakenFollowupFutureCone =
-        Callout.Of("Forsaken: Followup Cone + Future", "Cone, Bait Future");
+        Callout.Of("Forsaken: Followup Cone + Future", "Cone, Bait Future")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupFutureCircle =
-        Callout.Of("Forsaken: Followup Circle + Future", "Circle, Bait Future");
+        Callout.Of("Forsaken: Followup Circle + Future", "Circle, Bait Future")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupFutureStack =
-        Callout.Of("Forsaken: Followup Stack + Future", "Stack with {buddy}, Bait Future");
+        Callout.Of("Forsaken: Followup Stack + Future", "Stack with {buddy}, Bait Future")
+            .At("Bait rounds");
     public readonly Callout forsakenFollowupFutureNothing =
-        Callout.Of("Forsaken: Followup Nothing + Future", "Nothing, Bait Future");
+        Callout.Of("Forsaken: Followup Nothing + Future", "Nothing, Bait Future")
+            .At("Bait rounds");
 
     public readonly Callout forsakenNewDebuff =
         Callout.Of("Forsaken: New Debuff (Tower 3)", "New debuff {myNextMech}")
-            .Note("Soaking the third tower hands you the debuff you keep all the way to the last tower, and it lands after the tower 3 call has already been said. This fires the moment that marker appears.");
+            .Note("Soaking the third tower hands you the debuff you keep all the way to the last tower, and it lands after the tower 3 call has already been said. This fires the moment that marker appears.")
+            .At("New debuff on tower 3");
 
     public const string FinalBait = "Bait between, Final Tower";
 
     public readonly Callout forsakenFinalFuture =
-        Callout.Of("Forsaken: Final Future Nothing", $"{FinalBait}, Future");
+        Callout.Of("Forsaken: Final Future Nothing", $"{FinalBait}, Future")
+            .At("Final bait");
     public readonly Callout forsakenFinalPast =
         Callout.Of("Forsaken: Final Past Nothing", $"{FinalBait}, Past")
-            .In(2, "Forsaken: Final Past Nothing");
+            .In(2, "Forsaken: Final Past Nothing")
+            .At("Final bait");
 
     public static ForsakenMech? MechFor(uint markerId) => markerId switch
     {

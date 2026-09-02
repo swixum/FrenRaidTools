@@ -14,8 +14,17 @@ public partial class MainWindow
         Off,
     }
 
+    private enum CallGrouping
+    {
+        Steps,
+        Flat,
+    }
+
     private CallFilter _filter = CallFilter.All;
+    private CallGrouping _grouping = CallGrouping.Steps;
+    private int _shownPhase;
     private readonly HashSet<string> _openEditors = [];
+    private readonly HashSet<string> _openSteps = [];
 
     private const int NoPhase = 0;
 
@@ -23,7 +32,7 @@ public partial class MainWindow
     {
         var boss = FightPlans.ByKey(C.PlanFight) ?? FightPlans.First;
 
-        var catalog = Fight.Owners.Only(boss.Key, Board.Catalog).ToList();
+        var catalog = Fight.Owners.Only(boss.Key, Board.Shown).ToList();
 
         DrawBackToCategory();
 
@@ -54,10 +63,13 @@ public partial class MainWindow
     private void DrawPhaseTabs(PlannedFight boss, IReadOnlyList<CatalogEntry> catalog,
         List<CatalogEntry> matches)
     {
-        var phases = catalog.Select(e => e.Call.Phase).Distinct()
+        var standing = catalog.Where(e => e.Call.Fightwide).ToList();
+        var phased = catalog.Where(e => !e.Call.Fightwide).ToList();
+
+        var phases = phased.Select(e => e.Call.Phase).Distinct()
             .OrderBy(p => p == NoPhase ? int.MaxValue : p).ToList();
 
-        if (phases.Count <= 1)
+        if (phases.Count <= 1 && standing.Count == 0)
         {
             DrawMechanics(matches);
             return;
@@ -67,12 +79,14 @@ public partial class MainWindow
                 ImGuiTabBarFlags.FittingPolicyScroll | ImGuiTabBarFlags.NoCloseWithMiddleMouseButton))
             return;
 
+        DrawStandingTab(standing, matches.Where(e => e.Call.Fightwide).ToList());
+
         foreach (var phase in phases)
         {
-            var all = catalog.Where(e => e.Call.Phase == phase).ToList();
+            var all = phased.Where(e => e.Call.Phase == phase).ToList();
             var on = all.Count(e => !C.MutedCalls.Contains(e.Key));
             var name = Fight.PhaseNameFor(boss.Key, phase);
-            var shown = matches.Where(e => e.Call.Phase == phase).ToList();
+            var shown = matches.Where(e => !e.Call.Fightwide && e.Call.Phase == phase).ToList();
 
             var label = _search.Length > 0
                 ? $"{name}  {shown.Count}###tab{phase}"
@@ -81,6 +95,8 @@ public partial class MainWindow
                     : $"{name}  {on}/{all.Count}###tab{phase}";
 
             if (!ImGui.BeginTabItem(label)) continue;
+
+            _shownPhase = phase;
 
             if (shown.Count == 0)
                 Widgets.EmptyState(
@@ -95,6 +111,53 @@ public partial class MainWindow
         ImGui.EndTabBar();
     }
 
+    private const string StandingName = "Tanks and enrages";
+
+    private const int StandingPhase = -1;
+
+    private void DrawStandingTab(List<CatalogEntry> all, List<CatalogEntry> shown)
+    {
+        if (all.Count == 0) return;
+
+        var on = all.Count(e => !C.MutedCalls.Contains(e.Key));
+
+        var label = _search.Length > 0
+            ? $"{StandingName}  {shown.Count}###tabstanding"
+            : on == all.Count
+                ? $"{StandingName}  {all.Count}###tabstanding"
+                : $"{StandingName}  {on}/{all.Count}###tabstanding";
+
+        if (!ImGui.BeginTabItem(label)) return;
+
+        _shownPhase = StandingPhase;
+
+        if (shown.Count == 0)
+            Widgets.EmptyState(
+                _search.Length > 0 ? "Nothing matched here" : "Nothing here",
+                _search.Length > 0 ? "The other tabs show their own counts." : "The filter is hiding them all.");
+        else
+            DrawKinds(shown);
+
+        ImGui.EndTabItem();
+    }
+
+    private void DrawKinds(List<CatalogEntry> entries)
+    {
+        foreach (var kind in entries.Select(e => e.Call.Step).Distinct())
+        {
+            var inside = entries.Where(e => e.Call.Step == kind).ToList();
+            var on = inside.Count(e => !C.MutedCalls.Contains(e.Key));
+            var badge = on == inside.Count ? $"{inside.Count}" : $"{on}/{inside.Count}";
+
+            Fold("kind" + kind, kind, badge, on == inside.Count ? Theme.Muted : Theme.Warn,
+                _foldedMechanics, openByDefault: false,
+                () => { foreach (var entry in inside) DrawCallRow(entry, kind); },
+                forceOpen: _search.Length > 0,
+                controlWidth: ImGui.GetFrameHeight(),
+                controls: () => AllOn("kind" + kind, inside));
+        }
+    }
+
     private void DrawMechanics(List<CatalogEntry> entries)
     {
         if (entries.Count == 0)
@@ -107,13 +170,126 @@ public partial class MainWindow
         {
             var inside = entries.Where(e => MechanicOf(e) == mechanic).ToList();
             var on = inside.Count(e => !C.MutedCalls.Contains(e.Key));
+            var steps = Steps(inside).Count;
+
             var badge = on == inside.Count ? $"{inside.Count}" : $"{on}/{inside.Count}";
+            if (steps > 1 && _grouping == CallGrouping.Steps)
+                badge += steps == 1 ? ", 1 step" : $", {steps} steps";
 
             Fold(mechanic, mechanic, badge, on == inside.Count ? Theme.Muted : Theme.Warn,
-                _foldedMechanics, openByDefault: true,
-                () => { foreach (var entry in inside) DrawCallRow(entry, mechanic); },
-                forceOpen: _search.Length > 0);
+                _foldedMechanics, openByDefault: false,
+                () => DrawSteps(mechanic, inside),
+                forceOpen: _search.Length > 0,
+                controlWidth: ImGui.GetFrameHeight(),
+                controls: () => AllOn(mechanic, inside));
         }
+    }
+
+    private static List<string> Steps(IReadOnlyList<CatalogEntry> entries) =>
+        entries.Select(e => e.Call.Step).Where(s => s.Length > 0).Distinct().ToList();
+
+    private void AllOn(string id, IReadOnlyList<CatalogEntry> entries)
+    {
+        var on = entries.All(e => !C.MutedCalls.Contains(e.Key));
+        if (!Widgets.Check("##on" + id, ref on)) return;
+
+        foreach (var entry in entries) Board.SetMuted(entry.Key, !on);
+        Touch();
+    }
+
+    private void DrawVoice(List<CatalogEntry> inside)
+    {
+        var voice = CallVoices.For(inside.Select(e => e.Key));
+        if (voice is null) return;
+
+        var picked = voice.Matching(key => !C.MutedCalls.Contains(key));
+
+        Widgets.RowBegin(voice.Label, "",
+            Widgets.ButtonWidth([.. voice.Choices.Select(c => c.Label)]),
+            id: "voice" + voice.Label);
+
+        Widgets.SegmentBegin();
+
+        for (var i = 0; i < voice.Choices.Count; i++)
+        {
+            var choice = voice.Choices[i];
+            if (i > 0) ImGui.SameLine();
+
+            if (!Widgets.Segment(choice.Label, choice == picked)) continue;
+
+            foreach (var key in voice.Keys)
+                Board.SetMuted(key, !choice.Keys.Contains(key, StringComparer.Ordinal));
+
+            Touch();
+        }
+
+        Widgets.SegmentEnd();
+        Widgets.RowEnd();
+    }
+
+    private void DrawSteps(string mechanic, List<CatalogEntry> inside)
+    {
+        DrawVoice(inside);
+
+        if (_grouping == CallGrouping.Flat || Steps(inside).Count <= 1)
+        {
+            foreach (var entry in inside) DrawCallRow(entry, mechanic);
+            return;
+        }
+
+        var index = 0;
+
+        foreach (var step in inside.Select(e => e.Call.Step).Distinct())
+        {
+            var members = inside.Where(e => e.Call.Step == step).ToList();
+
+            if (step.Length == 0)
+            {
+                foreach (var entry in members) DrawCallRow(entry, mechanic);
+                continue;
+            }
+
+            DrawStep(mechanic, step, ++index, members);
+        }
+    }
+
+    private void DrawStep(string mechanic, string step, int index, List<CatalogEntry> members)
+    {
+        var id = mechanic + " / " + step;
+        var open = _search.Length > 0 || _openSteps.Contains(id);
+
+        var on = members.Count(e => !C.MutedCalls.Contains(e.Key));
+        var tag = on == members.Count ? $"{members.Count}" : $"{on}/{members.Count}";
+
+        var testWidth = Widgets.ButtonWidth("Test");
+        var gap = Theme.S(5f);
+
+        Widgets.RowBegin($"{index}. {step}", "", testWidth + ImGui.GetFrameHeight() + gap,
+            clickable: true,
+            icon: open ? FontAwesomeIcon.CaretDown : FontAwesomeIcon.CaretRight,
+            iconColor: open ? Theme.Accent : Theme.Muted,
+            id: id, edgeColor: on == 0 ? 0u : Theme.Accent, tag: tag);
+
+        var hit = Widgets.RowClicked;
+
+        if (Widgets.GhostButton("Test", new Vector2(testWidth, 0))) Board.Test(members[0].Call);
+        Widgets.Tip("Fire the first line");
+
+        ImGui.SameLine(0, gap);
+        AllOn(id, members);
+
+        Widgets.RowEnd();
+
+        if (hit && _search.Length == 0)
+        {
+            if (open) _openSteps.Remove(id);
+            else _openSteps.Add(id);
+            open = !open;
+        }
+
+        if (!open) return;
+
+        foreach (var entry in members) DrawCallRow(entry, mechanic, sub: true);
     }
 
     private string MechanicOf(CatalogEntry entry) => _plugin.Fight.FoldFor(entry);
@@ -140,18 +316,29 @@ public partial class MainWindow
         Widgets.SegmentEnd();
 
         ImGui.SameLine(0, Theme.S(10f));
+
+        Widgets.SegmentBegin();
+        if (Widgets.Segment("Steps", _grouping == CallGrouping.Steps)) _grouping = CallGrouping.Steps;
+        ImGui.SameLine();
+        if (Widgets.Segment("Flat", _grouping == CallGrouping.Flat)) _grouping = CallGrouping.Flat;
+        Widgets.SegmentEnd();
+        Widgets.Tip("Group calls by when they fire");
+
+        ImGui.SameLine(0, Theme.S(10f));
         if (Widgets.SmallGhost("All on"))
         {
-            foreach (var entry in Board.Catalog) C.MutedCalls.Remove(entry.Key);
+            foreach (var entry in Board.Shown) C.MutedCalls.Remove(entry.Key);
             Touch();
         }
 
         ImGui.SameLine(0, Theme.S(5f));
         if (Widgets.SmallDanger("All off"))
         {
-            foreach (var entry in Board.Catalog) C.MutedCalls.Add(entry.Key);
+            foreach (var entry in Board.Shown) C.MutedCalls.Add(entry.Key);
             Touch();
         }
+
+        DrawPhaseSwitch(boss);
 
         var edited = EditedCount();
         if (edited > 0)
@@ -159,7 +346,7 @@ public partial class MainWindow
             ImGui.SameLine(0, Theme.S(5f));
             if (Widgets.SmallDanger($"Undo {edited} edits"))
             {
-                foreach (var entry in Board.Catalog) C.DropEdit(entry.Key);
+                foreach (var entry in Board.Shown) C.DropEdit(entry.Key);
                 Touch();
             }
             Widgets.Tip($"Put every {boss.FullName} call back");
@@ -174,10 +361,36 @@ public partial class MainWindow
         ImGui.Spacing();
     }
 
+    private void DrawPhaseSwitch(PlannedFight boss)
+    {
+        if (_search.Length > 0 || _shownPhase == NoPhase) return;
+
+        var standing = _shownPhase == StandingPhase;
+
+        var inside = Fight.Owners.Only(boss.Key, Board.Shown)
+            .Where(e => standing
+                ? e.Call.Fightwide
+                : !e.Call.Fightwide && e.Call.Phase == _shownPhase).ToList();
+        if (inside.Count == 0) return;
+
+        var name = standing ? StandingName : Fight.PhaseNameFor(boss.Key, _shownPhase);
+        var off = inside.All(e => C.MutedCalls.Contains(e.Key));
+
+        ImGui.SameLine(0, Theme.S(5f));
+
+        if (off ? Widgets.SmallGhost($"{name} on") : Widgets.SmallDanger($"{name} off"))
+        {
+            foreach (var entry in inside) Board.SetMuted(entry.Key, !off);
+            Touch();
+        }
+
+        Widgets.Tip(off ? $"Turn every {name} call back on" : $"Turn every {name} call off");
+    }
+
     private int EditedCount()
     {
         var n = 0;
-        foreach (var entry in Board.Catalog)
+        foreach (var entry in Board.Shown)
             if (C.EditFor(entry.Key) is not null) n++;
         return n;
     }
@@ -198,7 +411,7 @@ public partial class MainWindow
                || entry.Group.Contains(_search, StringComparison.OrdinalIgnoreCase);
     }
 
-    private void DrawCallRow(CatalogEntry entry, string mechanic = "")
+    private void DrawCallRow(CatalogEntry entry, string mechanic = "", bool sub = false)
     {
         var call = entry.Call;
         var muted = C.MutedCalls.Contains(entry.Key);
@@ -226,7 +439,7 @@ public partial class MainWindow
 
         var planned = _plugin.Fight.Plan?.Starred(call) ?? call.FromPlan;
 
-        Widgets.RowBegin(name, hint, total, id: entry.Key,
+        Widgets.RowBegin(name, hint, total, sub: sub, id: entry.Key,
             icon: planned ? FontAwesomeIcon.Star : FontAwesomeIcon.None,
             iconColor: muted ? Theme.Muted : Theme.Accent,
             edgeColor: muted ? 0u : edit is not null ? Theme.Warn : Theme.Accent,

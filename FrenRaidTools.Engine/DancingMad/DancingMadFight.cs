@@ -147,6 +147,7 @@ public sealed class DancingMadFight
     {
         host.AddRange(Sequences(host.World));
         host.ResetHooks.Add(Vfx.Reset);
+        host.ResetHooks.Add(GrandCross.ForgetRaidwideQueue);
         host.ResetHooks.Add(Earthquake.ForgetAssignment);
         host.ResetHooks.Add(Forsaken.ForgetStacks);
         host.ResetHooks.Add(FellForces.ForgetSets);

@@ -22,7 +22,8 @@ public sealed class Flood
         Callout.Duration("Ultima Upsurge", "Big Raidwide");
 
     public readonly Callout p4enrageFail =
-        Callout.Duration("P4 Enrage (Failed)", "Failed");
+        Callout.Duration("P4 Enrage (Failed)", "Failed")
+            .OutOfPhase("Enrages");
 
     public readonly Callout ultimaRepeater =
         Callout.Duration("Ultima Repeater", "Raidwide, Role Spots");

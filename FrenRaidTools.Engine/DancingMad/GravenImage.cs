@@ -26,78 +26,109 @@ public sealed class GravenImage
     public const uint GlowingHandArg1 = 0x40;
     public const uint GlowingHandArg2 = 0x80;
 
-    public readonly Callout gravenImage = Callout.Duration("Graven Image");
+    public readonly Callout gravenImage = Callout.Duration("Graven Image")
+        .At("Cast");
 
-    public readonly Callout graven1Tether = Callout.Of("Graven Image 1: Tether", "Knockback");
-    public readonly Callout graven1NoTether = Callout.Of("Graven Image 1: No Tether", "No Tether");
+    public readonly Callout graven1Tether = Callout.Of("Graven Image 1: Tether", "Knockback")
+        .At("Tether");
+    public readonly Callout graven1NoTether = Callout.Of("Graven Image 1: No Tether", "No Tether")
+        .At("Tether");
 
     public readonly Callout gravenRealIceSpread =
-        Callout.Of("Graven Image 1: Real Ice, Spread", "Spread out of Cones");
+        Callout.Of("Graven Image 1: Real Ice, Spread", "Spread out of Cones")
+            .At("Ice and marker");
     public readonly Callout gravenRealIceStack =
-        Callout.Of("Graven Image 1: Real Ice, Stack", "Stacks out of Cones");
+        Callout.Of("Graven Image 1: Real Ice, Stack", "Stacks out of Cones")
+            .At("Ice and marker");
     public readonly Callout gravenFakeIceSpread =
-        Callout.Of("Graven Image 1: Fake Ice, Spread", "Spread in Cones");
+        Callout.Of("Graven Image 1: Fake Ice, Spread", "Spread in Cones")
+            .At("Ice and marker");
     public readonly Callout gravenFakeIceStack =
-        Callout.Of("Graven Image 1: Fake Ice, Stack", "Stacks in Cones");
+        Callout.Of("Graven Image 1: Fake Ice, Stack", "Stacks in Cones")
+            .At("Ice and marker");
 
     public readonly Callout gravenSpreadForLaser =
-        Callout.Of("Graven Image 1: Spread For Laser", "Line Spread");
+        Callout.Of("Graven Image 1: Spread For Laser", "Line Spread")
+            .At("Spread for the laser");
     public readonly Callout gravenAvoidTower =
-        Callout.Of("Graven Image 1: Got Hit by Laser", "Avoid Tower");
+        Callout.Of("Graven Image 1: Got Hit by Laser", "Avoid Tower")
+            .At("Tower");
     public readonly Callout gravenTakeTower =
-        Callout.Duration("Graven Image 1: Take Tower", "Take Tower");
+        Callout.Duration("Graven Image 1: Take Tower", "Take Tower")
+            .At("Tower");
 
     public readonly Callout gravenConfetti =
-        Callout.Duration("Graven Image 1: Knockback on You", "Knockback").AutoIcon();
+        Callout.Duration("Graven Image 1: Knockback on You", "Knockback").AutoIcon()
+            .At("Knockback");
     public readonly Callout gravenNoConfetti =
         Callout.Duration("Graven Image 1: Knockback on You", "Knockback on {confettiPlayers}")
-            .In(1, "Graven Image 1: Knockback on Others");
+            .In(1, "Graven Image 1: Knockback on Others")
+            .At("Knockback");
 
     public readonly Callout gravenRealIceRealThunder =
-        Callout.Of("Graven Image 1: Real Ice, Real Thunder", "Avoid Both");
+        Callout.Of("Graven Image 1: Real Ice, Real Thunder", "Avoid Both")
+            .At("Ice and thunder");
     public readonly Callout gravenRealIceFakeThunder =
-        Callout.Of("Graven Image 1: Real Ice, Fake Thunder", "Out of Cones, In Lines");
+        Callout.Of("Graven Image 1: Real Ice, Fake Thunder", "Out of Cones, In Lines")
+            .At("Ice and thunder");
     public readonly Callout gravenFakeIceRealThunder =
-        Callout.Of("Graven Image 1: Fake Ice, Real Thunder", "In Cones, Out of Lines");
+        Callout.Of("Graven Image 1: Fake Ice, Real Thunder", "In Cones, Out of Lines")
+            .At("Ice and thunder");
     public readonly Callout gravenFakeIceFakeThunder =
-        Callout.Of("Graven Image 1: Fake Ice, Fake Thunder", "Stand in Both");
+        Callout.Of("Graven Image 1: Fake Ice, Fake Thunder", "Stand in Both")
+            .At("Ice and thunder");
 
     public readonly Callout graven2realIceStone =
-        Callout.Of("Graven Image 2: Real Ice, Stone", "Avoid Ice, Stone");
+        Callout.Of("Graven Image 2: Real Ice, Stone", "Avoid Ice, Stone")
+            .At("Second set: ice and debuff");
     public readonly Callout graven2fakeIceStone =
-        Callout.Of("Graven Image 2: Fake Ice, Stone", "Fake Ice, Stone");
+        Callout.Of("Graven Image 2: Fake Ice, Stone", "Fake Ice, Stone")
+            .At("Second set: ice and debuff");
     public readonly Callout graven2realIceDark =
-        Callout.Of("Graven Image 2: Real Ice, Dark", "Avoid Ice, Dark");
+        Callout.Of("Graven Image 2: Real Ice, Dark", "Avoid Ice, Dark")
+            .At("Second set: ice and debuff");
     public readonly Callout graven2fakeIceDark =
-        Callout.Of("Graven Image 2: Fake Ice, Dark", "Fake Ice, Dark");
+        Callout.Of("Graven Image 2: Fake Ice, Dark", "Fake Ice, Dark")
+            .At("Second set: ice and debuff");
 
     public readonly Callout graven2dropFirstStone =
-        Callout.Of("Graven Image 2: Drop First Stone", "Drop Stone {spotSpeech}", "Drop Stone {spot}");
+        Callout.Of("Graven Image 2: Drop First Stone", "Drop Stone {spotSpeech}", "Drop Stone {spot}")
+            .At("Second set: first stone");
     public readonly Callout graven2avoidFirstStone =
         Callout.Of("Graven Image 2: Drop First Stone", "Run to middle")
-            .In(1, "Graven Image 2: Avoid First Stone");
+            .In(1, "Graven Image 2: Avoid First Stone")
+            .At("Second set: first stone");
 
-    public readonly Callout graven2westSafe1 = Callout.Of("Graven Image 2: West Safe", "West Safe");
-    public readonly Callout graven2eastSafe1 = Callout.Of("Graven Image 2: East Safe", "East Safe");
+    public readonly Callout graven2westSafe1 = Callout.Of("Graven Image 2: West Safe", "West Safe")
+        .At("Second set: safe side");
+    public readonly Callout graven2eastSafe1 = Callout.Of("Graven Image 2: East Safe", "East Safe")
+        .At("Second set: safe side");
 
-    public readonly Callout graven2stone2 = Callout.Of("Graven Image 2: Second Stone", "Stone");
-    public readonly Callout graven2dark2 = Callout.Of("Graven Image 2: Second Dark", "Dark");
+    public readonly Callout graven2stone2 = Callout.Of("Graven Image 2: Second Stone", "Stone")
+        .At("Second set: second debuff");
+    public readonly Callout graven2dark2 = Callout.Of("Graven Image 2: Second Dark", "Dark")
+        .At("Second set: second debuff");
 
     public readonly Callout graven2dropSecondStone =
-        Callout.Of("Graven Image 2: Drop Second Stone", "Drop Stone {spotSpeech}", "Drop Stone {spot}");
+        Callout.Of("Graven Image 2: Drop Second Stone", "Drop Stone {spotSpeech}", "Drop Stone {spot}")
+            .At("Second set: second stone");
     public readonly Callout graven2avoidSecondStone =
         Callout.Of("Graven Image 2: Drop Second Stone", "Run to middle")
-            .In(1, "Graven Image 2: Avoid Second Stone");
+            .In(1, "Graven Image 2: Avoid Second Stone")
+            .At("Second set: second stone");
 
     public readonly Callout gravenConfetti2 =
         Callout.Duration("Graven Image 2: Knockback on You", "{safeSpot2} Safe, Knockback")
-            .AutoIcon().In(1, "Graven Image 2: Knockback on You");
+            .AutoIcon().In(1, "Graven Image 2: Knockback on You")
+            .At("Second set: knockback");
     public readonly Callout gravenNoConfetti2 =
         Callout.Duration("Graven Image 2: Knockback on You", "{safeSpot2} Safe, Knockback on {confettiPlayers}")
-            .In(1, "Graven Image 2: Knockback on Others");
+            .In(1, "Graven Image 2: Knockback on Others")
+            .At("Second set: knockback");
 
     public readonly Callout gravenFinalSoaks =
-        Callout.Of("Graven Image 2: Final Soaks", "Final Soaks");
+        Callout.Of("Graven Image 2: Final Soaks", "Final Soaks")
+            .At("Second set: final soaks");
 
     public const string Group = "gravenImage";
 

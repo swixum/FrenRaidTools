@@ -24,18 +24,21 @@ public sealed class Trines
 
     public readonly Callout trinesTankSpot =
         Callout.Duration("Trines: Tank Spot", "Center to {tankSpot}")
-            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once, and stays up until Wings of Destruction lands.");
+            .Note("Tanks only. Counting counterclockwise from the 1 waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once, and stays up until Wings of Destruction lands.")
+            .OutOfPhase("Tank actions");
 
     public readonly Callout trinesPartySpot =
         Callout.Duration("Trines: DPS and Healer Spot", "Center to {partySpot}")
             .Note("DPS and healers. Counting clockwise from the A waymark, the first spot whose opening trine has already gone off, so the ground is spent when you land on it. Said once, and stays up until Wings of Destruction lands.");
 
-    public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed");
+    public readonly Callout lightOfJudgmentEnrage = Callout.Duration("Failed P2 Enrage", "Failed")
+            .OutOfPhase("Enrages");
     public readonly Callout aeroIIIAssault = Callout.Duration("Aero III Assault", "Knockback");
 
     public readonly Callout wingsBuster =
         Callout.Duration("Trines: Wings Buster", "Near and Far Buster", "Near/Far Buster")
-            .Note("Tanks only. One tank takes the near hit, the other the far hit, while the trines resolve.");
+            .Note("Tanks only. One tank takes the near hit, the other the far hit, while the trines resolve.")
+            .OutOfPhase("Busters");
 
     public Sequence Build(IWorld world) =>
         Sequence.Repeat(Group, 120, e => e.Is(EventKind.CastStart, TrinesCast),

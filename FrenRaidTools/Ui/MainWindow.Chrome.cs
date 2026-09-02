@@ -32,7 +32,7 @@ public partial class MainWindow
         Widgets.Chip("Zone", here ? "Dancing Mad" : Game.ZoneName(), here ? Theme.Accent : Theme.Muted);
         ImGui.SameLine(0, Theme.S(6f));
 
-        var loaded = Board.Catalog.Count;
+        var loaded = Board.Shown.Count;
         Widgets.Chip("Calls", loaded > 0 ? $"{loaded} ready" : "none yet",
             loaded > 0 ? Theme.Good : Theme.Warn);
         ImGui.SameLine(0, Theme.S(6f));
@@ -145,12 +145,13 @@ public partial class MainWindow
     }
 
     private static void Fold(string id, string title, string badge, uint badgeColor,
-        HashSet<string> remembered, bool openByDefault, Action body, bool forceOpen = false)
+        HashSet<string> remembered, bool openByDefault, Action body, bool forceOpen = false,
+        float controlWidth = 0f, Action? controls = null)
     {
         var open = forceOpen || openByDefault != remembered.Contains(id);
         var was = open;
 
-        if (Widgets.FoldBegin(id, title, badge, badgeColor, ref open)) body();
+        if (Widgets.FoldBegin(id, title, badge, badgeColor, ref open, controlWidth, controls)) body();
         Widgets.FoldEnd();
 
         if (forceOpen || open == was) return;
