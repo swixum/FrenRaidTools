@@ -103,7 +103,10 @@ public partial class MainWindow
                     _search.Length > 0 ? "Nothing matched in this phase" : "Nothing here",
                     _search.Length > 0 ? "The other tabs show their own counts." : "The filter is hiding them all.");
             else
+            {
+                if (_search.Length == 0) DrawVoice(phase, all);
                 DrawMechanics(shown);
+            }
 
             ImGui.EndTabItem();
         }
@@ -197,16 +200,18 @@ public partial class MainWindow
         Touch();
     }
 
-    private void DrawVoice(List<CatalogEntry> inside)
+    private void DrawVoice(int phase, List<CatalogEntry> shown)
     {
-        var voice = CallVoices.For(inside.Select(e => e.Key));
-        if (voice is null) return;
+        if (CallVoices.ForPhase(phase) is not { } voice) return;
 
-        var picked = voice.Matching(key => !C.MutedCalls.Contains(key));
+        var universe = voice.Universe(shown).ToList();
+        if (universe.Count == 0) return;
 
-        Widgets.RowBegin(voice.Label, "",
-            Widgets.ButtonWidth([.. voice.Choices.Select(c => c.Label)]),
-            id: "voice" + voice.Label);
+        var picked = voice.Matching(universe, key => !C.MutedCalls.Contains(key));
+
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextColored(Theme.V(Theme.Muted), voice.Label);
+        ImGui.SameLine(0, Theme.S(9f));
 
         Widgets.SegmentBegin();
 
@@ -217,20 +222,24 @@ public partial class MainWindow
 
             if (!Widgets.Segment(choice.Label, choice == picked)) continue;
 
-            foreach (var key in voice.Keys)
-                Board.SetMuted(key, !choice.Keys.Contains(key, StringComparer.Ordinal));
+            foreach (var entry in universe)
+                Board.SetMuted(entry.Key, !choice.Wants(entry.Call));
 
             Touch();
         }
 
         Widgets.SegmentEnd();
-        Widgets.RowEnd();
+
+        ImGui.SameLine(0, Theme.S(9f));
+        ImGui.AlignTextToFramePadding();
+        ImGui.TextColored(Theme.V(Theme.Muted),
+            $"{universe.Count(e => !C.MutedCalls.Contains(e.Key))}/{universe.Count} of the noisy ones on");
+
+        ImGui.Spacing();
     }
 
     private void DrawSteps(string mechanic, List<CatalogEntry> inside)
     {
-        DrawVoice(inside);
-
         if (_grouping == CallGrouping.Flat || Steps(inside).Count <= 1)
         {
             foreach (var entry in inside) DrawCallRow(entry, mechanic);

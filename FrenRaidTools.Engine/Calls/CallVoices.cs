@@ -1,17 +1,20 @@
 namespace FrenRaidTools.Engine;
 
-public sealed record CallChoice(string Label, IReadOnlyList<string> Keys);
+public sealed record CallChoice(string Label, Func<Callout, bool> Wants);
 
-public sealed record CallVoice(string Label, IReadOnlyList<CallChoice> Choices)
+public sealed record CallVoice(string Label, int Phase, Func<Callout, bool> Covers,
+    IReadOnlyList<CallChoice> Choices)
 {
-    public IEnumerable<string> Keys => Choices.SelectMany(c => c.Keys).Distinct(StringComparer.Ordinal);
+    public IEnumerable<CatalogEntry> Universe(IEnumerable<CatalogEntry> calls) =>
+        calls.Where(e => e.Call.Phase == Phase && !e.Call.Fightwide && Covers(e.Call));
 
-    public bool Covers(string key) => Keys.Contains(key, StringComparer.Ordinal);
-
-    public CallChoice? Matching(Func<string, bool> on)
+    public CallChoice? Matching(IEnumerable<CatalogEntry> calls, Func<string, bool> on)
     {
+        var universe = Universe(calls).ToList();
+        if (universe.Count == 0) return null;
+
         foreach (var choice in Choices)
-            if (Keys.All(key => on(key) == choice.Keys.Contains(key, StringComparer.Ordinal)))
+            if (universe.All(e => on(e.Key) == choice.Wants(e.Call)))
                 return choice;
 
         return null;
@@ -20,26 +23,33 @@ public sealed record CallVoice(string Label, IReadOnlyList<CallChoice> Choices)
 
 public static class CallVoices
 {
-    private static readonly string[] Raidwides =
-        ["grandCrossRaidwide", "infernoRaidwide", "tsunamiRaidwide"];
+    public const string Raidwides = "Raidwides";
 
-    private static readonly string[] Tells =
-        ["grandCross1", "grandCross2", "grandCross3", "inferno1", "inferno2", "tsunami1", "tsunami2"];
+    private static readonly string[] GrandCrossSteps = ["Crosses", "Inferno", "Tsunami"];
 
-    public static readonly CallVoice GrandCross = new("Say",
+    private static readonly string[] AppliedSteps =
+        ["First debuff set applied", "Second debuff set applied"];
+
+    private static bool IsRaidwide(Callout call) => call.Step == Raidwides;
+
+    private static bool InPhaseFour(Callout call) =>
+        IsRaidwide(call)
+        || GrandCrossSteps.Contains(call.Step, StringComparer.Ordinal)
+        || AppliedSteps.Contains(call.Step, StringComparer.Ordinal);
+
+    public static readonly CallVoice PhaseFour = new("Say", 4, InPhaseFour,
     [
-        new CallChoice("Raidwides", Raidwides),
-        new CallChoice("Real and fake", Tells),
-        new CallChoice("Both", [.. Raidwides, .. Tells]),
+        new CallChoice(Raidwides, IsRaidwide),
+        new CallChoice("Real and fake", call => call.OnByDefault && !IsRaidwide(call)),
+        new CallChoice("Both", call => call.OnByDefault),
     ]);
 
-    public static readonly IReadOnlyList<CallVoice> All = [GrandCross];
+    public static readonly IReadOnlyList<CallVoice> All = [PhaseFour];
 
-    public static CallVoice? For(IEnumerable<string> keys)
+    public static CallVoice? ForPhase(int phase)
     {
-        foreach (var key in keys)
-            foreach (var voice in All)
-                if (voice.Covers(key)) return voice;
+        foreach (var voice in All)
+            if (voice.Phase == phase) return voice;
 
         return null;
     }
