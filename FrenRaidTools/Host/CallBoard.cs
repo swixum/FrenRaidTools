@@ -99,22 +99,10 @@ public sealed class CallBoard
     {
         Catalog = entries;
         Shown = entries.Where(e => !e.Call.Fallback).ToArray();
-        PruneMutes();
         WakeFallbacks();
     }
 
     public void SetCatalog(CalloutCatalog catalog) => SetCatalog(catalog.Entries);
-
-    private void PruneMutes()
-    {
-        if (Catalog.Count == 0 || _config.MutedCalls.Count == 0) return;
-
-        var known = new HashSet<string>(Catalog.Select(e => e.Key), StringComparer.Ordinal);
-        _config.MutedCalls.RemoveWhere(key => !known.Contains(key));
-
-        foreach (var stale in _config.CallEdits.Keys.Where(key => !known.Contains(key)).ToList())
-            _config.CallEdits.Remove(stale);
-    }
 
     private void WakeFallbacks()
     {
