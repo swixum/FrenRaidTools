@@ -28,7 +28,6 @@ internal static class Theme
     public const uint SubBg = 0xFF0F0C0A;
     public const uint Border = 0xFF2F2724;
     public const uint RowLine = 0xFF1F1916;
-    public const uint RowHover = 0xFF191310;
     public const uint TitleBg = 0xFF191311;
     public const uint TitleBgActive = 0xFF221A16;
 
@@ -40,8 +39,17 @@ internal static class Theme
     public const uint OnAccent = WindowBg;
 
     public const uint FrameBg = 0xFF241D1A;
-    public const uint FrameHover = 0xFF332723;
-    public const uint FrameActive = 0xFF40312B;
+    public const uint ButtonBg = 0xFF30231F;
+    public const uint HeaderBg = 0xFF34271F;
+    public const uint TabBg = 0xFF2A211C;
+    public const uint TabIdleBg = 0xFF241D1A;
+    public const uint ScrollGrabBg = 0xFF382E2A;
+
+    private const float HotMix = 0.30f;
+    private const float HeldMix = 0.50f;
+
+    public static uint FrameHot => Mix(FrameBg, Accent, HotMix);
+    public static uint PanelHot => Mix(PanelBg, Accent, HotMix);
 
     public const uint CheckOn = 0xFF5AC832;
     public const uint CheckOnHover = 0xFF6FD647;
@@ -92,6 +100,18 @@ internal static class Theme
 
     public static uint Wash(uint abgr, uint alpha) => (abgr & 0x00FFFFFF) | (alpha << 24);
 
+    public static uint Mix(uint abgr, uint toward, float t)
+    {
+        uint Channel(int shift)
+        {
+            var from = (abgr >> shift) & 0xFF;
+            var to = (toward >> shift) & 0xFF;
+            return (uint)(from + (to - (float)from) * t) & 0xFF;
+        }
+
+        return (abgr & 0xFF000000) | (Channel(16) << 16) | (Channel(8) << 8) | Channel(0);
+    }
+
     public static uint ReadableOn(uint abgr)
     {
         var r = abgr & 0xFF;
@@ -117,23 +137,31 @@ internal static class Theme
         (ImGuiCol.TextDisabled, Muted),
         (ImGuiCol.ChildBg, 0x00000000),
         (ImGuiCol.FrameBg, FrameBg),
-        (ImGuiCol.FrameBgHovered, FrameHover),
-        (ImGuiCol.FrameBgActive, FrameActive),
-        (ImGuiCol.Button, 0xFF30231F),
-        (ImGuiCol.ButtonHovered, 0xFF42312A),
-        (ImGuiCol.ButtonActive, 0xFF564034),
-        (ImGuiCol.Header, 0xFF34271F),
-        (ImGuiCol.HeaderHovered, 0xFF50362A),
-        (ImGuiCol.HeaderActive, 0xFF634032),
-        (ImGuiCol.Tab, 0xFF2A211C),
-        (ImGuiCol.TabHovered, 0xFF50362A),
-        (ImGuiCol.TabActive, 0xFF634032),
-        (ImGuiCol.TabUnfocused, 0xFF241D1A),
-        (ImGuiCol.TabUnfocusedActive, 0xFF4A362C),
-        (ImGuiCol.Separator, 0xFF2F2724),
-        (ImGuiCol.SeparatorHovered, 0xFF50362A),
-        (ImGuiCol.ScrollbarGrab, 0xFF382E2A),
-        (ImGuiCol.ScrollbarGrabHovered, 0xFF4C3F3A),
+        (ImGuiCol.Button, ButtonBg),
+        (ImGuiCol.Header, HeaderBg),
+        (ImGuiCol.Tab, TabBg),
+        (ImGuiCol.TabUnfocused, TabIdleBg),
+        (ImGuiCol.Separator, Border),
+        (ImGuiCol.ScrollbarGrab, ScrollGrabBg),
+    ];
+
+    private static readonly (ImGuiCol Col, uint Base)[] HotColors =
+    [
+        (ImGuiCol.FrameBgHovered, FrameBg),
+        (ImGuiCol.ButtonHovered, ButtonBg),
+        (ImGuiCol.HeaderHovered, HeaderBg),
+        (ImGuiCol.TabHovered, TabBg),
+        (ImGuiCol.SeparatorHovered, Border),
+        (ImGuiCol.ScrollbarGrabHovered, ScrollGrabBg),
+    ];
+
+    private static readonly (ImGuiCol Col, uint Base)[] HeldColors =
+    [
+        (ImGuiCol.FrameBgActive, FrameBg),
+        (ImGuiCol.ButtonActive, ButtonBg),
+        (ImGuiCol.HeaderActive, HeaderBg),
+        (ImGuiCol.TabActive, TabBg),
+        (ImGuiCol.TabUnfocusedActive, TabIdleBg),
     ];
 
     private static readonly ImGuiCol[] AccentColors =
@@ -179,6 +207,8 @@ internal static class Theme
     public static void PushWidgets()
     {
         foreach (var (col, val) in WidgetColors) ImGui.PushStyleColor(col, val);
+        foreach (var (col, seed) in HotColors) ImGui.PushStyleColor(col, Mix(seed, Accent, HotMix));
+        foreach (var (col, seed) in HeldColors) ImGui.PushStyleColor(col, Mix(seed, Accent, HeldMix));
         foreach (var col in AccentColors) ImGui.PushStyleColor(col, Accent);
         ImGui.PushStyleColor(ImGuiCol.SliderGrabActive, AccentHover);
 
@@ -189,6 +219,7 @@ internal static class Theme
     public static void PopWidgets()
     {
         ImGui.PopStyleVar(WidgetVars.Length + WidgetPads.Length);
-        ImGui.PopStyleColor(WidgetColors.Length + AccentColors.Length + 1);
+        ImGui.PopStyleColor(WidgetColors.Length + HotColors.Length + HeldColors.Length
+                            + AccentColors.Length + 1);
     }
 }

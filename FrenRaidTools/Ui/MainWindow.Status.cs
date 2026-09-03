@@ -20,9 +20,9 @@ public partial class MainWindow
 
     private static string Where()
     {
-        if (Game.InReplay) return "Dancing Mad, replay";
+        if (Game.InReplay) return $"{Game.FightName}, replay";
         if (!Game.InTheFight) return "out of the fight";
-        return Game.InFight ? "Dancing Mad, pulled" : "Dancing Mad, standing by";
+        return Game.InFight ? $"{Game.FightName}, pulled" : $"{Game.FightName}, standing by";
     }
 
     private void DrawHomeTiles()
@@ -36,7 +36,7 @@ public partial class MainWindow
 
         if (Tile("##zone", width, height, FontAwesomeIcon.MapMarkerAlt, Theme.Accent,
                 "This zone",
-                here ? "Dancing Mad" : Game.ZoneName(),
+                here ? Game.FightName : Game.ZoneName(),
                 here ? Theme.TextBright : Theme.Muted,
                 here ? $"{Where()}, {loaded} calls ready" : "Nothing is called here"))
             Show(Nav.Strats);
@@ -116,7 +116,7 @@ public partial class MainWindow
         if (hot) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
         var dl = ImGui.GetWindowDrawList();
-        dl.AddRectFilled(p, p + size, hot ? Theme.RowHover : Theme.PanelBg, Theme.S(8f));
+        dl.AddRectFilled(p, p + size, hot ? Theme.PanelHot : Theme.PanelBg, Theme.S(8f));
         dl.AddRect(p, p + size, hot ? Theme.Accent : Theme.Border, Theme.S(8f));
 
         var pad = Theme.S(9f);

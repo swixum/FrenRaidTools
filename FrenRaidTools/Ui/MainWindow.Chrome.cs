@@ -29,7 +29,7 @@ public partial class MainWindow
 
         ImGui.Spacing();
 
-        Widgets.Chip("Zone", here ? "Dancing Mad" : Game.ZoneName(), here ? Theme.Accent : Theme.Muted);
+        Widgets.Chip("Zone", here ? Game.FightName : Game.ZoneName(), here ? Theme.Accent : Theme.Muted);
         ImGui.SameLine(0, Theme.S(6f));
 
         var loaded = Board.Shown.Count;
@@ -116,7 +116,7 @@ public partial class MainWindow
         var dl = ImGui.GetWindowDrawList();
         if (picked || hovered)
             dl.AddRectFilled(start, start + new Vector2(width, height),
-                picked ? Theme.AccentSoft : Theme.RowHover, Theme.S(5f));
+                picked ? Theme.AccentSoft : Theme.AccentFaint, Theme.S(5f));
         if (picked)
             dl.AddRectFilled(start + new Vector2(0, Theme.S(5f)),
                 start + new Vector2(Theme.S(2.5f), height - Theme.S(5f)), Theme.Accent, 2f);
@@ -184,7 +184,7 @@ public partial class MainWindow
         var dl = ImGui.GetWindowDrawList();
         if (on || hovered)
             dl.AddRectFilled(start, start + new Vector2(width, height),
-                on ? Theme.AccentSoft : Theme.RowHover, Theme.S(5f));
+                on ? Theme.AccentSoft : Theme.AccentFaint, Theme.S(5f));
         if (on)
             dl.AddRectFilled(start + new Vector2(0, Theme.S(5f)),
                 start + new Vector2(Theme.S(2.5f), height - Theme.S(5f)), Theme.Accent, 2f);

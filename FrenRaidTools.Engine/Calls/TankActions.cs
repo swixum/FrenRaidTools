@@ -10,16 +10,14 @@ public static class TankActions
     public const string MechanicName = "Tank swaps";
 
     public static readonly Callout Provoked =
-        (Callout.Of("Provoke", "{event.source} taunted") with
-        {
-            Key = "tank.provoke", Mechanic = MechanicName,
-        }).Note("Tanks only. Confirms the swap the moment either tank presses Provoke.");
+        (Callout.Of("Provoke", "{event.source} taunted") with { Mechanic = MechanicName })
+        .Note("Tanks only. Confirms the swap the moment either tank presses Provoke.")
+        .OutOfPhase(MechanicName);
 
     public static readonly Callout Shirked =
-        (Callout.Of("Shirk", "{event.source} shirked") with
-        {
-            Key = "tank.shirk", Mechanic = MechanicName,
-        }).Note("Tanks only. Confirms enmity moved before the next buster.");
+        (Callout.Of("Shirk", "{event.source} shirked") with { Mechanic = MechanicName })
+        .Note("Tanks only. Confirms enmity moved before the next buster.")
+        .OutOfPhase(MechanicName);
 
     public static Sequence Build(string group, IWorld world) =>
         Sequence.Indexed(group + "TankActions", TimeoutSeconds,

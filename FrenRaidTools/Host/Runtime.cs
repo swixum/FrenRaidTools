@@ -368,6 +368,7 @@ public sealed class Runtime : IDisposable
         _gate.Zone = zone;
         _gate.FightZone = _fight.Territory;
         Game.FightZone = _fight.Territory;
+        Game.FightName = _fight.Name;
         _gate.Replaying = replay;
         _gate.ParserOn = _config.ParserOn;
         Running = _gate.Running;
@@ -401,7 +402,7 @@ public sealed class Runtime : IDisposable
             _host.Reset();
         }
 
-        if (e.Kind is EventKind.CombatStart && _zone == EngineInfo.DancingMadTerritory)
+        if (e.Kind is EventKind.CombatStart && _zone == _fight.Territory)
             _board.Clear();
 
         if (Running) _host.Feed(e);

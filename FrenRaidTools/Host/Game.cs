@@ -19,6 +19,8 @@ public static class Game
 
     public static ushort FightZone { get; set; } = EngineInfo.DancingMadTerritory;
 
+    public static string FightName { get; set; } = "Dancing Mad";
+
     public static bool InTheFight => Zone == FightZone;
 
     public static bool InReplay => Service.Condition[ConditionFlag.DutyRecorderPlayback];

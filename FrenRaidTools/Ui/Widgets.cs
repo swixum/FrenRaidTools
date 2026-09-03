@@ -198,7 +198,7 @@ internal static partial class Widgets
         if (hovered) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
         var dl = ImGui.GetWindowDrawList();
-        dl.AddRectFilled(p, p + size, hovered ? Theme.FrameHover : Theme.FrameBg, Theme.S(5f));
+        dl.AddRectFilled(p, p + size, hovered ? Theme.FrameHot : Theme.FrameBg, Theme.S(5f));
         dl.AddRect(p, p + size, placed ? Theme.Accent : Theme.Border, Theme.S(5f));
 
         var at = new Vector2(p.X + pad.X, p.Y + pad.Y);

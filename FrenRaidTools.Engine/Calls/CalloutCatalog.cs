@@ -56,8 +56,8 @@ public sealed class CalloutCatalog
 
     public Callout WithKey(Callout call)
     {
-        if (call.Key.Length > 0) return call;
         if (_keyed.TryGetValue(call, out var byReference)) return byReference;
+        if (call.Key.Length > 0) return call;
 
         if (_shared.Contains(call.Description)) return call;
         if (!_byDescription.TryGetValue(call.Description, out var named)) return call;

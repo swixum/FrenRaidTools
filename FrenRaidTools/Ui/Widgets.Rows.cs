@@ -453,7 +453,7 @@ internal static partial class Widgets
         if (hovered)
         {
             ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-            dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.RowHover);
+            dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.AccentSoft);
         }
 
         if (edgeColor != 0)
@@ -512,7 +512,7 @@ internal static partial class Widgets
         if (hovered)
         {
             ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-            dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.RowHover);
+            dl.AddRectFilled(screen, screen + new Vector2(width, rowH), Theme.AccentSoft);
         }
 
         if (picked)

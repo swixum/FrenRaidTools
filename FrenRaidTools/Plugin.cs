@@ -29,7 +29,7 @@ public sealed class Plugin : IDalamudPlugin
     public PartyWindow Roles { get; }
 
     public string Version { get; } =
-        Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "0.1.0";
+        Assembly.GetExecutingAssembly().GetName().Version?.ToString(4) ?? "0.1.0.0";
 
     private double _clock;
     private double _fightClock;

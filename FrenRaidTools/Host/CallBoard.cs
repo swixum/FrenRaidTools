@@ -1,3 +1,4 @@
+using System.Globalization;
 using FrenRaidTools.Engine;
 
 namespace FrenRaidTools;
@@ -28,7 +29,7 @@ public sealed class LiveCall
         if (!Callout.ShowsNumber(left)) return Text;
         if (left < 0) left = 0;
 
-        return $"{Text} ({left:0.0})";
+        return $"{Text} ({left.ToString("0.0", CultureInfo.InvariantCulture)})";
     }
 }
 

@@ -19,6 +19,8 @@ public sealed class Fight
 
     public ushort Territory { get; private set; } = EngineInfo.DancingMadTerritory;
 
+    public string Name { get; private set; } = "Dancing Mad";
+
     public int Generation { get; private set; }
 
     private readonly List<LocalFight> _local = [];
@@ -52,6 +54,7 @@ public sealed class Fight
         Sequences = 0;
 
         Territory = fight.Territory;
+        Name = fight.Name;
 
         if (fight.Key == "umad") UseDancingMad();
         UseLocal(fight.Key);

@@ -135,17 +135,35 @@ public sealed class ParserActorBook
 
     private void Put(Actor actor)
     {
-        if (!_known.ContainsKey(actor.ObjectId))
-        {
-            _order.Enqueue(actor.ObjectId);
-            while (_order.Count > MaxActors)
-            {
-                var oldest = _order.Dequeue();
-                if (_known.Remove(oldest)) Forgotten++;
-            }
-        }
+        var fresh = !_known.ContainsKey(actor.ObjectId);
 
         _known[actor.ObjectId] = actor;
+
+        if (!fresh) return;
+
+        _order.Enqueue(actor.ObjectId);
+        Trim();
+    }
+
+    private void Trim()
+    {
+        var spins = _order.Count;
+
+        while (_order.Count > MaxActors)
+        {
+            var oldest = _order.Dequeue();
+
+            if (!_known.TryGetValue(oldest, out var held)) continue;
+
+            if (spins-- > 0 && (held.IsPlayer || held.IsYou))
+            {
+                _order.Enqueue(oldest);
+                continue;
+            }
+
+            _known.Remove(oldest);
+            Forgotten++;
+        }
     }
 }
 
