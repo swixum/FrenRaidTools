@@ -107,8 +107,22 @@ public sealed class Runtime : IDisposable
 
     public bool FeedUp => _iinact.Subscribed || _socket.Connected;
 
+    public string FeedHealth
+    {
+        get
+        {
+            var parts = new List<string> { $"{_iinact.Received:n0} lines read" };
+
+            if (_iinact.Dropped > 0) parts.Add($"{_iinact.Dropped:n0} over the queue");
+            if (_iinact.Restarts > 0) parts.Add($"{_iinact.Restarts} reconnects");
+            if (_iinact.Discarded > 0) parts.Add($"{_iinact.Discarded:n0} thrown away");
+
+            return string.Join(", ", parts) + ".";
+        }
+    }
+
     public string FeedDetail =>
-        _iinact.Subscribed ? "Connected to IINACT in-process."
+        _iinact.Subscribed ? $"Connected to IINACT in-process. {FeedHealth}"
         : _socket.Enabled || _socket.Connected ? SocketDetail
         : !_config.ParserOn ? "Off."
         : _iinact.LastError is { } error ? error.EndsWith('.') ? error : error + "."
@@ -124,6 +138,8 @@ public sealed class Runtime : IDisposable
     public const double IpcTrySeconds = 3.0;
 
     private double _nextIpcTry;
+
+    private long _reconnects;
 
     public void Tick(double now)
     {
@@ -154,6 +170,13 @@ public sealed class Runtime : IDisposable
         }
 
         _gate.IpcFeeding = _iinact.Subscribed;
+
+        if (_iinact.Restarts != _reconnects)
+        {
+            _reconnects = _iinact.Restarts;
+            _diag.Note("parser",
+                $"IINACT dropped and resubscribed, {_iinact.Discarded:n0} lines thrown away");
+        }
 
         if (_gate.WantsSocket) _socket.Start(_config.ParserAddress);
         else if (_socket.Enabled) _socket.Stop();
@@ -247,6 +270,8 @@ public sealed class Runtime : IDisposable
     private void NoteUnseen() => _diag.Note("unseen", Unseen());
 
     public IReadOnlyList<SequenceStall> Stalls => _host.Stalls;
+
+    public int StallsDropped => _host.StallsDropped;
 
     public const double SettleEverySeconds = 2.0;
 

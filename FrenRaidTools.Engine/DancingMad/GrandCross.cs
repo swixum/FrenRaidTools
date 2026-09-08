@@ -123,6 +123,10 @@ public sealed class VfxTracker
 
     public bool? ChaosReal { get; private set; }
 
+    public double NeoExdeathSeenAt { get; private set; } = double.NegativeInfinity;
+
+    public double ChaosSeenAt { get; private set; } = double.NegativeInfinity;
+
     public void Take(GameEvent e)
     {
         if (e.Kind != EventKind.StatusLoopVfx) return;
@@ -133,17 +137,30 @@ public sealed class VfxTracker
         {
             if (e.Id == GrandCross.RealNeoExdeath) NeoExdeathReal = true;
             else if (e.Id == GrandCross.FakeNeoExdeath) NeoExdeathReal = false;
+            else return;
+
+            NeoExdeathSeenAt = e.At;
         }
         else if (on == GrandCross.NpcChaos)
         {
             if (e.Id == GrandCross.RealChaos) ChaosReal = true;
             else if (e.Id == GrandCross.FakeChaos) ChaosReal = false;
+            else return;
+
+            ChaosSeenAt = e.At;
         }
     }
+
+    public bool? RealSince(bool neoExdeath, double since) =>
+        (neoExdeath ? NeoExdeathSeenAt : ChaosSeenAt) >= since
+            ? neoExdeath ? NeoExdeathReal : ChaosReal
+            : null;
 
     public void Reset()
     {
         NeoExdeathReal = null;
         ChaosReal = null;
+        NeoExdeathSeenAt = double.NegativeInfinity;
+        ChaosSeenAt = double.NegativeInfinity;
     }
 }

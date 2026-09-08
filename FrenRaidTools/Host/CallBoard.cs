@@ -219,7 +219,9 @@ public sealed class CallBoard
         }
 
         Fired++;
-        if (!test) _diag.Call(callout.Key, callout.Description, text, speech, ends, call.Expires);
+        if (!test)
+            _diag.Call(callout.Key, callout.Description, text, speech, ends, call.Expires,
+                Evidence(callout, on, args), callout.Fallback);
         Record(callout.Description, text, now, muted: false, test);
         Queue(speech, now + callout.SpeechDelaySeconds, callout.Rank, callout.RepeatsAloud, test);
     }
@@ -268,12 +270,23 @@ public sealed class CallBoard
 
     public int LeftBehind => _phases.Dropped;
 
+    private static string Evidence(Callout callout, GameEvent? on, IReadOnlyDictionary<string, object?> args)
+    {
+        var from = on is null
+            ? (callout.FromPlan ? "plan" : "timer")
+            : $"{on.Kind} {on.Id:X}";
+        var who = on?.Target is { } target && target.Name.Length > 0 ? $" on {target.Name}" : "";
+        var carried = Diag.Args(args);
+
+        return carried == "-" ? $"{from}{who}" : $"{from}{who} {carried}";
+    }
+
     private void Reached(int phase)
     {
         if (!_phases.Enter(phase)) return;
 
         foreach (var call in _live.Where(c => _phases.LeftBehind(c.Phase)))
-            _diag.Dropped($"left behind in phase {call.Phase}", call.Key, call.Expires - _now);
+            _diag.Dropped("leftbehind", $"left behind in phase {call.Phase}", call.Key, call.Expires - _now);
 
         _phases.Dropping(_live.RemoveAll(c => _phases.LeftBehind(c.Phase)));
     }
@@ -284,7 +297,7 @@ public sealed class CallBoard
 
         var over = _live.Count - LiveCap;
         foreach (var call in _live.Take(over))
-            _diag.Dropped($"over the {LiveCap} call cap", call.Key, call.Expires - _now);
+            _diag.Dropped("overcap", $"over the {LiveCap} call cap", call.Key, call.Expires - _now);
 
         _live.RemoveRange(0, over);
     }

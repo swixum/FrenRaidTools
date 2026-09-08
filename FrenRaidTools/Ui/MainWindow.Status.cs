@@ -102,8 +102,19 @@ public partial class MainWindow
         foreach (var fault in _plugin.Runtime.Faults.Take(FaultsShown))
             found.Add(new Snag(fault, Nav.Diagnostics));
 
+        foreach (var stall in Stalled().Take(StallsShown))
+            found.Add(new Snag(stall, Nav.Diagnostics));
+
         return found;
     }
+
+    private IEnumerable<string> Stalled() =>
+        _plugin.Runtime.Stalls
+            .Where(stall => stall.Reason == StallReason.Timeout)
+            .Reverse()
+            .Select(stall => stall.Awaiting.Length > 0
+                ? $"{stall.Name} stalled on {stall.Awaiting}"
+                : $"{stall.Name} stalled");
 
     private static bool Tile(string id, float width, float height, FontAwesomeIcon icon,
         uint iconColor, string label, string line, uint lineColor, string sub)
@@ -177,6 +188,10 @@ public partial class MainWindow
     }
 
     private const int FaultsShown = 5;
+
+    private const int StallsShown = 3;
+
+    private const int StallLines = 10;
 
     private string? VoiceDown()
     {
@@ -258,6 +273,22 @@ public partial class MainWindow
         else
             foreach (var snag in trouble)
                 Widgets.RowNoteWrap(snag.Text, Theme.Warn);
+
+        Widgets.ListEnd();
+
+        Widgets.SectionHeader("Stalls");
+        Widgets.ListBegin();
+
+        var stalls = _plugin.Runtime.Stalls;
+
+        if (stalls.Count == 0) Widgets.RowNote("None this pull", Theme.Good);
+        else
+            foreach (var stall in stalls.Reverse().Take(StallLines))
+                Widgets.RowNoteWrap(stall.Line(),
+                    stall.Reason == StallReason.Timeout ? Theme.Warn : Theme.Muted);
+
+        if (_plugin.Runtime.StallsDropped > 0)
+            Widgets.RowNote($"{_plugin.Runtime.StallsDropped} older stalls dropped", Theme.Muted);
 
         Widgets.ListEnd();
 

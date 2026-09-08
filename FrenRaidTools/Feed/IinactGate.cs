@@ -26,6 +26,10 @@ public sealed class IinactGate : IDisposable
 
     public long Dropped { get; private set; }
 
+    public long Restarts { get; private set; }
+
+    public long Discarded { get; private set; }
+
     public string? LastError { get; private set; }
 
     public IinactGate()
@@ -104,9 +108,11 @@ public sealed class IinactGate : IDisposable
 
     public void Stop()
     {
+        if (Subscribed) Restarts++;
+
         Subscribed = false;
         Drop();
-        while (_lines.TryDequeue(out _)) { }
+        while (_lines.TryDequeue(out _)) Discarded++;
     }
 
     private static void Drop()

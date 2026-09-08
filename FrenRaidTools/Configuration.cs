@@ -50,8 +50,11 @@ public sealed class Configuration : IPluginConfiguration
         if (CallKeys.Carry(MutedCalls) + CallKeys.Carry(CallEdits) > 0) _dirty = true;
     }
 
-    public bool DiagOn { get; set; }
-    public bool DiagInReplay { get; set; }
+    public const int DiagAlwaysOnRound = 1;
+
+    public bool DiagOn { get; set; } = true;
+    public bool DiagInReplay { get; set; } = true;
+    public int DiagRound { get; set; }
 
     public bool ParserOn { get; set; } = true;
 
@@ -140,6 +143,13 @@ public sealed class Configuration : IPluginConfiguration
         {
             QuietSeed.Wake(MutedCalls, SeededQuiet);
             QuietRound = QuietSeed.Round;
+            _dirty = true;
+        }
+        if (DiagRound < DiagAlwaysOnRound)
+        {
+            DiagOn = true;
+            DiagInReplay = true;
+            DiagRound = DiagAlwaysOnRound;
             _dirty = true;
         }
         CarryRenamedCalls();

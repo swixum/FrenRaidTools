@@ -548,11 +548,36 @@ public sealed class KefkaSays
         e.Id is WHITE_WOUND or BLACK_WOUND or ALLAG_FIELD or BEYOND_DEATH
              or BEYOND_DEATH_FAKE or WHITE_WOUND_FAKE or BLACK_WOUND_FAKE;
 
-    private async Task<bool> NeoExdeathReal(SequenceRun run)
+    public const double TellWindowSeconds = 2.0;
+
+    public const double TellWaitSeconds = 3.0;
+
+    public const double AntilightTellWaitSeconds = 30.0;
+
+    private async Task<(bool? Real, double At)> NeoExdeathRealForSet(SequenceRun run, double pairAt)
     {
-        var vfx = await run.WaitEvent(
-            e => e.Kind == EventKind.StatusLoopVfx && e.Target?.BaseId == NpcNeoExdeath);
-        return vfx.Id == RealNeoExdeath;
+        if (Vfx.RealSince(neoExdeath: true, pairAt - TellWindowSeconds) is { } held)
+            return (held, Vfx.NeoExdeathSeenAt);
+
+        return await NeoExdeathReal(run, pairAt, TellWaitSeconds);
+    }
+
+    private async Task<(bool? Real, double At)> NeoExdeathRealAfter(SequenceRun run, double after)
+    {
+        if (Vfx.NeoExdeathSeenAt > after && Vfx.NeoExdeathReal is { } held)
+            return (held, Vfx.NeoExdeathSeenAt);
+
+        return await NeoExdeathReal(run, after, AntilightTellWaitSeconds);
+    }
+
+    private async Task<(bool? Real, double At)> NeoExdeathReal(
+        SequenceRun run, double fallbackAt, double waitSeconds)
+    {
+        var vfx = await run.WaitEventUntil(
+            e => e.Kind == EventKind.StatusLoopVfx && e.Target?.BaseId == NpcNeoExdeath,
+            run.Now + waitSeconds);
+
+        return vfx is null ? (null, fallbackAt) : (vfx.Id == RealNeoExdeath, vfx.At);
     }
 
     private CallTicket? ElementCall(
@@ -584,11 +609,11 @@ public sealed class KefkaSays
     {
         var fake = new HashSet<(uint Status, uint Target)>();
 
-        await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
+        var pair1 = await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
 
-        var real1 = await NeoExdeathReal(run);
+        var (real1, _) = await NeoExdeathRealForSet(run, pair1[0].At);
         var burst1 = await run.WaitEventsQuickSuccession(DebuffBurst, IsElementDebuff);
-        MarkFake(fake, burst1, real1);
+        if (real1 is { } known1) MarkFake(fake, burst1, known1);
         var mine1 = burst1.Where(Yours).ToList();
 
         await run.WaitMs(100);
@@ -598,17 +623,20 @@ public sealed class KefkaSays
         var water1 = ById(mine1, WATER);
         var fork1 = ById(mine1, FORK);
 
-        var ticket = ElementCall(run, real1, ShortAccelSeconds, accel1, shriek1, water1, fork1,
-            realAccelShort, realAccelShortShriek, realAccelLong, realAccelLongShriek,
-            fakeAccelShort, fakeAccelShortShriek, fakeAccelLong, fakeAccelLongShriek,
-            realWater, fakeWater, realLightning, fakeLightning);
+        var ticket = real1 is { } shown1
+            ? ElementCall(run, shown1, ShortAccelSeconds, accel1, shriek1, water1, fork1,
+                realAccelShort, realAccelShortShriek, realAccelLong, realAccelLongShriek,
+                fakeAccelShort, fakeAccelShortShriek, fakeAccelLong, fakeAccelLongShriek,
+                realWater, fakeWater, realLightning, fakeLightning)
+            : null;
 
-        await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
+        var pair2 = await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
         ticket?.ForceExpire();
 
-        var real2 = await NeoExdeathReal(run);
+        var (real2, _) = await NeoExdeathRealForSet(run, pair2[0].At);
+        var setsRead = real1 is not null && real2 is not null;
         var burst2 = await run.WaitEventsQuickSuccession(DebuffBurst, IsElementDebuff);
-        MarkFake(fake, burst2, real2);
+        if (real2 is { } known2) MarkFake(fake, burst2, known2);
         var mine2 = burst2.Where(Yours).ToList();
 
         var accel2 = ById(mine2, ACCEL);
@@ -616,18 +644,22 @@ public sealed class KefkaSays
         var water2 = ById(mine2, WATER);
         var fork2 = ById(mine2, FORK);
 
-        ticket = ElementCall(run, real2, SecondAccelSeconds, accel2, shriek2, water2, fork2,
-            secondRealAccelShort, secondRealAccelShortShriek, secondRealAccelLong, secondRealAccelLongShriek,
-            secondFakeAccelShort, secondFakeAccelShortShriek, secondFakeAccelLong, secondFakeAccelLongShriek,
-            secondRealWater, secondFakeWater, secondRealLightning, secondFakeLightning);
+        ticket = real2 is { } shown2
+            ? ElementCall(run, shown2, SecondAccelSeconds, accel2, shriek2, water2, fork2,
+                secondRealAccelShort, secondRealAccelShortShriek, secondRealAccelLong, secondRealAccelLongShriek,
+                secondFakeAccelShort, secondFakeAccelShortShriek, secondFakeAccelLong, secondFakeAccelLongShriek,
+                secondRealWater, secondFakeWater, secondRealLightning, secondFakeLightning)
+            : null;
 
-        await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
+        var pair3 = await run.WaitEvents(2, EventKind.HeadMarker, OnKefka);
         ticket?.ForceExpire();
 
         var wounds = (await run.WaitEventsQuickSuccession(WoundBurst, IsWoundDebuff))
             .Where(Yours).ToList();
 
-        var real3 = Vfx.NeoExdeathReal ?? real2;
+        var since3 = pair3[0].At - TellWindowSeconds;
+        var tell3 = Vfx.NeoExdeathSeenAt >= since3 ? Vfx.NeoExdeathSeenAt : pair3[0].At;
+        var real3 = Vfx.RealSince(neoExdeath: true, since3) ?? real2;
 
         var myBD = ById(wounds, BEYOND_DEATH, BEYOND_DEATH_FAKE);
         var myAF = ById(wounds, ALLAG_FIELD);
@@ -639,50 +671,58 @@ public sealed class KefkaSays
         run.SetParam("myWW", myWW);
         run.SetParam("myBW", myBW);
 
-        var shouldGetHit = (myBD is not null) ^ !real3;
-        var whiteIsLethal = (myWW is not null) ^ !real3;
-        var standInRealWhite = shouldGetHit == whiteIsLethal;
-
+        bool? standInRealWhite = null;
         CallTicket? wound = null;
-        if (myBD is not null)
+
+        if (real3 is { } shown3)
         {
-            if (myWW is not null) wound = run.Call(real3 ? realWhiteDeath : fakeWhiteDeath, myBD);
-            else if (myBW is not null) wound = run.Call(real3 ? realBlackDeath : fakeBlackDeath, myBD);
-        }
-        else if (myAF is not null)
-        {
-            if (myWW is not null) wound = run.Call(real3 ? realWhiteAllag : fakeWhiteAllag, myAF);
-            else if (myBW is not null) wound = run.Call(real3 ? realBlackAllag : fakeBlackAllag, myAF);
+            var shouldGetHit = (myBD is not null) ^ !shown3;
+            var whiteIsLethal = (myWW is not null) ^ !shown3;
+            standInRealWhite = shouldGetHit == whiteIsLethal;
+
+            if (myBD is not null)
+            {
+                if (myWW is not null) wound = run.Call(shown3 ? realWhiteDeath : fakeWhiteDeath, myBD);
+                else if (myBW is not null) wound = run.Call(shown3 ? realBlackDeath : fakeBlackDeath, myBD);
+            }
+            else if (myAF is not null)
+            {
+                if (myWW is not null) wound = run.Call(shown3 ? realWhiteAllag : fakeWhiteAllag, myAF);
+                else if (myBW is not null) wound = run.Call(shown3 ? realBlackAllag : fakeBlackAllag, myAF);
+            }
         }
 
         if (wound is null && world.You is not null) wound = run.Call(kefkaSaysError);
 
-        var real4 = await NeoExdeathReal(run);
-        var whiteIsSafe = standInRealWhite == real4;
+        var (real4, _) = await NeoExdeathRealAfter(run, tell3);
 
-        var blackCast = await run.FindOrWaitForCast(world,
-            e => e.Id == (real4 ? BlackCastReal : BlackCastFake));
-
-        if (blackCast is not null)
+        if (real4 is { } shown4)
         {
-            var caster = blackCast.Source is null ? null : world.Latest(blackCast.Source) ?? blackCast.Source;
-            if (caster is not null)
+            var blackCast = await run.FindOrWaitForCast(world,
+                e => e.Id == (shown4 ? BlackCastReal : BlackCastFake));
+
+            if (blackCast is not null)
             {
-                var cleaving = caster.Pos.Forward(caster.Heading, BlackCleaveDistance);
-                var blackPos = TightAp.For(cleaving);
-                var orbs = TightAp.For(caster.Pos);
-                var blackHalf = HalfOf(caster.Pos, caster.Heading);
+                var caster = blackCast.Source is null ? null : world.Latest(blackCast.Source) ?? blackCast.Source;
+                if (caster is not null)
+                {
+                    var cleaving = caster.Pos.Forward(caster.Heading, BlackCleaveDistance);
+                    var blackPos = TightAp.For(cleaving);
+                    var orbs = TightAp.For(caster.Pos);
+                    var blackHalf = HalfOf(caster.Pos, caster.Heading);
 
-                run.SetParam("blackCompass", blackHalf);
-                run.SetParam("whiteCompass", OtherHalf(blackHalf));
-                run.SetParam("blackPos", OrbSide(orbs, blackPos) ?? blackPos.Told());
-                run.SetParam("whitePos", OrbSide(orbs, blackPos.Opposite()) ?? blackPos.Opposite().Told());
+                    run.SetParam("blackCompass", blackHalf);
+                    run.SetParam("whiteCompass", OtherHalf(blackHalf));
+                    run.SetParam("blackPos", OrbSide(orbs, blackPos) ?? blackPos.Told());
+                    run.SetParam("whitePos", OrbSide(orbs, blackPos.Opposite()) ?? blackPos.Opposite().Told());
+                }
+
+                if (standInRealWhite is { } whiteReal)
+                    run.Call(whiteReal == shown4 ? standInWhite : standInBlack, blackCast);
+
+                await run.WaitCastFinished(blackCast);
             }
-
-            run.Call(whiteIsSafe ? standInWhite : standInBlack, blackCast);
         }
-
-        if (blackCast is not null) await run.WaitCastFinished(blackCast);
 
         BombSet(run, world, fake, first: true, fork1, fork2, accel1, accel2, water1, water2);
         NoteSecondSet(run, world, fake, fork1, fork2, water1, water2);
@@ -693,7 +733,8 @@ public sealed class KefkaSays
         var shortShriek = ShriekEnding(world, run, false);
         var shortShriekOnYou = ShriekEnding(world, run, true);
         run.SetParam("fakeShriek", IsFake(fake, shortShriek));
-        On(run, shortShriekOnYou is null ? thunderShriek : thunderShriekOnYou, shortShriek);
+        if (setsRead)
+            On(run, shortShriekOnYou is null ? thunderShriek : thunderShriekOnYou, shortShriek);
 
         var hm2 = await run.WaitEvent(EventKind.HeadMarker, NearKefka);
         run.SetParam("fakeIce", hm2.Id == FakeIce);
@@ -704,12 +745,14 @@ public sealed class KefkaSays
         var longShriek = ShriekEnding(world, run, false);
         var longShriekOnYou = ShriekEnding(world, run, true);
         run.SetParam("fakeShriek", IsFake(fake, longShriek));
-        var lastShriek = On(run, longShriekOnYou is null ? secondShriek : secondShriekOnYou, longShriek);
+        CallTicket? lastShriek = setsRead
+            ? On(run, longShriekOnYou is null ? secondShriek : secondShriekOnYou, longShriek)
+            : null;
 
-        if (longShriek is not null)
+        if (setsRead && longShriek is not null)
         {
             await run.WaitStatusRemovedOrExpired(longShriek, 1.0);
-            lastShriek.ForceExpire();
+            lastShriek?.ForceExpire();
         }
     }
 
@@ -813,18 +856,25 @@ public sealed class KefkaSays
             ? isLong ? isReal ? secondRealDynamicFluid : secondFakeDynamicFluid : isReal ? realDynamicFluid : fakeDynamicFluid
             : isLong ? isReal ? secondRealEntropy : secondFakeEntropy : isReal ? realEntropy : fakeEntropy;
 
-    private async Task<bool> ChaosReal(SequenceRun run)
+    public const double ChaosTellWaitSeconds = 60.0;
+
+    private async Task<(bool? Real, double At)> ChaosReal(SequenceRun run, double after)
     {
-        var vfx = await run.WaitEvent(
-            e => e.Kind == EventKind.StatusLoopVfx && e.Target?.BaseId == NpcChaos);
-        return vfx.Id == RealChaos;
+        if (Vfx.ChaosSeenAt > after && Vfx.ChaosReal is { } held) return (held, Vfx.ChaosSeenAt);
+
+        var vfx = await run.WaitEventUntil(
+            e => e.Kind == EventKind.StatusLoopVfx && e.Target?.BaseId == NpcChaos,
+            run.Now + ChaosTellWaitSeconds);
+
+        return vfx is null ? (null, after) : (vfx.Id == RealChaos, vfx.At);
     }
 
     private async Task Chaos(GameEvent start, SequenceRun run, IWorld world)
     {
         var fake = new HashSet<(uint Status, uint Target)>();
 
-        var real1 = await ChaosReal(run);
+        var (first1, tell1) = await ChaosReal(run, start.At - TellWindowSeconds);
+        if (first1 is not { } real1) return;
 
         await run.FindOrWaitForStatusWhere(world, IsChaosDebuff);
         await run.WaitMs(ChaosFirstDelayMs);
@@ -838,7 +888,8 @@ public sealed class KefkaSays
         var ticket = run.Call(
             DynEnt(first.Id == ChaosDynamic, first.Duration > FirstLongSeconds, real1), first);
 
-        var real2 = await ChaosReal(run);
+        var (second2, _) = await ChaosReal(run, tell1);
+        if (second2 is not { } real2) return;
         ticket.ForceExpire();
         await run.WaitMs(ChaosVfxGapMs);
 

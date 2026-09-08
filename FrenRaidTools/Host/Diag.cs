@@ -5,30 +5,42 @@ namespace FrenRaidTools;
 
 public sealed class Diag : IDisposable
 {
-    public const string FileName = "replay-diag.log";
-    public const string PreviousFileName = "replay-diag-prev.log";
+    public const int KeepDays = 90;
     public const int MaxLines = 200_000;
     public const int FlushEvery = 200;
     public const double FlushSeconds = 2.0;
+    public const int QuietShown = 20;
+
+    private static readonly object Disk = new();
 
     private readonly object _gate = new();
     private readonly StringBuilder _pending = new();
 
+    private readonly Dictionary<string, int> _drops = [];
+    private readonly Dictionary<string, int> _events = [];
+    private readonly Dictionary<uint, int> _quiet = [];
+
     private string? _path;
+    private string _stem = "";
+    private int _part;
     private int _written;
     private int _sinceFlush;
     private double _nextFlush;
     private double _now;
+    private int _calls;
+    private int _readFails;
 
     public bool On { get; private set; }
 
     public int Lines => _written;
 
+    public int Part => _part;
+
     public string Where => _path ?? "not started";
 
     public string Detail =>
         !On ? "Off."
-        : _written >= MaxLines ? $"Full at {MaxLines:n0} lines. {_path}"
+        : _part > 1 ? $"{_written:n0} lines, part {_part}. {_path}"
         : $"{_written:n0} lines. {_path}";
 
     public void Tick(double now)
@@ -50,9 +62,11 @@ public sealed class Diag : IDisposable
             {
                 var dir = Service.PluginInterface.ConfigDirectory;
                 dir.Create();
-                _path = Path.Combine(dir.FullName, FileName);
-                Keep(dir.FullName);
-                File.WriteAllText(_path, "");
+                _stem = Path.Combine(dir.FullName, $"replay-diag-{DateTime.Now:yyyyMMdd-HHmmss}");
+                _part = 1;
+                _path = $"{_stem}.log";
+                var home = dir.FullName;
+                Task.Run(() => Sweep(home));
                 _written = 0;
                 On = true;
             }
@@ -64,21 +78,32 @@ public sealed class Diag : IDisposable
             }
         }
 
+        _calls = 0;
+        _readFails = 0;
+        _drops.Clear();
+        _events.Clear();
+        _quiet.Clear();
+
         Note("diag", "started");
+        Note("setup", $"wall={DateTime.UtcNow:yyyy-MM-ddTHH:mm:ss}");
+        Note("setup", $"version={typeof(Diag).Assembly.GetName().Version}");
         Header();
     }
 
-    private void Keep(string dir)
+    private static void Sweep(string dir)
     {
-        if (_path is null || !File.Exists(_path)) return;
+        var cutoff = DateTime.Now.AddDays(-KeepDays);
 
         try
         {
-            File.Move(_path, Path.Combine(dir, PreviousFileName), overwrite: true);
+            lock (Disk)
+                foreach (var file in new DirectoryInfo(dir).GetFiles("replay-diag*.log"))
+                    if (file.LastWriteTime < cutoff)
+                        try { file.Delete(); } catch { }
         }
         catch (Exception ex)
         {
-            Service.Log.Warning(ex, "Could not keep the previous diagnostics file.");
+            Service.Log.Warning(ex, "Could not sweep old diagnostics files.");
         }
     }
 
@@ -103,8 +128,22 @@ public sealed class Diag : IDisposable
     {
         if (!On) return;
 
+        Note("counts", $"calls={_calls} readfails={_readFails} lines={_written} part={_part}");
+        foreach (var (code, n) in _drops)
+            Note("counts", $"drop {code}={n}");
+        foreach (var (kind, n) in _events)
+            Note("counts", $"event {kind}={n}");
+
+        var quiet = _quiet.OrderByDescending(pair => pair.Value).ToList();
+        foreach (var (id, n) in quiet.Take(QuietShown))
+            Note("counts", $"actorcontrol skipped {id:X}={n}");
+        if (quiet.Count > QuietShown)
+            Note("counts",
+                $"actorcontrol skipped {quiet.Count - QuietShown} more ids, " +
+                $"{quiet.Skip(QuietShown).Sum(pair => pair.Value)} lines");
+
         Note("diag", "stopped");
-        Flush();
+        FlushNow();
         lock (_gate) On = false;
     }
 
@@ -120,19 +159,48 @@ public sealed class Diag : IDisposable
 
         lock (_gate)
         {
-            if (_written >= MaxLines) return;
+            if (_written >= MaxLines) Roll();
 
-            _pending.Append(_now.ToString("0.00")).Append("  ")
-                .Append(tag).Append("  ").Append(what).Append('\n');
-
-            _written++;
-            if (++_sinceFlush >= FlushEvery) FlushLocked();
+            Line(tag, what);
+            if (_sinceFlush >= FlushEvery) FlushLocked();
         }
+    }
+
+    private void Line(string tag, string what)
+    {
+        _pending.Append(_now.ToString("0.00")).Append("  ")
+            .Append(tag).Append("  ").Append(what).Append('\n');
+
+        _written++;
+        _sinceFlush++;
+    }
+
+    private void Roll()
+    {
+        var next = $"{_stem}-{_part + 1}.log";
+
+        Line("diag", $"full at {MaxLines:n0} lines, continues in {Path.GetFileName(next)}");
+        FlushLocked();
+
+        _part++;
+        _path = next;
+        _written = 0;
+
+        Line("diag", $"part {_part}, continued from {Path.GetFileName(_stem)}.log");
     }
 
     public void Event(GameEvent e, EventSource from)
     {
         if (!On) return;
+
+        var name = e.Kind.ToString();
+        _events[name] = _events.GetValueOrDefault(name) + 1;
+
+        if (e.Kind == EventKind.ActorControl && !ControlIds.Watched.Contains(e.Id))
+        {
+            _quiet[e.Id] = _quiet.GetValueOrDefault(e.Id) + 1;
+            return;
+        }
 
         var source = Who(e.Source);
         var target = Who(e.Target);
@@ -150,17 +218,28 @@ public sealed class Diag : IDisposable
     }
 
     public void Call(string key, string description, string text, string speech,
-        double countdownEnds, double expires)
+        double countdownEnds, double expires, string evidence = "", bool readFails = false)
     {
         if (!On) return;
 
         var spoken = speech == text ? "" : $" | says '{speech}'";
         var clock = countdownEnds > _now ? $" ends={countdownEnds - _now:0.0}" : "";
-        Note("CALL", $"{key} ({description}) '{text}'{spoken}{clock} holds={expires - _now:0.0}");
+        var why = evidence.Length > 0 ? $" why={evidence}" : "";
+        var hidden = readFails ? " readfail" : "";
+
+        _calls++;
+        if (readFails) _readFails++;
+
+        Note("CALL", $"{key} ({description}) '{text}'{spoken}{clock} holds={expires - _now:0.0}{why}{hidden}");
     }
 
-    public void Dropped(string why, string key, double left) =>
-        Note("dropped", $"{key} {why}, {left:0.0}s of its hold left");
+    public void Dropped(string code, string why, string key, double left)
+    {
+        if (!On) return;
+
+        _drops[code] = _drops.GetValueOrDefault(code) + 1;
+        Note("dropped", $"{key} [{code}] {why}, {left:0.0}s of its hold left");
+    }
 
     public void Plan(string what) => Note("plan", what);
 
@@ -221,15 +300,42 @@ public sealed class Diag : IDisposable
         _sinceFlush = 0;
         if (_pending.Length == 0 || _path is null) return;
 
-        try
+        var batch = _pending.ToString();
+        var path = _path;
+        _pending.Clear();
+
+        Task.Run(() => Write(path, batch));
+    }
+
+    private void FlushNow()
+    {
+        string batch;
+        string? path;
+
+        lock (_gate)
         {
-            File.AppendAllText(_path, _pending.ToString());
+            _sinceFlush = 0;
+            if (_pending.Length == 0 || _path is null) return;
+            batch = _pending.ToString();
+            path = _path;
             _pending.Clear();
         }
-        catch (Exception ex)
+
+        Write(path, batch);
+    }
+
+    private static void Write(string path, string batch)
+    {
+        lock (Disk)
         {
-            Service.Log.Warning(ex, "Could not write the diagnostics file.");
-            _pending.Clear();
+            try
+            {
+                File.AppendAllText(path, batch);
+            }
+            catch (Exception ex)
+            {
+                Service.Log.Warning(ex, "Could not write the diagnostics file.");
+            }
         }
     }
 
