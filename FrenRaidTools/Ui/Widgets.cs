@@ -6,6 +6,9 @@ namespace FrenRaidTools.Ui;
 
 internal static partial class Widgets
 {
+    public const ImGuiButtonFlags ClickThrough =
+        (ImGuiButtonFlags)ImGuiButtonFlagsPrivate.AllowItemOverlap;
+
     private const double TooltipDelay = 0.35;
 
     private static Vector2 _tipPos;

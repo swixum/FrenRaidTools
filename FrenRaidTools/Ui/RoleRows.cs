@@ -43,7 +43,7 @@ internal static class RoleRows
         var span = new Vector2(ImGui.GetContentRegionAvail().X,
             Widgets.RowHeightFor(hint.Length > 0));
 
-        ImGui.InvisibleButton("##drop" + id, span);
+        ImGui.InvisibleButton("##drop" + id, span, Widgets.ClickThrough);
         ImGui.SetItemAllowOverlap();
         DragParty.Offer(new PartyMember(name, roster.Jobs[slot]), slot, id);
         var took = DragParty.TakeOn(roster, slot, out var hovering);

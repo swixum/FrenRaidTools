@@ -53,7 +53,7 @@ internal static partial class Widgets
         var start = ImGui.GetCursorScreenPos();
         var top = ImGui.GetCursorPos();
 
-        var clicked = ImGui.InvisibleButton("##fold" + id, new Vector2(width, height));
+        var clicked = ImGui.InvisibleButton("##fold" + id, new Vector2(width, height), ClickThrough);
         var hovered = ImGui.IsItemHovered();
         if (hovered) ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
 
@@ -184,7 +184,7 @@ internal static partial class Widgets
         _rowClicked = false;
         if (clickable)
         {
-            _rowClicked = ImGui.InvisibleButton("##hit" + id, new Vector2(width, rowH));
+            _rowClicked = ImGui.InvisibleButton("##hit" + id, new Vector2(width, rowH), ClickThrough);
             if (ImGui.IsItemHovered()) { hot = true; ImGui.SetMouseCursor(ImGuiMouseCursor.Hand); }
             ImGui.SetItemAllowOverlap();
             ImGui.SetCursorPos(start);

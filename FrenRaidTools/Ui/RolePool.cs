@@ -44,7 +44,7 @@ internal sealed class RolePool
         var room = ImGui.GetContentRegionAvail().X;
         var tall = Reserved(room, config.Roles);
 
-        ImGui.InvisibleButton("##out" + _id, new Vector2(room, tall));
+        ImGui.InvisibleButton("##out" + _id, new Vector2(room, tall), Widgets.ClickThrough);
         ImGui.SetItemAllowOverlap();
         if (DragParty.DropOut(config.Roles, out var hovering)) config.Save(now);
         ImGui.SetCursorPos(top);
