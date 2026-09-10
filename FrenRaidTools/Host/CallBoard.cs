@@ -224,7 +224,8 @@ public sealed class CallBoard
                 Evidence(callout, on, args), callout.Fallback);
         Record(callout.Description, text, now, muted: false, test);
         Queue(speech, now + callout.SpeechDelaySeconds,
-            TankActions.RankFor(callout, _config.TtsTankSwapsFirst), callout.RepeatsAloud, test);
+            TankActions.RankFor(callout, _config.TtsTankSwapsFirst), callout.RepeatsAloud, test,
+            TankActions.PlaysOnTop(callout, _config.TtsTankSwapsOnTop));
     }
 
     private string Fill(string template, IReadOnlyDictionary<string, object?> args, bool test)
@@ -240,13 +241,16 @@ public sealed class CallBoard
         return Placeholders.Bare(result.Text);
     }
 
-    private void Queue(string speech, double at, CallRank rank, bool repeatsAloud, bool test)
+    private void Queue(string speech, double at, CallRank rank, bool repeatsAloud, bool test,
+        bool onTop)
     {
         if (!_config.TtsOn || string.IsNullOrWhiteSpace(speech)) return;
         if (!test && !Game.Fighting) return;
 
-        lock (_gate) _lines.Add(speech, at, rank, repeatsAloud);
+        lock (_gate) _lines.Add(speech, at, rank, repeatsAloud, onTop ? OnTop : null);
     }
+
+    private static readonly object OnTop = new();
 
     private void Record(string description, string text, double at, bool muted, bool test)
     {
@@ -335,8 +339,15 @@ public sealed class CallBoard
 
     public Func<uint, uint, double?>? StatusRemaining { get; set; }
 
-    private bool Say(string line) =>
-        _speech.Say(line, _config.TtsRate, _config.TtsVolume, _config.TtsVoice);
+    public const int OnTopVolume = 100;
+
+    private bool Say(string line, object? tag)
+    {
+        var onTop = ReferenceEquals(tag, OnTop);
+
+        return _speech.Say(line, _config.TtsRate, onTop ? OnTopVolume : _config.TtsVolume,
+            _config.TtsVoice, onTop, onTop ? _config.TtsUnderVolume : -1);
+    }
 
     public int SpeechWaiting => _lines.Waiting;
 

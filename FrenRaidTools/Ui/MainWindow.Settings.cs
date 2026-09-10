@@ -280,10 +280,25 @@ public partial class MainWindow
         }
 
         var swapsFirst = C.TtsTankSwapsFirst;
-        if (Widgets.RowCheckClick("Taunts and shirks first", "Tanks only, ahead of waiting calls",
+        if (Widgets.RowCheckClick("Taunts and shirks first", "High prio queueing",
             ref swapsFirst))
         {
             C.TtsTankSwapsFirst = swapsFirst;
+            Touch();
+        }
+
+        var swapsOnTop = C.TtsTankSwapsOnTop;
+        if (Widgets.RowCheckClick("Taunts and shirks on top", "Play on top",
+            ref swapsOnTop))
+        {
+            C.TtsTankSwapsOnTop = swapsOnTop;
+            Touch();
+        }
+
+        var under = C.TtsUnderVolume;
+        if (Widgets.RowInputInt("Volume underneath", "While a taunt plays over it", ref under, 0, 100))
+        {
+            C.TtsUnderVolume = under;
             Touch();
         }
 

@@ -90,6 +90,8 @@ public sealed class Configuration : IPluginConfiguration
     public int TtsVolume { get; set; } = 90;
     public float TtsMinGap { get; set; } = 0.4f;
     public bool TtsTankSwapsFirst { get; set; }
+    public bool TtsTankSwapsOnTop { get; set; }
+    public int TtsUnderVolume { get; set; } = 25;
 
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public List<Roster> Setups { get; set; } = [];
@@ -197,6 +199,7 @@ public sealed class Configuration : IPluginConfiguration
             Math.Clamp(OverlayPosition.Y, 0.01f, 0.97f));
         TtsRate = Math.Clamp(TtsRate, -10, 10);
         TtsVolume = Math.Clamp(TtsVolume, 0, 100);
+        TtsUnderVolume = Math.Clamp(TtsUnderVolume, 0, 100);
         TtsMinGap = Math.Clamp(TtsMinGap, 0f, 5f);
         TtsVoice ??= "";
         if (AccentColor >> 24 == 0 || AccentColor == RetiredAccent) AccentColor = Theme.DefaultAccent;

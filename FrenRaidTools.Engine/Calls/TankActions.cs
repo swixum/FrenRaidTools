@@ -26,6 +26,8 @@ public static class TankActions
     public static CallRank RankFor(Callout call, bool first) =>
         first && SwapConfirm(call) ? CallRank.High : call.Rank;
 
+    public static bool PlaysOnTop(Callout call, bool over) => over && SwapConfirm(call);
+
     public static Sequence Build(string group, IWorld world) =>
         Sequence.Indexed(group + "TankActions", TimeoutSeconds,
             e => e.Kind == EventKind.AbilityHit
