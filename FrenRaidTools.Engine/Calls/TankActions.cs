@@ -19,6 +19,13 @@ public static class TankActions
         .Note("Tanks only. Confirms enmity moved before the next buster.")
         .OutOfPhase(MechanicName);
 
+    public static bool SwapConfirm(Callout call) =>
+        call.Step == MechanicName
+        && (call.Description == Provoked.Description || call.Description == Shirked.Description);
+
+    public static CallRank RankFor(Callout call, bool first) =>
+        first && SwapConfirm(call) ? CallRank.High : call.Rank;
+
     public static Sequence Build(string group, IWorld world) =>
         Sequence.Indexed(group + "TankActions", TimeoutSeconds,
             e => e.Kind == EventKind.AbilityHit

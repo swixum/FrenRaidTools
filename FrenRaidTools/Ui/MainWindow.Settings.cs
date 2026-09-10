@@ -279,6 +279,14 @@ public partial class MainWindow
             Touch();
         }
 
+        var swapsFirst = C.TtsTankSwapsFirst;
+        if (Widgets.RowCheckClick("Taunts and shirks first", "Tanks only, ahead of waiting calls",
+            ref swapsFirst))
+        {
+            C.TtsTankSwapsFirst = swapsFirst;
+            Touch();
+        }
+
         Widgets.ListEnd();
 
         ImGui.Spacing();

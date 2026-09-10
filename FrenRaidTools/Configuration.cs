@@ -89,6 +89,7 @@ public sealed class Configuration : IPluginConfiguration
     public int TtsRate { get; set; } = 1;
     public int TtsVolume { get; set; } = 90;
     public float TtsMinGap { get; set; } = 0.4f;
+    public bool TtsTankSwapsFirst { get; set; }
 
     [Newtonsoft.Json.JsonProperty(ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace)]
     public List<Roster> Setups { get; set; } = [];

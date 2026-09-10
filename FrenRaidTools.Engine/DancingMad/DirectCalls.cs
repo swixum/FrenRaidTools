@@ -25,11 +25,11 @@ public sealed class DirectCalls
     public readonly Callout provoked =
         Callout.Of("Provoke", "{event.source} Taunted")
             .Note("Tanks only. Confirms the swap the moment either tank presses Provoke.")
-            .OutOfPhase("Tank swaps");
+            .OutOfPhase(TankActions.MechanicName);
 
     public readonly Callout shirked =
         Callout.Of("Shirk", "{event.source} Shirked")
-            .OutOfPhase("Tank swaps");
+            .OutOfPhase(TankActions.MechanicName);
 
     public Sequence Build(IWorld world) =>
         Sequence.Indexed(Group, 30,

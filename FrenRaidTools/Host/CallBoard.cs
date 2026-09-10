@@ -223,7 +223,8 @@ public sealed class CallBoard
             _diag.Call(callout.Key, callout.Description, text, speech, ends, call.Expires,
                 Evidence(callout, on, args), callout.Fallback);
         Record(callout.Description, text, now, muted: false, test);
-        Queue(speech, now + callout.SpeechDelaySeconds, callout.Rank, callout.RepeatsAloud, test);
+        Queue(speech, now + callout.SpeechDelaySeconds,
+            TankActions.RankFor(callout, _config.TtsTankSwapsFirst), callout.RepeatsAloud, test);
     }
 
     private string Fill(string template, IReadOnlyDictionary<string, object?> args, bool test)
