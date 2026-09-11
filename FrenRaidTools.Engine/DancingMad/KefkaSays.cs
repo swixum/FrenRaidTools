@@ -316,9 +316,19 @@ public sealed class KefkaSays
 
     private (bool Spreading, string? Marker)? _secondSpot;
 
+    private bool _spreadTaken;
+
     public void NoteSecondSpot(bool spreading, string? marker) => _secondSpot = (spreading, marker);
 
-    public void ForgetSecondSpot() => _secondSpot = null;
+    public void NoteSpreadTaken(bool spreading) => _spreadTaken |= spreading;
+
+    public bool SpreadTaken => _spreadTaken;
+
+    public void ForgetSecondSpot()
+    {
+        _secondSpot = null;
+        _spreadTaken = false;
+    }
 
     public string? SecondSpotSuffix() =>
         _secondSpot is { Marker: { } marker } spot
@@ -363,12 +373,12 @@ public sealed class KefkaSays
 
     public readonly Callout firstEntropyDynamicMove =
         Callout.Duration("Kefka Says: First Entropy/Dynamic: Move (Circle Aoe)", "Move{next}").AutoIcon()
-            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Move and Spread B. Supports take D on a spread and A on a stack, dps take B and C. Holding neither a fork nor a water for that set leaves it as plain Move.")
+            .Note("{next} is the spot the second set sends you to, so this reads like Move and Spread B. Supports take D on a spread and A on a stack, dps take B and C. You only ever spread once, so after a first set spread, and whenever you hold neither a fork nor a water, the second set is a stack.")
             .At("First entropy and dynamic");
 
     public readonly Callout firstEntropyDynamicStay =
         Callout.Duration("Kefka Says: First Entropy/Dynamic: Stay (Donut AoE)", "Stay{next}").AutoIcon()
-            .Note("When your second stack or spread is known, {next} becomes the spot it sends you to, so this reads like Stay and Spread B. Holding neither a fork nor a water for that set leaves it as plain Stay.")
+            .Note("{next} is the spot the second set sends you to, so this reads like Stay and Spread B. You only ever spread once, so after a first set spread, and whenever you hold neither a fork nor a water, the second set is a stack.")
             .At("First entropy and dynamic");
 
     public readonly Callout secondSetStack =
@@ -764,24 +774,27 @@ public sealed class KefkaSays
         SequenceRun run, IWorld world, HashSet<(uint Status, uint Target)> fake,
         GameEvent? fork1, GameEvent? fork2, GameEvent? water1, GameEvent? water2)
     {
-        var fork = Longest(run, fork1, fork2);
-        var water = Longest(run, water1, water2);
+        var fork = Longest(run, BombSetSeconds, fork1, fork2);
+        var water = Longest(run, BombSetSeconds, water1, water2);
 
         bool spreading;
         if (fork is not null && (water is null || run.Remaining(fork) > run.Remaining(water)))
             spreading = !IsFake(fake, fork);
         else if (water is not null)
             spreading = IsFake(fake, water);
-        else return;
+        else
+            spreading = false;
+
+        if (_spreadTaken) spreading = false;
 
         NoteSecondSpot(spreading, Waymark(world, spreading));
     }
 
-    private static GameEvent? Longest(SequenceRun run, params GameEvent?[] statuses)
+    private static GameEvent? Longest(SequenceRun run, double atLeast, params GameEvent?[] statuses)
     {
         GameEvent? best = null;
         foreach (var status in statuses)
-            if (status is not null && run.Remaining(status) > 0 &&
+            if (status is not null && run.Remaining(status) >= atLeast &&
                 (best is null || run.Remaining(status) > run.Remaining(best)))
                 best = status;
         return best;
@@ -812,7 +825,8 @@ public sealed class KefkaSays
 
         if (myFork is not null)
         {
-            var spreading = !IsFake(fake, myFork);
+            var spreading = !IsFake(fake, myFork) && !_spreadTaken;
+            NoteSpreadTaken(spreading);
             run.SetParam(MarkerParam, Waymark(world, spreading));
             if (myAccel is not null) run.Call(spreading ? accelSpread : accelStack, Timed(myFork));
             else run.Call(spreading ? spread : stack, Timed(myFork));
@@ -821,7 +835,8 @@ public sealed class KefkaSays
 
         if (myWater is not null)
         {
-            var spreading = IsFake(fake, myWater);
+            var spreading = IsFake(fake, myWater) && !_spreadTaken;
+            NoteSpreadTaken(spreading);
             run.SetParam(MarkerParam, Waymark(world, spreading));
             if (myAccel is not null) run.Call(spreading ? accelSpread : accelStack, Timed(myWater));
             else run.Call(spreading ? spread : stack, Timed(myWater));

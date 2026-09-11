@@ -18,6 +18,9 @@ public sealed class Flood
 
     public static readonly ArenaPos Ap = new(100, 100, 2, 2);
 
+    public const int AddsPerWave = 2;
+    public const double ResolveWaveSeconds = 0.3;
+
     public readonly Callout ultimaUpsurge =
         Callout.Duration("Ultima Upsurge", "Big Raidwide");
 
@@ -34,7 +37,7 @@ public sealed class Flood
     public readonly Callout floodCall =
         Callout.Of("Flood: Location and Rotation",
             "Start {startWaymark}, {clockwise ? 'Clockwise' : 'Counterclockwise'}",
-            "Start {startWaymark}, {clockwise ? 'CW' : 'CCW'}").Note("{startWaymark} is the waymark letter on the cardinal to start at. You can use the variables 'start' and 'secondStart' for the direction opposite the first and second hit (intercard),\\ along with {cardinalStart} for the cardinal between those two. 'final' is opposite the final hit, and cardinalFinal is the safe spot for the 3rd and 4th hits.");
+            "Start {startWaymark}, {clockwise ? 'CW' : 'CCW'}").Note("{startWaymark} is the waymark letter on the cardinal to start at. You can use the variables 'start' and 'second' for the direction opposite the first and second hit (intercard),\\ along with {cardinalStart} for the cardinal between those two. 'final' is opposite the final hit, and cardinalFinal is the safe spot for the 3rd and 4th hits.");
 
     public readonly Callout floodMove1 =
         Callout.Of("Flood: Move 1", "Move").Quiet();
@@ -72,10 +75,9 @@ public sealed class Flood
 
         run.Call(floodCall);
 
-        await run.WaitEvent(EventKind.AbilityHit, FloodResolve);
+        await ResolveWave(run);
         run.Call(floodMove1);
-        await run.WaitMs(100);
-        await run.WaitEvent(EventKind.AbilityHit, FloodResolve);
+        await ResolveWave(run);
         run.Call(floodMove2);
     }
 
@@ -87,15 +89,34 @@ public sealed class Flood
 
     private static ArenaSector Where(IEnumerable<GameEvent> casts, IWorld world)
     {
+        var nearest = ArenaSector.Unknown;
+        var shortest = double.MaxValue;
+
         foreach (var cast in casts)
         {
             var actor = cast.Source is null ? null : world.Latest(cast.Source) ?? cast.Source;
-            if (actor is null) continue;
+            if (actor is null || !actor.Pos.Known) continue;
             var sector = Ap.For(actor.Pos);
-            if (sector.IsPoint()) return sector;
+            if (!sector.IsPoint()) continue;
+            var range = FromCenter(actor.Pos);
+            if (range >= shortest) continue;
+            shortest = range;
+            nearest = sector;
         }
-        return ArenaSector.Unknown;
+
+        return nearest;
     }
+
+    private static double FromCenter(Position pos)
+    {
+        var dx = pos.X - Ap.CenterX;
+        var dy = pos.Y - Ap.CenterY;
+        return Math.Sqrt(dx * dx + dy * dy);
+    }
+
+    private static Task<List<GameEvent>> ResolveWave(SequenceRun run) =>
+        run.WaitEventsQuickSuccession(
+            AddsPerWave, e => e.Is(EventKind.AbilityHit, FloodResolve), ResolveWaveSeconds);
 
     public static bool Turning(ArenaSector from, ArenaSector to)
     {
