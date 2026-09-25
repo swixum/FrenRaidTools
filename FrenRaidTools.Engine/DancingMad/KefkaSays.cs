@@ -750,20 +750,17 @@ public sealed class KefkaSays
         run.SetParam("fakeIce", hm2.Id == FakeIce);
 
         var held = BombSet(run, world, fake, first: false, fork1, fork2, accel1, accel2, water1, water2);
-        await run.WaitStatusRemovedIfAny(held);
+        if (held is not null) await run.WaitStatusRemovedOrExpired(held, 1.0);
 
         var longShriek = ShriekEnding(world, run, false);
         var longShriekOnYou = ShriekEnding(world, run, true);
-        run.SetParam("fakeShriek", IsFake(fake, longShriek));
-        CallTicket? lastShriek = setsRead
-            ? On(run, longShriekOnYou is null ? secondShriek : secondShriekOnYou, longShriek)
-            : null;
+        if (!setsRead || longShriek is null) return;
 
-        if (setsRead && longShriek is not null)
-        {
-            await run.WaitStatusRemovedOrExpired(longShriek, 1.0);
-            lastShriek?.ForceExpire();
-        }
+        run.SetParam("fakeShriek", IsFake(fake, longShriek));
+        var lastShriek = run.Call(longShriekOnYou is null ? secondShriek : secondShriekOnYou, longShriek);
+
+        await run.WaitStatusRemovedOrExpired(longShriek, 1.0);
+        lastShriek.ForceExpire();
     }
 
     private static GameEvent? ShriekEnding(IWorld world, SequenceRun run, bool onlyYou) =>
@@ -830,7 +827,7 @@ public sealed class KefkaSays
             run.SetParam(MarkerParam, Waymark(world, spreading));
             if (myAccel is not null) run.Call(spreading ? accelSpread : accelStack, Timed(myFork));
             else run.Call(spreading ? spread : stack, Timed(myFork));
-            return myWater;
+            return myFork;
         }
 
         if (myWater is not null)
